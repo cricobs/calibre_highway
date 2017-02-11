@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QListWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::ActionsContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QListView::item { padding: 0.5ex }</string>
+  </property>
+  <property name="dragEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="dragDropMode">
+   <enum>QAbstractItemView::InternalMove</enum>
+  </property>
+  <property name="defaultDropAction">
+   <enum>Qt::MoveAction</enum>
+  </property>
+  <property name="alternatingRowColors">
+   <bool>true</bool>
+  </property>
+  <action name="ac_edit">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="ac_delete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="ac_sort">
+   <property name="text">
+    <string>Name</string>
+   </property>
+  </action>
+  <action name="ac_sort_pos">
+   <property name="text">
+    <string>Position</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

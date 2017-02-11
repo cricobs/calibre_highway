@@ -1,0 +1,311 @@
+{
+  "root": [
+    {
+      "slot": "search_online",
+      "text": "",
+      "name": "search_online",
+      "context": true,
+      "icon": "search.png"
+    },
+    {
+      "slot": "lookup",
+      "name": "dictionary",
+      "text": "&Lookup in dictionary",
+      "shortcut": "Lookup word",
+      "context": true,
+      "icon": "dictionary.png"
+    },
+    {
+      "slot": "search_next",
+      "name": "search",
+      "text": "&Search for next occurrence",
+      "shortcut": "Next occurrence",
+      "context": true,
+      "icon": "dictionary.png"
+    },
+    {
+      "slot": "image_popup",
+      "text": "View &image...",
+      "name": "view_image",
+      "icon": "view-image.png"
+    },
+    {
+      "slot": "popup_table",
+      "text": "View &table...",
+      "name": "view_table",
+      "icon": "view.png"
+    },
+    {
+      "slot": "restore_font_size",
+      "checkable": true,
+      "name": "restore_fonts",
+      "text": "Default font size"
+    },
+    {
+      "text": "Go to...",
+      "name": "goto_location"
+    }
+  ],
+  "goto_location": [
+    {
+      "call": "goto_next_section",
+      "name": "Next Section",
+      "shortcut": "Next Section"
+    },
+    {
+      "separator": true,
+      "call": "goto_previous_section",
+      "name": "Previous Section",
+      "shortcut": "Previous Section"
+    },
+    {
+      "call": "goto_document_start",
+      "name": "Document Start",
+      "shortcut": "Document Top"
+    },
+    {
+      "separator": true,
+      "call": "goto_document_end",
+      "name": "Document End",
+      "shortcut": "Document Bottom"
+    },
+    {
+      "call": "goto_section_start",
+      "name": "Section Start",
+      "shortcut": "Section Top"
+    },
+    {
+      "separator": true,
+      "call": "goto_section_end",
+      "name": "Section End",
+      "shortcut": "Section Bottom"
+    },
+    {
+      "call": "next_page",
+      "name": "Next Page",
+      "shortcut": "Next Page"
+    },
+    {
+      "call": "previous_page",
+      "name": "Previous Page",
+      "shortcut": "Previous Page"
+    }
+  ],
+  "search_online": [
+    {
+      "url": "https://www.google.com/search?q=%s",
+      "name": "engine"
+    },
+    {
+      "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
+      "name": "encyclopedia",
+      "shortcut": "Search encyclopedia"
+    },
+    {
+      "url": "http://www.merriam-webster.com/dictionary?s=%s",
+      "name": "dictionary"
+    },
+    {
+      "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
+      "separator": true,
+      "name": "etymology"
+    },
+    {
+      "url": "https://translate.google.com/#en/es/%s",
+      "name": "translate enes"
+    },
+    {
+      "url": "https://translate.google.com/#es/en/%s",
+      "name": "translate esen"
+    }
+  ],
+  "shortcuts": {
+    "Quit": [
+      [
+        "Ctrl+Q",
+        "Ctrl+W",
+        "Alt+F4"
+      ],
+      "Quit"
+    ],
+    "Reload": [
+      [
+        "Ctrl+R",
+        "F5"
+      ],
+      "Reload the current book"
+    ],
+    "Document Bottom": [
+      [
+        "Ctrl+End"
+      ],
+      "Scroll to the end of the document"
+    ],
+    "Bookmark": [
+      [
+        "Ctrl+B"
+      ],
+      "Bookmark the current location"
+    ],
+    "Previous Page": [
+      [
+        "PgUp",
+        "Backspace",
+        "Shift+Space"
+      ],
+      "Scroll to the previous page"
+    ],
+    "Print": [
+      [
+        "Ctrl+P"
+      ],
+      "Print the current book"
+    ],
+    "Document Top": [
+      [
+        "Ctrl+Home"
+      ],
+      "Scroll to the start of the document"
+    ],
+    "Section Top": [
+      [
+        "Home"
+      ],
+      "Scroll to the top of the section"
+    ],
+    "Next Page": [
+      [
+        "PgDown",
+        "Space"
+      ],
+      "Scroll to the next page"
+    ],
+    "Edit": [
+      [
+        "Alt+E"
+      ],
+      "Toggle the Edit Toolbar"
+    ],
+    "Lookup word": [
+      [
+        "Ctrl+L"
+      ],
+      "Lookup word in dictionary"
+    ],
+    "Up": [
+      [
+        "K",
+        "Up"
+      ],
+      "Scroll up"
+    ],
+    "Show metadata": [
+      [
+        "Ctrl+I"
+      ],
+      "Show metadata"
+    ],
+    "Section Bottom": [
+      [
+        "End"
+      ],
+      "Scroll to the bottom of the section"
+    ],
+    "Next occurrence": [
+      [
+        "Ctrl+S"
+      ],
+      "Go to next occurrence of selected word"
+    ],
+    "Find next": [
+      [
+        "F3"
+      ],
+      "Find next"
+    ],
+    "Previous Section": [
+      [
+        "Ctrl+PgUp",
+        "Ctrl+Up"
+      ],
+      "Scroll to the previous section"
+    ],
+    "Left": [
+      [
+        "H",
+        "Left"
+      ],
+      "Scroll left"
+    ],
+    "Focus Search": [
+      [
+        "/",
+        "Ctrl+F"
+      ],
+      "Start search"
+    ],
+    "Find previous": [
+      [
+        "Shift+F3"
+      ],
+      "Find previous"
+    ],
+    "Right": [
+      [
+        "L",
+        "Right"
+      ],
+      "Scroll right"
+    ],
+    "Font smaller": [
+      [
+        "Ctrl+-"
+      ],
+      "Font size smaller"
+    ],
+    "Font larger": [
+      [
+        "Ctrl+="
+      ],
+      "Font size larger"
+    ],
+    "Back": [
+      [
+        "Alt+Left"
+      ],
+      "Back"
+    ],
+    "Down": [
+      [
+        "J",
+        "Down"
+      ],
+      "Scroll down"
+    ],
+    "Table of Contents": [
+      [
+        "Ctrl+T"
+      ],
+      "Toggle the Table of Contents"
+    ],
+    "Forward": [
+      [
+        "Alt+Right"
+      ],
+      "Forward"
+    ],
+    "Search online": [
+      [
+        "Ctrl+E"
+      ],
+      "Search online for word"
+    ],
+    "Next Section": [
+      [
+        "Ctrl+PgDown",
+        "Ctrl+Down"
+      ],
+      "Scroll to the next section"
+    ]
+  }
+}

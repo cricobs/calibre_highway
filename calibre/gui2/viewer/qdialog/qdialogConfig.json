@@ -1,0 +1,200 @@
+{
+  "config": {
+    "remember_window_size": {
+      "default": false,
+      "help": "Remember last used window size"
+    },
+    "user_css": {
+      "default": "",
+      "help": "Set the user CSS stylesheet. This can be used to customize the look of all books."
+    },
+    "max_fs_width": {
+      "default": 800,
+      "help": "Set the maximum width that the book's text and pictures will take when in fullscreen mode. This allows you to read the book text without it becoming too wide."
+    },
+    "max_fs_height": {
+      "default": -1,
+      "help": "Set the maximum height that the book's text and pictures will take when in fullscreen mode. This allows you to read the book text without it becoming too tall. Note that this setting only takes effect in paged mode (which is the default mode)."
+    },
+    "fit_images": {
+      "default": true,
+      "help": "Resize images larger than the viewer window to fit inside it"
+    },
+    "hyphenate": {
+      "default": false,
+      "help": "Hyphenate text"
+    },
+    "hyphenate_default_lang": {
+      "default": "en",
+      "help": "Default language for hyphenation rules"
+    },
+    "search_online_url": {
+      "default": "https://www.google.com/search?q={text}",
+      "help": "The URL to use when searching for selected text online"
+    },
+    "remember_current_page": {
+      "default": true,
+      "help": "Save the current position in the document, when quitting"
+    },
+    "copy_bookmarks_to_file": {
+      "default": true,
+      "help": "Copy bookmarks to the ebook file for easy sharing, if possible"
+    },
+    "wheel_flips_pages": {
+      "default": false,
+      "help": "Have the mouse wheel turn pages"
+    },
+    "wheel_scroll_fraction": {
+      "default": 100,
+      "help": "Control how much the mouse wheel scrolls by in flow mode"
+    },
+    "line_scroll_fraction": {
+      "default": 100,
+      "help": "Control how much the arrow keys scroll by in flow mode"
+    },
+    "tap_flips_pages": {
+      "default": true,
+      "help": "Tapping on the screen turns pages"
+    },
+    "line_scrolling_stops_on_pagebreaks": {
+      "default": false,
+      "help": "Prevent the up and down arrow keys from scrolling past page breaks"
+    },
+    "page_flip_duration": {
+      "default": 0.5,
+      "help": "The time, in seconds, for the page flip animation. Default is half a second."
+    },
+    "font_magnification_step": {
+      "default": 0.2,
+      "help": "The amount by which to change the font size when clicking the font larger/smaller buttons. Should be a number between 0 and 1."
+    },
+    "fullscreen_clock": {
+      "default": false,
+      "action": "store_true",
+      "help": "Show a clock in fullscreen mode."
+    },
+    "fullscreen_pos": {
+      "default": false,
+      "action": "store_true",
+      "help": "Show reading position in fullscreen mode."
+    },
+    "fullscreen_scrollbar": {
+      "default": true,
+      "action": "store_false",
+      "help": "Show the scrollbar in fullscreen mode."
+    },
+    "start_in_fullscreen": {
+      "default": false,
+      "action": "store_true",
+      "help": "Start viewer in full screen mode"
+    },
+    "show_fullscreen_help": {
+      "default": true,
+      "action": "store_false",
+      "help": "Show full screen usage help"
+    },
+    "cols_per_screen": {
+      "default": 1
+    },
+    "cols_per_screen_portrait": {
+      "default": 1
+    },
+    "cols_per_screen_landscape": {
+      "default": 1
+    },
+    "cols_per_screen_migrated": {
+      "default": false,
+      "action": "store_true"
+    },
+    "use_book_margins": {
+      "default": false,
+      "action": "store_true"
+    },
+    "top_margin": {
+      "default": 20
+    },
+    "side_margin": {
+      "default": 40
+    },
+    "bottom_margin": {
+      "default": 20
+    },
+    "text_color": {
+      "default": null
+    },
+    "background_color": {
+      "default": null
+    },
+    "show_controls": {
+      "default": true
+    },
+    "FONT": {
+      "help": "Font options"
+    },
+    "serif_family": {
+      "default": [
+        "Times New Roman",
+        "Liberation Serif"
+      ],
+      "help": "The serif font family",
+      "groups": [
+        "FONT"
+      ],
+      "system": true
+    },
+    "sans_family": {
+      "default": [
+        "Verdana",
+        "Liberation Sans"
+      ],
+      "help": "The sans-serif font family",
+      "groups": [
+        "FONT"
+      ],
+      "system": true
+    },
+    "mono_family": {
+      "default": [
+        "Courier New",
+        "Liberation Mono"
+      ],
+      "help": "The monospace font family",
+      "groups": [
+        "FONT"
+      ],
+      "system": true
+    },
+    "default_font_size": {
+      "default": 20,
+      "help": "The standard font size in px",
+      "groups": [
+        "FONT"
+      ]
+    },
+    "mono_font_size": {
+      "default": 16,
+      "help": "The monospace font size in px",
+      "groups": [
+        "FONT"
+      ]
+    },
+    "standard_font": {
+      "default": "serif",
+      "help": "The standard font type",
+      "groups": [
+        "FONT"
+      ]
+    },
+    "minimum_font_size": {
+      "default": 8,
+      "help": "The minimum font size in px",
+      "groups": [
+        "FONT"
+      ]
+    },
+    "synopsis_extension": {
+      "default": "md",
+      "help": "The extension for the synopsis file"
+    }
+  }
+}

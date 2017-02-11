@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QmainwindowEbook</class>
+ <widget class="QMainWindow" name="QmainwindowEbook">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1081</width>
+    <height>648</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>E-book viewer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="1" column="1">
+     <widget class="QScrollBar" name="vertical_scrollbar">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QScrollBar" name="horizontal_scrollbar">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QwebviewDocument" name="view">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="url">
+       <url>
+        <string>about:blank</string>
+       </url>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QwidgetSearch" name="qwidgetSearch" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QtoolbarEdit" name="tool_bar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="Qdockwidget" name="toc_dock">
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="windowTitle">
+    <string>Table of Contents</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="toc_container">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QwidgetContent" name="toc_search" native="true"/>
+     </item>
+     <item>
+      <widget class="QtreeviewContent" name="toc"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="Qdockwidget" name="bookmarks_dock">
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="windowTitle">
+    <string>Bookmarks</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QwidgetBookmark" name="bookmarks"/>
+  </widget>
+  <widget class="Qdockwidget" name="footnotes_dock">
+   <property name="contextMenuPolicy">
+    <enum>Qt::CustomContextMenu</enum>
+   </property>
+   <property name="windowTitle">
+    <string>Footnotes</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QwidgetFootnote" name="footnotes_view"/>
+  </widget>
+  <widget class="QdockwidgetSynopsis" name="qdockwidgetSynopsis">
+   <property name="windowTitle">
+    <string>Synopsis</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+  <customwidget>
+   <class>QtoolbarEdit</class>
+   <extends>QToolBar</extends>
+   <header>calibre.gui2.viewer.qtoolbar.qtoolbarEdit</header>
+  </customwidget>
+  <customwidget>
+   <class>QtreeviewContent</class>
+   <extends>QTreeView</extends>
+   <header>calibre.gui2.viewer.qtreeview.qtreeviewContent</header>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetContent</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetContent</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetBookmark</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetBookmark</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetFootnote</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetFootnote</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Qdockwidget</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QwebviewDocument</class>
+   <extends>QWebView</extends>
+   <header>calibre.gui2.viewer.qwebview.qwebviewDocument</header>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetSearch</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetSearch</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QdockwidgetSynopsis</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidgetSynopsis</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

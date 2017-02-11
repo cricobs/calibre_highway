@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QTreeView" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>256</width>
+    <height>192</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>80</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::CustomContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">                QTreeView {
+                    background-color: palette(window);
+                    color: palette(window-text);
+                    border: none;
+                }
+
+                QTreeView::item {
+                    border: 1px solid transparent;
+                    padding-top:0.5ex;
+                    padding-bottom:0.5ex;
+                }
+
+                QTreeView::item:hover {
+                    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+                    border: 1px solid #bfcde4;
+                    border-radius: 6px;
+                }</string>
+  </property>
+  <property name="headerHidden">
+   <bool>true</bool>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,292 @@
+{
+  "root": [
+    {
+      "text": "Back",
+      "name": "back",
+      "icon": "back.png",
+      "slots": {
+        "triggered": [
+          "back"
+        ]
+      }
+    },
+    {
+      "text": "Forward",
+      "separator": true,
+      "name": "forward",
+      "icon": "forward.png",
+      "slots": {
+        "triggered": [
+          "forward"
+        ]
+      }
+    },
+    {
+      "text": "Previous page",
+      "name": "previous_page",
+      "icon": "previous.png",
+      "slots": {
+        "triggered": [
+          "view",
+          "previous_page"
+        ]
+      }
+    },
+    {
+      "text": "Next page",
+      "separator": true,
+      "name": "next_page",
+      "icon": "next.png",
+      "slots": {
+        "triggered": [
+          "view",
+          "next_page"
+        ]
+      }
+    },
+    {
+      "menu": "open_history",
+      "text": "Open ebook",
+      "name": "open_ebook",
+      "icon": "document_open.png",
+      "context": true,
+      "slots": {
+        "triggered": [
+          "open_ebook"
+        ]
+      }
+    },
+    {
+      "text": "&Reload book",
+      "name": "reload",
+      "context": true,
+      "icon": "view-refresh.png",
+      "slots": {
+        "triggered": [
+          "reload_book"
+        ]
+      }
+    },
+    {
+      "menu": "bookmarks",
+      "text": "Bookmark",
+      "popup": "InstantPopup",
+      "name": "bookmark",
+      "icon": "bookmarks.png",
+      "context": true
+    },
+    {
+      "text": "Synopsis",
+      "widget": "qdockwidgetSynopsis",
+      "name": "synopsis",
+      "context": true
+    },
+    {
+      "checkable": true,
+      "widget": "qdockwidgetSynopsis",
+      "text": "Synopsis",
+      "name": "synopsis",
+      "icon": "modified.png",
+      "context": true
+    },
+    {
+      "text": "Show book metadata",
+      "name": "metadata",
+      "checkable": true,
+      "icon": "metadata.png",
+      "slots": {
+        "triggered": [
+          "metadata",
+          "setVisible"
+        ]
+      },
+      "separator": true
+    },
+    {
+      "text": "Search",
+      "name": "search",
+      "context": true,
+      "icon": "search.png",
+      "slots": {
+        "triggered": [
+          "on_action_search_triggered"
+        ]
+      }
+    },
+    {
+      "disabled": true,
+      "text": "Copy to clipboard",
+      "name": "copy",
+      "icon": "edit-copy.png",
+      "slots": {
+        "triggered": [
+          "copy"
+        ]
+      }
+    },
+    {
+      "checkable": true,
+      "widget": "toc_dock",
+      "shortcut": "Table of Contents",
+      "text": "Table of Contents",
+      "name": "table_of_contents",
+      "icon": "highlight_only_on.png",
+      "context": true,
+      "slots": {
+        "toggled": [
+          "set_toc_visible"
+        ]
+      }
+    },
+    {
+      "checkable": true,
+      "widget": "tool_bar",
+      "text": "Edit",
+      "shortcut": "Edit",
+      "name": "tool_bar",
+      "icon": "edit_input.png",
+      "context": true,
+      "separator": true
+    },
+    {
+      "text": "Increase font size",
+      "name": "font_size_larger",
+      "icon": "font_size_larger.png",
+      "context": true,
+      "slots": {
+        "triggered": [
+          "font_size_larger"
+        ]
+      }
+    },
+    {
+      "text": "Decrease font size",
+      "name": "font_size_smaller",
+      "icon": "font_size_smaller.png",
+      "context": true,
+      "separator": true,
+      "slots": {
+        "triggered": [
+          "font_size_smaller"
+        ]
+      }
+    },
+    {
+      "text": "Toggle full screen",
+      "shortcut": "Fullscreen",
+      "name": "full_screen",
+      "icon": "page.png",
+      "context": true,
+      "slots": {
+        "triggered": [
+          "toggle_fullscreen"
+        ]
+      }
+    },
+    {
+      "text": "Reference mode",
+      "name": "reference_mode",
+      "checkable": true,
+      "icon": "lookfeel.png",
+      "slots": {
+        "triggered": [
+          "view",
+          "reference_mode"
+        ]
+      }
+    },
+    {
+      "text": "Find previous occurrence",
+      "toolbar": "qwidgetSearch",
+      "name": "find_previous",
+      "icon": "arrow-up.png",
+      "slots": {
+        "triggered": [
+          "find_previous"
+        ]
+      }
+    },
+    {
+      "text": "Find next occurrence",
+      "toolbar": "qwidgetSearch",
+      "name": "find_next",
+      "icon": "arrow-down.png",
+      "slots": {
+        "triggered": [
+          "find_next"
+        ]
+      }
+    },
+    {
+      "text": "Toggle paged mode",
+      "toolbar": "tool_bar",
+      "name": "toggle_paged_mode",
+      "checkable": true,
+      "icon": "scroll.png",
+      "slots": {
+        "toggled": [
+          "toggle_paged_mode"
+        ]
+      }
+    },
+    {
+      "text": "Preview synopsis",
+      "toolbar": "tool_bar",
+      "name": "toggle_synopsis_preview",
+      "checkable": true,
+      "icon": "beautify.png",
+      "slots": {
+        "toggled": [
+          "toggle_synopsis_preview"
+        ]
+      }
+    },
+    {
+      "name": "load_theme",
+      "text": "Load a theme",
+      "popup": "InstantPopup",
+      "menu": "themes",
+      "icon": "wizard.png",
+      "separator": true
+    },
+    {
+      "text": "Print to PDF file",
+      "name": "print",
+      "icon": "print.png",
+      "slots": {
+        "triggered": [
+          "print_book"
+        ]
+      }
+    },
+    {
+      "text": "Preferences",
+      "name": "preferences",
+      "icon": "config.png",
+      "slots": {
+        "triggered": [
+          "do_config"
+        ]
+      }
+    },
+    {
+      "text": "&Quit",
+      "name": "quit",
+      "context": true,
+      "slots": {
+        "triggered": [
+          "quit"
+        ]
+      }
+    },
+    {
+      "text": "Clear list of recently opened books",
+      "name": "clear_recent_history",
+      "slots": {
+        "triggered": [
+          "clear_recent_history"
+        ]
+      }
+    }
+  ]
+}
