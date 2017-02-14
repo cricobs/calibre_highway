@@ -1,6 +1,20 @@
 {
   "root": [
     {
+      "slot": "copy_position",
+      "text": "Copy Position",
+      "name": "copy_position",
+      "icon": "copy.png"
+    },
+    {
+      "slot": "synopsis_append",
+      "name": "synopsis_append",
+      "text": "A&ppend to synopsis",
+      "context": true,
+      "icon": "modified.png",
+      "separator": true
+    },
+    {
       "slot": "search_online",
       "text": "",
       "name": "search_online",
@@ -212,9 +226,7 @@
       "Scroll to the bottom of the section"
     ],
     "Next occurrence": [
-      [
-        "Ctrl+S"
-      ],
+      [],
       "Go to next occurrence of selected word"
     ],
     "Find next": [
@@ -284,7 +296,7 @@
     ],
     "Table of Contents": [
       [
-        "Ctrl+T"
+        "Alt+T"
       ],
       "Toggle the Table of Contents"
     ],
@@ -306,6 +318,24 @@
         "Ctrl+Down"
       ],
       "Scroll to the next section"
+    ],
+    "Synopsis Save": [
+      [
+        "Ctrl+S"
+      ],
+      "Save synopsis file"
+    ],
+    "Synopsis Preview": [
+      [
+        "Alt+P"
+      ],
+      "Toggle the Synopsis Preview"
+    ],
+    "Synopsis": [
+      [
+        "Alt+S"
+      ],
+      "Toggle the Synopsis"
     ]
   }
 }

@@ -12,6 +12,7 @@ from threading import Thread
 
 from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QSize, QTime, QObject,
                       QPropertyAnimation, QInputDialog, QAction, QModelIndex, pyqtSignal)
+from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QToolBar
 from PyQt5.QtWidgets import QToolButton
@@ -364,11 +365,13 @@ class QmainwindowEbook(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        for qtoolbar in self.findChildren(QToolBar):
-            for action in qtoolbar.actions():
-                # So that the keyboard shortcuts for these actions will
-                # continue to function even when the toolbars are hidden
-                self.addAction(action)
+        qwidget_types = [QToolBar, QDockWidget]
+        for qwidget_type in qwidget_types:
+            for qwidget in self.findChildren(qwidget_type):
+                for action in qwidget.actions():
+                    # So that the keyboard shortcuts for these actions will
+                    # continue to function even when the toolbars are hidden
+                    self.addAction(action)
 
         for plugin in self.view.document.all_viewer_plugins:
             plugin.customize_ui(self)
@@ -380,6 +383,9 @@ class QmainwindowEbook(Qmainwindow):
         t.setSingleShot(True), t.setInterval(3000)
         t.timeout.connect(self.hide_cursor)
         t.start()
+
+    def on_qwebviewPreview_goToPosition(self, position):
+        self.view.document.page_position.to_pos(position)
 
     def on_action_search_triggered(self, checked):
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
@@ -407,18 +413,12 @@ class QmainwindowEbook(Qmainwindow):
                 self.cursor_hidden = False
                 QApplication.instance().restoreOverrideCursor()
             self.hide_cursor_timer.start()
+
         return False
 
     def hide_cursor(self):
         self.cursor_hidden = True
         QApplication.instance().setOverrideCursor(Qt.BlankCursor)
-
-    def toggle_synopsis_preview(self, checked):
-        self.qdockwidgetSynopsis.show()
-        if checked:
-            self.qdockwidgetSynopsis.preview()
-        else:
-            self.qdockwidgetSynopsis.edit()
 
     def toggle_paged_mode(self, checked, at_start=False):
         in_paged_mode = not self.action_toggle_paged_mode.isChecked()
@@ -1193,6 +1193,7 @@ class QmainwindowEbook(Qmainwindow):
             key = self.view.shortcuts.get_match(event)
         except AttributeError:
             return super(QmainwindowEbook, self).keyPressEvent(event)
+
         try:
             bac = self.bookmarks_menu.actions()[0]
         except (AttributeError, TypeError, IndexError, KeyError):
@@ -1213,6 +1214,10 @@ class QmainwindowEbook(Qmainwindow):
             'Reload': self.action_reload,
             'Table of Contents': self.action_table_of_contents,
             'Print': self.action_print,
+            "Edit": self.action_tool_bar,
+            "Synopsis Save": self.qdockwidgetSynopsis.qactionSave,
+            "Synopsis": self.action_synopsis,
+            "Synopsis Preview": self.action_toggle_synopsis_preview
         }.get(key, None)
         if action is not None:
             event.accept()
@@ -1220,6 +1225,7 @@ class QmainwindowEbook(Qmainwindow):
             return
         if key == 'Focus Search':
             self.search.setFocus(Qt.OtherFocusReason)
+            self.action_search.trigger()
             return
         if not self.view.handle_key_press(event):
             event.ignore()
@@ -1290,6 +1296,9 @@ class QmainwindowEbook(Qmainwindow):
         qaction.setObjectName('action_' + name)
         qaction.setDisabled(disabled)
         qaction.setCheckable(checkable)
+
+        if widget:
+            setattr(self, qaction.objectName(), qaction)
 
         if not widget and icon:
             toolbar.addAction(qaction)

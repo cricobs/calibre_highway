@@ -262,12 +262,18 @@ class Main(MainWindow):
         self.manage_fonts = ManageFonts(self)
         self.sr_debug_output = DebugOutput(self)
 
+        self.qaction_statusbar = QAction(self)
+        self.qaction_statusbar.setText("Statusbar")
+        self.qaction_statusbar.setCheckable(True)
+        self.qaction_statusbar.triggered.connect(self.on_qactionStatusbar_triggered)
+
         self.create_actions()
         self.create_toolbars()
         self.create_docks()
         self.create_menubar()
 
         self.status_bar = self.statusBar()
+        self.status_bar.hide()
         self.status_bar.addPermanentWidget(self.boss.save_manager.status_widget)
         self.cursor_position_widget = CursorPositionWidget(self)
         self.status_bar.addPermanentWidget(self.cursor_position_widget)
@@ -284,6 +290,9 @@ class Main(MainWindow):
 
         self.restore_state()
         self.apply_settings()
+
+    def on_qactionStatusbar_triggered(self, checked):
+        self.statusBar().setVisible(checked)
 
     def apply_settings(self):
         self.keyboard.finalize()
@@ -581,6 +590,7 @@ class Main(MainWindow):
                 e.addAction(ac)
             elif name.endswith('-bar'):
                 t.addAction(ac)
+        e.addAction(self.qaction_statusbar)
         e.addAction(self.action_browse_images)
         e.addSeparator()
         e.addAction(self.action_close_current_tab)
@@ -632,13 +642,14 @@ class Main(MainWindow):
             m.addAction(self.elided_text(path, width=500), partial(self.boss.open_book, path=path))
 
     def create_toolbars(self):
-        def create(text, name):
+        def create(text, name, qwidget=None):
             name += '-bar'
             b = self.addToolBar(text)
             b.setObjectName(name)  # Needed for saveState
             actions[name] = b.toggleViewAction()
             b.setIconSize(QSize(tprefs['toolbar_icon_size'], tprefs['toolbar_icon_size']))
             return b
+
         self.global_bar = create(_('Book tool bar'), 'global')
         self.tools_bar = create(_('Tools tool bar'), 'tools')
         self.plugins_bar = create(_('Plugins tool bar'), 'plugins')

@@ -1,27 +1,33 @@
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 """ The GUI """
-import os, sys, Queue, threading, glob, signal
+import Queue
+import glob
+import os
+import signal
+import sys
+import threading
 from contextlib import contextmanager
 from threading import RLock, Lock
 from urllib import unquote
-from PyQt5.QtWidgets import QStyle  # Gives a nicer error message than import from Qt
+
 from PyQt5.Qt import (
     QFileInfo, QObject, QBuffer, Qt, QByteArray, QTranslator, QSocketNotifier,
     QCoreApplication, QThread, QEvent, QTimer, pyqtSignal, QDateTime, QFontMetrics,
     QDesktopServices, QFileDialog, QFileIconProvider, QSettings, QIcon, QStringListModel,
     QApplication, QDialog, QUrl, QFont, QFontDatabase, QLocale, QFontInfo)
+from PyQt5.QtWidgets import QStyle  # Gives a nicer error message than import from Qt
 
 from calibre import prints
 from calibre.constants import (islinux, iswindows, isbsd, isfrozen, isosx,
         plugins, config_dir, filesystem_encoding, isxp, DEBUG, __version__, __appname__ as APP_UID)
+from calibre.ebooks.metadata import MetaInformation
 from calibre.ptempfile import base_dir
 from calibre.utils.config import Config, ConfigProxy, dynamic, JSONConfig
-from calibre.ebooks.metadata import MetaInformation
 from calibre.utils.date import UNDEFINED_DATE
-from calibre.utils.localization import get_lang
-from calibre.utils.filenames import expanduser
 from calibre.utils.file_type_icons import EXT_MAP
+from calibre.utils.filenames import expanduser
+from calibre.utils.localization import get_lang
 
 try:
     NO_URL_FORMATTING = QUrl.None_
@@ -1391,8 +1397,8 @@ def build_forms(srcdir, info=None, summary=False, check_for_migration=False):
 
 _df = os.environ.get('CALIBRE_DEVELOP_FROM', None)
 if _df and os.path.exists(_df):
-    build_forms(_df, check_for_migration=True)
-
+    # build_forms(_df, check_for_migration=True)
+    pass # why build_forms
 
 def event_type_name(ev_or_etype):
     from PyQt5.QtCore import QEvent
@@ -1401,19 +1407,6 @@ def event_type_name(ev_or_etype):
         if num == etype:
             return name
     return 'UnknownEventType'
-
-
-def secure_web_page(qwebpage_or_qwebsettings):
-    from PyQt5.QtWebKit import QWebSettings
-    settings = qwebpage_or_qwebsettings if isinstance(qwebpage_or_qwebsettings, QWebSettings) else qwebpage_or_qwebsettings.settings()
-    settings.setAttribute(QWebSettings.JavaEnabled, False)
-    settings.setAttribute(QWebSettings.PluginsEnabled, False)
-    settings.setAttribute(QWebSettings.JavascriptCanOpenWindows, False)
-    settings.setAttribute(QWebSettings.JavascriptCanAccessClipboard, False)
-    settings.setAttribute(QWebSettings.LocalContentCanAccessFileUrls, False)  # ensure javascript cannot read from local files
-    settings.setAttribute(QWebSettings.NotificationsEnabled, False)
-    settings.setThirdPartyCookiePolicy(QWebSettings.AlwaysBlockThirdPartyCookies)
-    return settings
 
 
 empty_model = QStringListModel([''])

@@ -76,12 +76,6 @@
       "context": true
     },
     {
-      "text": "Synopsis",
-      "widget": "qdockwidgetSynopsis",
-      "name": "synopsis",
-      "context": true
-    },
-    {
       "checkable": true,
       "widget": "qdockwidgetSynopsis",
       "text": "Synopsis",
@@ -237,7 +231,8 @@
       "icon": "beautify.png",
       "slots": {
         "toggled": [
-          "toggle_synopsis_preview"
+          "qdockwidgetSynopsis",
+          "toggle_preview"
         ]
       }
     },

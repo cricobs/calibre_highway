@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file '/mnt/7597ECC22B316B49/programs/linux/calibre/src/calibre/gui2/convert/metadata.ui'
 #
-# Created: Tue Feb 14 02:10:11 2017
-#      by: PyQt5 UI code generator 5.3.2
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -20,15 +19,15 @@ class Ui_Form(object):
         self._2 = QtWidgets.QGridLayout(self.groupBox_4)
         self._2.setObjectName("_2")
         self._4 = QtWidgets.QVBoxLayout()
-        self._4.setSpacing(6)
         self._4.setContentsMargins(0, 0, 0, 0)
+        self._4.setSpacing(6)
         self._4.setObjectName("_4")
         self.label_5 = QtWidgets.QLabel(self.groupBox_4)
         self.label_5.setObjectName("label_5")
         self._4.addWidget(self.label_5)
         self._5 = QtWidgets.QHBoxLayout()
-        self._5.setSpacing(6)
         self._5.setContentsMargins(0, 0, 0, 0)
+        self._5.setSpacing(6)
         self._5.setObjectName("_5")
         self.cover_path = QtWidgets.QLineEdit(self.groupBox_4)
         self.cover_path.setReadOnly(True)
@@ -36,7 +35,7 @@ class Ui_Form(object):
         self._5.addWidget(self.cover_path)
         self.cover_button = QtWidgets.QToolButton(self.groupBox_4)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/document_open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(I("document_open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.cover_button.setIcon(icon)
         self.cover_button.setObjectName("cover_button")
         self._5.addWidget(self.cover_button)
@@ -48,7 +47,7 @@ class Ui_Form(object):
         self._2.addWidget(self.opt_prefer_metadata_cover, 2, 0, 1, 1)
         self._3 = QtWidgets.QHBoxLayout()
         self._3.setObjectName("_3")
-        self.cover = ImageView(self.groupBox_4)
+        self.cover = QdialogImage(self.groupBox_4)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -57,6 +56,7 @@ class Ui_Form(object):
         self.cover.setObjectName("cover")
         self._3.addWidget(self.cover)
         self._2.addLayout(self._3, 0, 0, 1, 1)
+        self.opt_prefer_metadata_cover.raise_()
         self.horizontalLayout.addWidget(self.groupBox_4)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -150,26 +150,28 @@ class Ui_Form(object):
         Form.setTabOrder(self.cover_button, self.opt_prefer_metadata_cover)
 
     def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.groupBox_4.setTitle(_translate("Form", "Book Cover"))
-        self.label_5.setText(_translate("Form", "Change &cover image:"))
-        self.cover_button.setToolTip(_translate("Form", "Browse for an image to use as the cover of this book."))
-        self.cover_button.setText(_translate("Form", "..."))
-        self.opt_prefer_metadata_cover.setText(_translate("Form", "Use cover from &source file"))
-        self.label.setText(_translate("Form", "&Title: "))
-        self.title.setToolTip(_translate("Form", "Change the title of this book"))
-        self.label_2.setText(_translate("Form", "&Author(s): "))
-        self.label_6.setText(_translate("Form", "Author So&rt:"))
-        self.author_sort.setToolTip(_translate("Form", "Change the author(s) of this book. Multiple authors should be separated by a comma"))
-        self.label_3.setText(_translate("Form", "&Publisher: "))
-        self.label_4.setText(_translate("Form", "Ta&gs: "))
-        self.tags.setToolTip(_translate("Form", "Tags categorize the book. This is particularly useful while searching. <br><br>They can be any words or phrases, separated by commas."))
-        self.label_7.setText(_translate("Form", "&Series:"))
-        self.series.setToolTip(_translate("Form", "List of known series. You can add new series."))
-        self.series.setWhatsThis(_translate("Form", "List of known series. You can add new series."))
-        self.series_index.setPrefix(_translate("Form", "Book "))
+
+        Form.setWindowTitle(_("Form"))
+        self.groupBox_4.setTitle(_("Book Cover"))
+        self.label_5.setText(_("Change &cover image:"))
+        self.cover_button.setToolTip(_("Browse for an image to use as the cover of this book."))
+        self.cover_button.setText(_("..."))
+        self.opt_prefer_metadata_cover.setText(_("Use cover from &source file"))
+        self.label.setText(_("&Title: "))
+        self.title.setToolTip(_("Change the title of this book"))
+        self.label_2.setText(_("&Author(s): "))
+        self.label_6.setText(_("Author So&rt:"))
+        self.author_sort.setToolTip(_("Change the author(s) of this book. Multiple authors should be separated by a comma"))
+        self.label_3.setText(_("&Publisher: "))
+        self.label_4.setText(_("Ta&gs: "))
+        self.tags.setToolTip(_("Tags categorize the book. This is particularly useful while searching. <br><br>They can be any words or phrases, separated by commas."))
+        self.label_7.setText(_("&Series:"))
+        self.series.setToolTip(_("List of known series. You can add new series."))
+        self.series.setWhatsThis(_("List of known series. You can add new series."))
+        self.series_index.setPrefix(_("Book "))
 
 from calibre.gui2.comments_editor import Editor
 from calibre.gui2.complete2 import EditWithComplete
-from calibre.gui2.widgets import ImageView, EnLineEdit
+from calibre.gui2.widgets import EnLineEdit
+from calibre.gui2.viewer.qdialog.qdialogImage import QdialogImage
+

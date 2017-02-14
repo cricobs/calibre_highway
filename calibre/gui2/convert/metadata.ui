@@ -84,7 +84,7 @@
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="_3">
         <item>
-         <widget class="QdialogImage" name="cover" native="true">
+         <widget class="ImageView" name="cover" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -281,7 +281,7 @@
    <header>calibre/gui2/complete2.h</header>
   </customwidget>
   <customwidget>
-   <class>QdialogImage</class>
+   <class>ImageView</class>
    <extends>QWidget</extends>
    <header>calibre/gui2/widgets.h</header>
    <container>1</container>
@@ -312,3 +312,4 @@
  </resources>
  <connections/>
 </ui>
+

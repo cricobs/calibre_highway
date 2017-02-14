@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
@@ -25,12 +26,6 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         self.setTitleBarWidget(QWidget())
         self.titleBarWidget_default = self.titleBarWidget()
-
-        with open(filepath_relative(self, "css")) as iput:
-            self.preview_css = iput.read()
-
-        with open(filepath_relative(self, "html")) as iput:
-            self.preview_html = iput.read()
 
         self.update_config()
 
@@ -75,6 +70,27 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         self.qplaintexteditSynopsis.setFont(QFont(self.mono_family))
 
+    def toggle_preview(self, show):
+        self.show()
+        if show:
+            self.preview()
+        else:
+            self.edit()
+
+    def append(self, text):
+        self.qplaintexteditSynopsis.appendPlainText(text)
+
+        if self.stackedWidget.currentIndex():
+            self.save()
+
+    @pyqtSlot(bool)
+    def on_qactionSave_triggered(self):
+        self.save()
+
+    @pyqtSlot(bool)
+    def on_qactionPreview_triggered(self):
+        self.preview()
+
     @pyqtSlot(bool)
     def on_qplaintexteditSynopsis_modificationChanged(self, changed):
         self.toolButtonSave.setEnabled(changed)
@@ -104,18 +120,31 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.save()
 
     def save(self):
-        with open(self.path_synopsis(), "r+") as oput:
-            text = self.qplaintexteditSynopsis.toPlainText()
-            if text == oput.read():
+        try:
+            with open(self.path_synopsis(), "r+") as oput:
+                self.write_to_file(oput)
+        except IOError as error:
+            if error.errno != 2:
+                raise
+
+            if not self.qplaintexteditSynopsis.toPlainText():
                 return
 
-            oput.seek(0)
-            oput.write(text)
-            oput.truncate()
+            with open(self.path_synopsis(), "ab+") as oput:
+                self.write_to_file(oput)
 
-            self.update_scroll()
-            self.qwebviewPreview.setHtml(self.text_to_html(text))
-            self.qplaintexteditSynopsis.document().setModified(False)
+    def write_to_file(self, oput):
+        text = self.qplaintexteditSynopsis.toPlainText()
+        if text == oput.read():
+            return
+
+        oput.seek(0)
+        oput.write(text)
+        oput.truncate()
+
+        self.update_scroll()
+        self.load_preview(text)
+        self.qplaintexteditSynopsis.document().setModified(False)
 
     def update_scroll(self):
         self.qplaintexteditSynopsis_scroll = self.qplaintexteditSynopsis.verticalScrollBar().value()
@@ -133,10 +162,10 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         return filepath_relative(self.path_source, extension=self.synopsis_extension)
 
-    def text_to_html(self, text):
-        return self.preview_html.format(
-            css=self.preview_css,
-            body=markdown.markdown(text)
+    def load_preview(self, text):
+        self.qwebviewPreview.load(
+            QUrl.fromLocalFile(filepath_relative(self, "html")),
+            markdown.markdown(text, extensions=["markdown.extensions.extra"])
         )
 
     def load(self):
@@ -145,8 +174,11 @@ class QdockwidgetSynopsis(Qdockwidget):
                 text = iput.read()
 
                 self.update_scroll()
+                self.load_preview(text)
                 self.qplaintexteditSynopsis.setPlainText(text)
-                self.qwebviewPreview.setHtml(self.text_to_html(text))
 
-        except IOError:
-            self.qplaintexteditSynopsis.clear()
+        except IOError as error:
+            if error.errno == 2:
+                self.qplaintexteditSynopsis.clear()
+            else:
+                raise

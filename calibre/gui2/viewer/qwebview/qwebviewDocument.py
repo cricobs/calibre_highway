@@ -4,11 +4,11 @@ import json
 import math
 import sys
 from functools import partial
-from future_builtins import map
 
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon, QAction, QMenu,
                       pyqtSignal, QApplication, QKeySequence, QMimeData)
 from PyQt5.QtWebKitWidgets import QWebView
+from future_builtins import map
 
 from calibre import isosx
 from calibre.constants import iswindows
@@ -133,7 +133,7 @@ class QwebviewDocument(QWebView):
             self.create_online_action(**action_options)
 
     def create_action(self, name, text, slot=None, icon=None, checkable=False, shortcut=None,
-                      context=False):
+                      context=False, separator=False):
         action = QAction(_(text), self)
         action.setCheckable(checkable)
         action.setData(shortcut)
@@ -144,9 +144,19 @@ class QwebviewDocument(QWebView):
             action.setIcon(QIcon(I(icon)))
         if context:
             self.context_actions.append(action)
+        if separator:
+            action_separator = QAction(self)
+            action_separator.setSeparator(True)
+
+            self.context_actions.append(action_separator)
 
         setattr(self, name + "_action", action)
         self.addAction(action)
+
+    def synopsis_append(self, *args, **kwargs):
+        text = "\n{0}\n{{: position={1}}}".format(
+            self.selected_text, self.document.page_position.current_pos)
+        self.manager.qdockwidgetSynopsis.append(text)
 
     def create_actions(self, actions):
         for action_options in actions:
@@ -216,6 +226,9 @@ class QwebviewDocument(QWebView):
     def selected_text(self):
         return self.document.selectedText().replace(u'\u00ad', u'').strip()
 
+    def copy_position(self):
+        QApplication.clipboard().setText(self.document.page_position.current_pos)
+
     def copy(self):
         self.document.triggerAction(self.document.Copy)
         c = QApplication.clipboard()
@@ -267,6 +280,10 @@ class QwebviewDocument(QWebView):
         for action in self.unimplemented_actions:
             menu.removeAction(action)
 
+        for action in menu.actions():
+            if action.isSeparator():
+                menu.removeAction(action)
+
         if not img.isNull():
             menu.addAction(self.view_image_action)
         if table is not None:
@@ -277,6 +294,10 @@ class QwebviewDocument(QWebView):
         if text and img.isNull():
             self.search_online_action.setText(text)
             for action in self.context_actions:
+                if action.isSeparator():
+                    menu.addSeparator()
+                    continue
+
                 text = unicode(action.text())
                 shortcuts = self.shortcuts.get_shortcuts(action.data())
                 if shortcuts:
@@ -305,6 +326,7 @@ class QwebviewDocument(QWebView):
             if self.manager.action_forward.isEnabled():
                 menu.addAction(self.manager.action_forward)
 
+            menu.addAction(self.copy_position_action)
             menu.addAction(self.goto_location_action)
             if self.manager is not None:
                 menu.addActions(self.manager.context_actions)

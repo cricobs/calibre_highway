@@ -4,6 +4,7 @@ body {
     line-height: 1.6;
     padding: 10px 30px;
     background-color: white;
+    text-align: justify;
 }
 
 body > *:first-child {
