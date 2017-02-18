@@ -23,7 +23,7 @@ class QwebviewPreview(Qwebview):
 
     def keyPressEvent(self, qkeyevent):
         super(QwebviewPreview, self).keyPressEvent(qkeyevent)
-        if qkeyevent.key() == Qt.Key_Escape:
+        if qkeyevent.key() in [Qt.Key_Escape, Qt.Key_Return]:
             self.showEditor.emit(True)
 
     @pyqtSlot()

@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
@@ -11,6 +12,7 @@ from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
 from calibre.library.filepath import filepath_relative
 
 I = I
+
 
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):
@@ -36,6 +38,34 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         self.qwebviewPreview.page().mainFrame().contentsSizeChanged.connect(
             self.on_mainFrame_contentSizeChanged)
+        self.qwebviewPreview.page().scrollRequested.connect(
+            self.on_qwebviewPreview_scrollRequested
+        )
+        self.qplaintexteditSynopsis.verticalScrollBar().sliderMoved.connect(
+            self.on_qplaintexteditSynopsis_sliderMoved
+        )
+
+    def on_qplaintexteditSynopsis_sliderMoved(self, value):
+        p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
+        s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
+
+        s_position = self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition()
+        p_position = s_position * float(p_height) / s_height if s_position > 0 else 0
+
+        self.qwebviewPreview.page().blockSignals(True)
+        self.qwebviewPreview.page().mainFrame().setScrollPosition(QPoint(0, p_position))
+        self.qwebviewPreview.page().blockSignals(False)
+
+    def on_qwebviewPreview_scrollRequested(self, dx, dy, rectToScroll):
+        p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
+        s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
+
+        p_position = self.qwebviewPreview.page().mainFrame().scrollPosition().y()
+        s_position = p_position * float(s_height) / p_height if p_position > 0 else 0
+
+        self.qplaintexteditSynopsis.verticalScrollBar().blockSignals(True)
+        self.qplaintexteditSynopsis.verticalScrollBar().setValue(s_position)
+        self.qplaintexteditSynopsis.verticalScrollBar().blockSignals(False)
 
     @pyqtSlot(bool)
     def on_toolButtonPreview_clicked(self, checked):
