@@ -153,10 +153,17 @@ class QwebviewDocument(QWebView):
         setattr(self, name + "_action", action)
         self.addAction(action)
 
+    def copy_markdown(self, *args, **kwargs):
+        self.copy_text(self.selected_markdown())
+
     def synopsis_append(self, *args, **kwargs):
-        text = "\n{0}\n{{: position={1}}}".format(
+        self.manager.qdockwidgetSynopsis.append(
+            self.selected_markdown()
+        )
+
+    def selected_markdown(self):
+        return "\n{0}\n{{: position={1}}}".format(
             self.selected_text, self.document.page_position.current_pos)
-        self.manager.qdockwidgetSynopsis.append(text)
 
     def create_actions(self, actions):
         for action_options in actions:
@@ -227,7 +234,10 @@ class QwebviewDocument(QWebView):
         return self.document.selectedText().replace(u'\u00ad', u'').strip()
 
     def copy_position(self):
-        QApplication.clipboard().setText(self.document.page_position.current_pos)
+        self.copy_text(self.document.page_position.current_pos)
+
+    def copy_text(self, text):
+        QApplication.clipboard().setText(text)
 
     def copy(self):
         self.document.triggerAction(self.document.Copy)
