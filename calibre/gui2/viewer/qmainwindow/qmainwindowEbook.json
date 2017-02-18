@@ -224,19 +224,6 @@
       }
     },
     {
-      "text": "Preview synopsis",
-      "toolbar": "tool_bar",
-      "name": "toggle_synopsis_preview",
-      "checkable": true,
-      "icon": "beautify.png",
-      "slots": {
-        "toggled": [
-          "qdockwidgetSynopsis",
-          "toggle_preview"
-        ]
-      }
-    },
-    {
       "name": "load_theme",
       "text": "Load a theme",
       "popup": "InstantPopup",

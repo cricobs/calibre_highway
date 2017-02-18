@@ -7,12 +7,22 @@
     <link rel="stylesheet" type="text/css" href="qdockwidgetSynopsis/css/synopsis.css">
     <script>
         window.onload = function () {
-            $("body")[0].innerHTML = qwebview.body;
-            $("p").on("dblclick", function (e) {
-                qwebview.goto_position($(this).attr("position"));
-            });
+            $("body")
+                .on("dblclick", function () {
+                    qwebview.show_editor();
+                })
+                .first()
+                .html(qwebview.body);
 
-//            window.scrollTo(0, document.body.scrollHeight);
+            $("p")
+                .on("dblclick", function (e) {
+                    qwebview.goto_position($(this).attr("position"));
+
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
+            qwebview.load_finished();
         };
     </script>
 </head>

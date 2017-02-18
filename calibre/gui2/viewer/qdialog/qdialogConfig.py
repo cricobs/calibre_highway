@@ -265,6 +265,7 @@ class QdialogConfig(Qdialog):
     def clear_search_history(self):
         from calibre.gui2 import config
         config['viewer_search_history'] = []
+        config['synopsis_search_history'] = []
         config['viewer_toc_search_history'] = []
 
     def save_theme(self):

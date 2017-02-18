@@ -32,10 +32,19 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonRedo.setIcon(QIcon(I("edit-redo.png")))
         self.toolButtonUndo.setIcon(QIcon(I("edit-undo.png")))
         self.toolButtonSave.setIcon(QIcon(I("save.png")))
+        self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
         self.qwebviewPreview.page().mainFrame().contentsSizeChanged.connect(
             self.on_mainFrame_contentSizeChanged)
+
+    @pyqtSlot(bool)
+    def on_toolButtonPreview_clicked(self, checked):
+        self.preview()
+
+    @pyqtSlot(bool)
+    def on_qwebviewPreview_showEditor(self):
+        self.edit()
 
     def on_mainFrame_contentSizeChanged(self, size):
         if not self.qwebviewPreview_scroll:
@@ -163,10 +172,10 @@ class QdockwidgetSynopsis(Qdockwidget):
         return filepath_relative(self.path_source, extension=self.synopsis_extension)
 
     def load_preview(self, text):
-        self.qwebviewPreview.load(
-            QUrl.fromLocalFile(filepath_relative(self, "html")),
-            markdown.markdown(text, extensions=["markdown.extensions.extra"])
-        )
+        body = markdown.markdown(text, extensions=["markdown.extensions.extra"])
+        qurl = QUrl.fromLocalFile(filepath_relative(self, "html"))
+
+        self.qwebviewPreview.load(qurl, body=body, scroll_to_bottom=True)
 
     def load(self):
         try:

@@ -14,6 +14,7 @@ from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QSize, QTime,
                       QPropertyAnimation, QInputDialog, QAction, QModelIndex, pyqtSignal)
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QMenu
+from PyQt5.QtWidgets import QScrollBar
 from PyQt5.QtWidgets import QToolBar
 from PyQt5.QtWidgets import QToolButton
 from PyQt5.QtWidgets import QWidget
@@ -384,8 +385,15 @@ class QmainwindowEbook(Qmainwindow):
         t.timeout.connect(self.hide_cursor)
         t.start()
 
+    def on_qwebviewPreview_goToBottom(self):
+        pass
+        # self.qdockwidgetSynopsis.qplaintexteditSynopsis.scroll_to_bottom()
+
     def on_qwebviewPreview_goToPosition(self, position):
         self.view.document.page_position.to_pos(position)
+        self.view.setFocus(Qt.OtherFocusReason)
+
+        self.sender().findText("")  # clear selection
 
     def on_action_search_triggered(self, checked):
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
@@ -1216,8 +1224,7 @@ class QmainwindowEbook(Qmainwindow):
             'Print': self.action_print,
             "Edit": self.action_tool_bar,
             "Synopsis Save": self.qdockwidgetSynopsis.qactionSave,
-            "Synopsis": self.action_synopsis,
-            "Synopsis Preview": self.action_toggle_synopsis_preview
+            "Synopsis": self.action_synopsis
         }.get(key, None)
         if action is not None:
             event.accept()
