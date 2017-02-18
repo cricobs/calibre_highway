@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtProperty, pyqtSlot
 from PyQt5.QtCore import pyqtSignal
 
@@ -19,6 +20,11 @@ class QwebviewPreview(Qwebview):
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared
         )
+
+    def keyPressEvent(self, qkeyevent):
+        super(QwebviewPreview, self).keyPressEvent(qkeyevent)
+        if qkeyevent.key() == Qt.Key_Escape:
+            self.showEditor.emit(True)
 
     @pyqtSlot()
     def load_finished(self):

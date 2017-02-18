@@ -45,6 +45,10 @@ class QdockwidgetSynopsis(Qdockwidget):
     def on_qwebviewPreview_showEditor(self):
         self.edit()
 
+    @pyqtSlot(bool)
+    def on_qplaintexteditSynopsis_showPreview(self):
+        self.preview()
+
     def on_mainFrame_contentSizeChanged(self, size):
         if not self.qwebviewPreview_scroll:
             return
@@ -69,6 +73,7 @@ class QdockwidgetSynopsis(Qdockwidget):
     def edit(self):
         self.setTitleBarWidget(self.titleBarWidget_default)
         self.stackedWidget.setCurrentIndex(0)
+        self.qplaintexteditSynopsis.setFocus()
 
     def update_config(self):
         opts = config().parse()
