@@ -479,7 +479,7 @@ class QmainwindowEbook(Qmainwindow):
         if self.isFullScreen() and not self.view.document.start_in_fullscreen:
             self.action_full_screen.trigger()
             return False
-        self.save_state()
+        self.qdockwidgetSynopsis.state_save()
         if self.listener is not None:
             self.listener.close()
         return True
@@ -512,6 +512,8 @@ class QmainwindowEbook(Qmainwindow):
         vprefs['in_paged_mode'] = not self.action_toggle_paged_mode.isChecked()
 
     def restore_state(self):
+        self.qdockwidgetSynopsis.state_restore()
+
         state = vprefs.get('main_window_state', None)
         if state is not None:
             try:

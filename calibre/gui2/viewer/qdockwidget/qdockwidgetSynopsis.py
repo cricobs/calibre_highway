@@ -12,7 +12,6 @@ from calibre.library.filepath import filepath_relative
 
 I = I
 
-
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):
         super(QdockwidgetSynopsis, self).__init__(*args, **kwargs)
@@ -191,3 +190,15 @@ class QdockwidgetSynopsis(Qdockwidget):
                 self.qplaintexteditSynopsis.clear()
             else:
                 raise
+
+    def state_save(self):
+        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+
+        vprefs.set('synopsis_mode', self.stackedWidget.currentIndex())
+
+    def state_restore(self):
+        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+
+        mode = vprefs.get('synopsis_mode', None)
+        if mode is not None:
+            self.stackedWidget.setCurrentIndex(int(mode))
