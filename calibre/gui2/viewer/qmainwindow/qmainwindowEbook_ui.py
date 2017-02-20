@@ -69,7 +69,7 @@ class Ui_QmainwindowEbook(object):
         self.footnotes_dock.setWidget(self.footnotes_view)
         QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.footnotes_dock)
         self.qdockwidgetSynopsis = QdockwidgetSynopsis(QmainwindowEbook)
-        self.qdockwidgetSynopsis.setObjectName("qdockwidgetSynopsis")
+        self.qdockwidgetSynopsis.setObjectName("qwebviewPreview")
         QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.qdockwidgetSynopsis)
 
         self.retranslateUi(QmainwindowEbook)
