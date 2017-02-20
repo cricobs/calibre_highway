@@ -15,11 +15,11 @@ I = I
 
 
 # todo
-# - move scroll handling to ScrollPosition
+# - move scroll synchronization to ScrollSynchronize
 # - syntax highlight markdown
 
 # fixme
-# - qplaintexteditSyntax fails to scroll on initial load
+# - qplaintexteditSyntax fails to scroll initially
 
 class ScrollSynchronize(object):
     def __init__(self, *qwidgets):
@@ -30,36 +30,29 @@ class ScrollSynchronize(object):
 
 
 class ScrollPosition(object):
-    def __init__(self, qwidget):
+    def __init__(self, qwidget, ):
         super(ScrollPosition, self).__init__()
 
         self.position = None
         self.qwidget = qwidget
-        self.qwidget.loading.connect(self.on_qwidget_loading)
+        self.qwidget.positionSave.connect(self.on_qwidget_positionSave)
+        self.qwidget.positionLoad.connect(self.on_qwidget_positionLoad)
 
-        setattr(qwidget.parent(), "scroll_position" + qwidget.objectName(), self)
+        setattr(qwidget, "scroll_position", self)
 
-    def on_qwidget_loading(self, loading):
-        if loading:
-            # if self.qwidget.parent().synopsis_position:  # don't update if it's first load
-            #     self.qwidget.parent().synopsis_position = False
-            #     return
+    def on_qwidget_positionSave(self, position=None):
+        if position:
+            self.position = position
+        elif isinstance(self.qwidget, QPlainTextEdit):
+            self.position = self.qwidget.verticalScrollBar().value()
+        elif isinstance(self.qwidget, QWebView):
+            self.position = self.qwidget.page().mainFrame().scrollBarValue(Qt.Vertical)
 
-            self.position_save()
-        elif self.position:
-            self.position_load()
-
-    def position_load(self):
+    def on_qwidget_positionLoad(self):
         if isinstance(self.qwidget, QPlainTextEdit):
             self.qwidget.verticalScrollBar().setValue(self.position)
         elif isinstance(self.qwidget, QWebView):
             self.qwidget.page().mainFrame().setScrollBarValue(Qt.Vertical, self.position)
-
-    def position_save(self):
-        if isinstance(self.qwidget, QPlainTextEdit):
-            self.position = self.qwidget.verticalScrollBar().value()
-        elif isinstance(self.qwidget, QWebView):
-            self.position = self.qwidget.page().mainFrame().scrollBarValue(Qt.Vertical)
 
 
 class QdockwidgetSynopsis(Qdockwidget):
@@ -236,8 +229,11 @@ class QdockwidgetSynopsis(Qdockwidget):
         try:
             with open(self.path_synopsis(), "r") as iput:
                 text = iput.read()
-                self.qwebviewPreview.set_body(text)
-                self.qplaintexteditSynopsis.setPlainText(text)
+
+                self.qwebviewPreview.set_body(
+                    text, self.p_position if self.synopsis_position else None)
+                self.qplaintexteditSynopsis.setPlainText(
+                    text, self.s_position if self.synopsis_position else None)
 
         except IOError as error:
             if error.errno == 2:

@@ -12,7 +12,8 @@ from calibre.library.filepath import filepath_relative
 class QwebviewPreview(Qwebview):
     toPosition = pyqtSignal(str)
     showEditor = pyqtSignal(bool)
-    loading = pyqtSignal(bool)
+    positionSave = pyqtSignal(int)
+    positionLoad = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(QwebviewPreview, self).__init__(*args, **kwargs)
@@ -23,17 +24,17 @@ class QwebviewPreview(Qwebview):
         self.page().mainFrame().contentsSizeChanged.connect(self.on_mainFrame_contentSizeChanged)
 
     def on_mainFrame_contentSizeChanged(self):
-        self.loading.emit(False)
+        self.positionLoad.emit()
 
     def keyPressEvent(self, qkeyevent):
         super(QwebviewPreview, self).keyPressEvent(qkeyevent)
         if qkeyevent.key() in [Qt.Key_Escape, Qt.Key_Return]:
             self.showEditor.emit(True)
 
-    def set_body(self, body):
+    def set_body(self, body, position=None):
         self._body = markdown.markdown(body, extensions=["markdown.extensions.extra"])
 
-        self.loading.emit(True)
+        self.positionSave.emit(position)
         self.load(QUrl.fromLocalFile(filepath_relative(self, "html")))
 
     @pyqtProperty(str)

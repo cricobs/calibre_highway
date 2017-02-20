@@ -9,17 +9,18 @@ from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhiglighterMarkdown import \
 
 class QplaintexteditSynopsis(Qplaintextedit):
     showPreview = pyqtSignal(bool)
-    loading = pyqtSignal(bool)
+    positionSave = pyqtSignal(int)
+    positionLoad = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(QplaintexteditSynopsis, self).__init__(*args, **kwargs)
 
         QsyntaxhighlighterMarkdown(self)
 
-    def setPlainText(self, p_str):
-        self.loading.emit(True)
+    def setPlainText(self, p_str, position=None):
+        self.positionSave.emit(position)
         super(QplaintexteditSynopsis, self).setPlainText(p_str)
-        self.loading.emit(False)
+        self.positionLoad.emit()
 
     def scroll_to_bottom(self):
         self.moveCursor(QTextCursor.End)
