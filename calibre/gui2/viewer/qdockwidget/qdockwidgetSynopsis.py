@@ -4,6 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtWidgets import QWidget
 
 from calibre.ebooks import markdown
@@ -14,16 +16,53 @@ from calibre.library.filepath import filepath_relative
 I = I
 
 
+# todo
+# - move scroll handling to ScrollPosition
+# - syntax highlight markdown
+
+# fixme
+# - qplaintexteditSyntax fails to scroll on initial load
+
+class ScrollSynchronize(object):
+    def __init__(self, *qwidgets):
+        super(ScrollSynchronize, self).__init__()
+
+
+class Scroll(object):
+    def __init__(self, qwidget):
+        super(Scroll, self).__init__()
+
+        self.qwidget = qwidget
+
+        if isinstance(qwidget, QPlainTextEdit):
+            signal = qwidget.contentChanged
+        elif isinstance(qwidget, QWebView):
+            signal = qwidget.page().mainFrame().contentsSizeChanged
+        else:
+            raise NotImplementedError(qwidget)
+
+        signal.connect(self.on_signal)
+
+    def on_signal(self, *args, **kwargs):
+        pass
+
+
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):
         super(QdockwidgetSynopsis, self).__init__(*args, **kwargs)
 
         self.path_source = None
+
+        # config
         self.synopsis_extension = None
         self.mono_family = None
         self.default_font_size = None
-        self.qwebviewPreview_scroll = None
-        self.qplaintexteditSynopsis_scroll = None
+        self.synopsis_size = None
+        self.synopsis_position = None
+
+        # fixme move to handler
+        self.p_position = None
+        self.s_position = None
 
         self.setTitleBarWidget(QWidget())
         self.titleBarWidget_default = self.titleBarWidget()
@@ -36,36 +75,34 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
+        Scroll(self.qwebviewPreview)
+        Scroll(self.qplaintexteditSynopsis)
+        ScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
+
         self.qwebviewPreview.page().mainFrame().contentsSizeChanged.connect(
             self.on_mainFrame_contentSizeChanged)
         self.qwebviewPreview.page().scrollRequested.connect(
-            self.on_qwebviewPreview_scrollRequested
-        )
+            self.on_qwebviewPreview_scrollRequested)
         self.qplaintexteditSynopsis.verticalScrollBar().sliderMoved.connect(
-            self.on_qplaintexteditSynopsis_sliderMoved
-        )
+            self.on_qplaintexteditSynopsis_sliderMoved)
 
     def on_qplaintexteditSynopsis_sliderMoved(self, value):
         p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
         s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
 
         s_position = self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition()
-        p_position = s_position * float(p_height) / s_height if s_position > 0 else 0
+        p_position = s_position * float(p_height) / s_height
 
-        self.qwebviewPreview.page().blockSignals(True)
         self.qwebviewPreview.page().mainFrame().setScrollPosition(QPoint(0, p_position))
-        self.qwebviewPreview.page().blockSignals(False)
 
     def on_qwebviewPreview_scrollRequested(self, dx, dy, rectToScroll):
         p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
         s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
 
         p_position = self.qwebviewPreview.page().mainFrame().scrollPosition().y()
-        s_position = p_position * float(s_height) / p_height if p_position > 0 else 0
+        s_position = p_position * float(s_height) / p_height
 
-        self.qplaintexteditSynopsis.verticalScrollBar().blockSignals(True)
         self.qplaintexteditSynopsis.verticalScrollBar().setValue(s_position)
-        self.qplaintexteditSynopsis.verticalScrollBar().blockSignals(False)
 
     @pyqtSlot(bool)
     def on_toolButtonPreview_clicked(self, checked):
@@ -80,19 +117,17 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.preview()
 
     def on_mainFrame_contentSizeChanged(self, size):
-        if not self.qwebviewPreview_scroll:
+        if not self.p_position:
             return
 
-        self.qwebviewPreview.page().mainFrame().setScrollBarValue(
-            Qt.Vertical, self.qwebviewPreview_scroll)
+        self.qwebviewPreview.page().mainFrame().setScrollBarValue(Qt.Vertical, self.p_position)
 
     @pyqtSlot()
     def on_qplaintexteditSynopsis_contentChanged(self):
-        if not self.qplaintexteditSynopsis_scroll:
+        if not self.s_position:
             return
 
-        self.qplaintexteditSynopsis.verticalScrollBar().setValue(
-            self.qplaintexteditSynopsis_scroll)
+        self.qplaintexteditSynopsis.verticalScrollBar().setValue(self.s_position)
 
     def preview(self):
         self.save()
@@ -110,6 +145,8 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.synopsis_extension = opts.synopsis_extension
         self.mono_family = opts.mono_family
         self.default_font_size = opts.default_font_size
+        self.synopsis_position = opts.synopsis_position
+        self.synopsis_size = opts.synopsis_size
 
         self.qplaintexteditSynopsis.setFont(QFont(self.mono_family))
 
@@ -185,13 +222,17 @@ class QdockwidgetSynopsis(Qdockwidget):
         oput.write(text)
         oput.truncate()
 
-        self.update_scroll()
+        self.update_position()
         self.load_preview(text)
         self.qplaintexteditSynopsis.document().setModified(False)
 
-    def update_scroll(self):
-        self.qplaintexteditSynopsis_scroll = self.qplaintexteditSynopsis.verticalScrollBar().value()
-        self.qwebviewPreview_scroll = self.qwebviewPreview.page().mainFrame().scrollBarValue(
+    def update_position(self):
+        if self.synopsis_position:  # don't update if it's first load
+            self.synopsis_position = False
+            return
+
+        self.s_position = self.qplaintexteditSynopsis.verticalScrollBar().value()
+        self.p_position = self.qwebviewPreview.page().mainFrame().scrollBarValue(
             Qt.Vertical)
 
     def set_path_source(self, path):
@@ -216,9 +257,10 @@ class QdockwidgetSynopsis(Qdockwidget):
             with open(self.path_synopsis(), "r") as iput:
                 text = iput.read()
 
-                self.update_scroll()
+                self.update_position()
                 self.load_preview(text)
                 self.qplaintexteditSynopsis.setPlainText(text)
+                self.qplaintexteditSynopsis.verticalScrollBar().setValue(self.s_position)
 
         except IOError as error:
             if error.errno == 2:
@@ -230,6 +272,12 @@ class QdockwidgetSynopsis(Qdockwidget):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
         vprefs.set('synopsis_mode', self.stackedWidget.currentIndex())
+        vprefs.set(
+            'synopsis_position_edit',
+            self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition())
+        vprefs.set(
+            'synopsis_position_preview',
+            self.qwebviewPreview.page().mainFrame().scrollPosition().y())
 
     def state_restore(self):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
@@ -237,3 +285,6 @@ class QdockwidgetSynopsis(Qdockwidget):
         mode = vprefs.get('synopsis_mode', None)
         if mode is not None:
             self.stackedWidget.setCurrentIndex(int(mode))
+
+        self.s_position = vprefs.get('synopsis_position_edit', None)
+        self.p_position = vprefs.get('synopsis_position_preview', None)

@@ -57,7 +57,7 @@ QToolBox::tab:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
+            <width>524</width>
             <height>370</height>
            </rect>
           </property>
@@ -264,7 +264,7 @@ QToolBox::tab:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>436</width>
+            <width>524</width>
             <height>368</height>
            </rect>
           </property>
@@ -464,8 +464,8 @@ QToolBox::tab:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>372</width>
-            <height>224</height>
+            <width>537</width>
+            <height>233</height>
            </rect>
           </property>
           <attribute name="label">
@@ -616,8 +616,8 @@ QToolBox::tab:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>192</height>
+            <width>537</width>
+            <height>233</height>
            </rect>
           </property>
           <attribute name="label">
@@ -799,8 +799,8 @@ QToolBox::tab:hover {
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
-            <width>263</width>
+            <y>-20</y>
+            <width>524</width>
             <height>267</height>
            </rect>
           </property>
@@ -986,8 +986,8 @@ QToolBox::tab:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>307</width>
-            <height>135</height>
+            <width>537</width>
+            <height>233</height>
            </rect>
           </property>
           <attribute name="label">
@@ -1087,10 +1087,10 @@ QToolBox::tab:hover {
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
+           <item row="0" column="3">
             <widget class="QLineEdit" name="synopsis_extension"/>
            </item>
-           <item row="1" column="0">
+           <item row="2" column="0">
             <spacer name="verticalSpacer_7">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -1103,14 +1103,37 @@ QToolBox::tab:hover {
              </property>
             </spacer>
            </item>
+           <item row="1" column="0" colspan="4">
+            <widget class="QGroupBox" name="groupBox_12">
+             <property name="title">
+              <string>Remember</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QCheckBox" name="synopsis_position">
+                <property name="text">
+                 <string>Position</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="synopsis_size">
+                <property name="text">
+                 <string>Size and layout</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="page_4">
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
-            <width>497</width>
+            <y>-29</y>
+            <width>524</width>
             <height>262</height>
            </rect>
           </property>

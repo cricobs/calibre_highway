@@ -195,6 +195,14 @@
     "synopsis_extension": {
       "default": "md",
       "help": "The extension for the synopsis file"
+    },
+    "synopsis_position": {
+      "default": true,
+      "help": "Remember the synopsis position"
+    },
+    "synopsis_size": {
+      "default": true,
+      "help": "Remember the synopsis size and layout"
     }
   }
 }

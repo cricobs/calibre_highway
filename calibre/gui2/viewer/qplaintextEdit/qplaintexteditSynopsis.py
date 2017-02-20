@@ -3,6 +3,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QTextCursor
 
 from calibre.gui2.viewer.qplaintextEdit.qplaintextedit import Qplaintextedit
+from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhiglighterMarkdown import \
+    QsyntaxhighlighterMarkdown
 
 
 class QplaintexteditSynopsis(Qplaintextedit):
@@ -11,6 +13,8 @@ class QplaintexteditSynopsis(Qplaintextedit):
 
     def __init__(self, *args, **kwargs):
         super(QplaintexteditSynopsis, self).__init__(*args, **kwargs)
+
+        QsyntaxhighlighterMarkdown(self)
 
     def setPlainText(self, p_str):
         super(QplaintexteditSynopsis, self).setPlainText(p_str)
