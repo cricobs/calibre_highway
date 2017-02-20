@@ -4,8 +4,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWebKitWidgets import QWebView
-from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtWidgets import QWidget
 
 from calibre.ebooks import markdown
@@ -28,23 +26,23 @@ class ScrollSynchronize(object):
         super(ScrollSynchronize, self).__init__()
 
 
-class Scroll(object):
+class ScrollPosition(object):
     def __init__(self, qwidget):
-        super(Scroll, self).__init__()
+        super(ScrollPosition, self).__init__()
 
+        self.position = None
         self.qwidget = qwidget
+        self.qwidget.loading.connect(self.on_qwidget_loading)
 
-        if isinstance(qwidget, QPlainTextEdit):
-            signal = qwidget.contentChanged
-        elif isinstance(qwidget, QWebView):
-            signal = qwidget.page().mainFrame().contentsSizeChanged
-        else:
-            raise NotImplementedError(qwidget)
-
-        signal.connect(self.on_signal)
+    def on_qwidget_loading(self, loading):
+        print("on_qwidget_loadStarted", self.qwidget, loading)
 
     def on_signal(self, *args, **kwargs):
-        pass
+        print("on_signal", self.qwidget)
+        # if isinstance(self.qwidget, QPlainTextEdit):
+        #     self.qwidget.verticalScrollBar().setValue(self.position)
+        # elif isinstance(self.qwidget, QWebView):
+        #     self.qwidget.page().mainFrame().setScrollBarValue(Qt.Vertical, self.position)
 
 
 class QdockwidgetSynopsis(Qdockwidget):
@@ -75,8 +73,8 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        Scroll(self.qwebviewPreview)
-        Scroll(self.qplaintexteditSynopsis)
+        ScrollPosition(self.qwebviewPreview)
+        ScrollPosition(self.qplaintexteditSynopsis)
         ScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
 
         self.qwebviewPreview.page().mainFrame().contentsSizeChanged.connect(
@@ -122,9 +120,9 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         self.qwebviewPreview.page().mainFrame().setScrollBarValue(Qt.Vertical, self.p_position)
 
-    @pyqtSlot()
-    def on_qplaintexteditSynopsis_contentChanged(self):
-        if not self.s_position:
+    @pyqtSlot(bool)
+    def on_qplaintexteditSynopsis_loading(self, loading):
+        if not loading or not self.s_position:
             return
 
         self.qplaintexteditSynopsis.verticalScrollBar().setValue(self.s_position)
@@ -250,7 +248,7 @@ class QdockwidgetSynopsis(Qdockwidget):
         body = markdown.markdown(text, extensions=["markdown.extensions.extra"])
         qurl = QUrl.fromLocalFile(filepath_relative(self, "html"))
 
-        self.qwebviewPreview.load(qurl, body=body, scroll_to_bottom=True)
+        self.qwebviewPreview.load(qurl, body=body)
 
     def load(self):
         try:
@@ -260,7 +258,6 @@ class QdockwidgetSynopsis(Qdockwidget):
                 self.update_position()
                 self.load_preview(text)
                 self.qplaintexteditSynopsis.setPlainText(text)
-                self.qplaintexteditSynopsis.verticalScrollBar().setValue(self.s_position)
 
         except IOError as error:
             if error.errno == 2:

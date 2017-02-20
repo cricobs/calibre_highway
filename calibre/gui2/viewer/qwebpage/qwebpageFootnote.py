@@ -27,8 +27,7 @@ class QwebpageFootnote(QWebPage):
         from calibre.gui2.viewer.qwebpage.qwebpageDocument import apply_basic_settings
         settings = self.settings()
         apply_basic_settings(settings)
-        settings.setAttribute(QWebSettings.DeveloperExtrasEnabled, False)
-        self.setLinkDelegationPolicy(self.DelegateAllLinks)
+
         self.mainFrame().javaScriptWindowObjectCleared.connect(self.add_window_objects)
         self.add_window_objects()
 

@@ -385,11 +385,7 @@ class QmainwindowEbook(Qmainwindow):
         t.timeout.connect(self.hide_cursor)
         t.start()
 
-    def on_qwebviewPreview_goToBottom(self):
-        pass
-        # self.qdockwidgetSynopsis.qplaintexteditSynopsis.scroll_to_bottom()
-
-    def on_qwebviewPreview_goToPosition(self, position):
+    def on_qwebviewPreview_toPosition(self, position):
         self.view.document.page_position.to_pos(position)
         self.view.setFocus(Qt.OtherFocusReason)
 

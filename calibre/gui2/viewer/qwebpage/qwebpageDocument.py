@@ -52,7 +52,6 @@ class Document(QWebPage):
         self.in_fullscreen_mode = False
         self.math_present = False
 
-        self.setLinkDelegationPolicy(self.DelegateAllLinks)
         self.scroll_marks = []
         self.shortcuts = shortcuts
         pal = self.palette()
@@ -553,7 +552,6 @@ def apply_basic_settings(settings):
 
     # Miscellaneous
     settings.setAttribute(QWebSettings.LinksIncludedInFocusChain, True)
-    settings.setAttribute(QWebSettings.DeveloperExtrasEnabled, True)
 
 
 class PagePosition(object):

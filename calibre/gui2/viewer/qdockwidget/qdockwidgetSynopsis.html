@@ -16,13 +16,11 @@
 
             $("p")
                 .on("dblclick", function (e) {
-                    qwebview.goto_position($(this).attr("position"));
+                    qwebview.to_position($(this).attr("position"));
 
                     e.preventDefault();
                     e.stopPropagation();
                 });
-
-            qwebview.load_finished();
         };
     </script>
 </head>
