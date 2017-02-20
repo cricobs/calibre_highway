@@ -1226,7 +1226,8 @@ class QmainwindowEbook(Qmainwindow):
             'Print': self.action_print,
             "Edit": self.action_tool_bar,
             "Synopsis Save": self.qdockwidgetSynopsis.qactionSave,
-            "Synopsis": self.action_synopsis
+            "Synopsis": self.action_synopsis,
+            "Preferences": self.action_preferences
         }.get(key, None)
         if action is not None:
             event.accept()

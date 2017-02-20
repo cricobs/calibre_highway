@@ -222,9 +222,15 @@
     ],
     "Show metadata": [
       [
-        "Ctrl+I"
+        "Alt+M"
       ],
       "Show metadata"
+    ],
+    "Preferences": [
+      [
+        "Alt+S"
+      ],
+      "Preferences dialog"
     ],
     "Section Bottom": [
       [
