@@ -3,12 +3,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWebKitWidgets import QWebView
-from PyQt5.QtWidgets import QPlainTextEdit
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
 
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
 from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
+from calibre.gui2.viewer.qobject.qobjectScrollSynchronize import QobjectScrollSynchronize
 from calibre.library.filepath import filepath_relative
 
 I = I
@@ -17,42 +17,7 @@ I = I
 # todo
 # - move scroll synchronization to ScrollSynchronize
 # - syntax highlight markdown
-
-# fixme
-# - qplaintexteditSyntax fails to scroll initially
-
-class ScrollSynchronize(object):
-    def __init__(self, *qwidgets):
-        super(ScrollSynchronize, self).__init__()
-
-        for qwidget in qwidgets:
-            setattr(qwidget.parent(), "scroll_synchronize" + qwidget.objectName(), self)
-
-
-class ScrollPosition(object):
-    def __init__(self, qwidget, ):
-        super(ScrollPosition, self).__init__()
-
-        self.position = None
-        self.qwidget = qwidget
-        self.qwidget.positionSave.connect(self.on_qwidget_positionSave)
-        self.qwidget.positionLoad.connect(self.on_qwidget_positionLoad)
-
-        setattr(qwidget, "scroll_position", self)
-
-    def on_qwidget_positionSave(self, position=None):
-        if position:
-            self.position = position
-        elif isinstance(self.qwidget, QPlainTextEdit):
-            self.position = self.qwidget.verticalScrollBar().value()
-        elif isinstance(self.qwidget, QWebView):
-            self.position = self.qwidget.page().mainFrame().scrollBarValue(Qt.Vertical)
-
-    def on_qwidget_positionLoad(self):
-        if isinstance(self.qwidget, QPlainTextEdit):
-            self.qwidget.verticalScrollBar().setValue(self.position)
-        elif isinstance(self.qwidget, QWebView):
-            self.qwidget.page().mainFrame().setScrollBarValue(Qt.Vertical, self.position)
+# - save and load position in relation to book
 
 
 class QdockwidgetSynopsis(Qdockwidget):
@@ -83,44 +48,38 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        ScrollPosition(self.qwebviewPreview)
-        ScrollPosition(self.qplaintexteditSynopsis)
-        ScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
+        QobjectScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
 
-        self.qwebviewPreview.page().scrollRequested.connect(
-            self.on_qwebviewPreview_scrollRequested)
-        self.qplaintexteditSynopsis.verticalScrollBar().sliderMoved.connect(
-            self.on_qplaintexteditSynopsis_sliderMoved)
+        # self.qwebviewPreview.page().scrollRequested.connect(
+        #     self.on_qwebviewPreview_scrollRequested)
+        # self.qplaintexteditSynopsis.verticalScrollBar().sliderMoved.connect(
+        #     self.on_qplaintexteditSynopsis_sliderMoved)
 
-    def on_qplaintexteditSynopsis_sliderMoved(self, value):
-        p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
-        s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
+        QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
-        s_position = self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition()
-        p_position = s_position * float(p_height) / s_height
+        self.state_restore()
 
-        self.qwebviewPreview.page().mainFrame().setScrollPosition(QPoint(0, p_position))
+    def on_qapplication_aboutToQuit(self):
+        self.save()
+        self.state_save()
 
-    def on_qwebviewPreview_scrollRequested(self, dx, dy, rectToScroll):
-        p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
-        s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
-
-        p_position = self.qwebviewPreview.page().mainFrame().scrollPosition().y()
-        s_position = p_position * float(s_height) / p_height
-
-        self.qplaintexteditSynopsis.verticalScrollBar().setValue(s_position)
-
-    @pyqtSlot(bool)
-    def on_toolButtonPreview_clicked(self, checked):
-        self.preview()
-
-    @pyqtSlot(bool)
-    def on_qwebviewPreview_showEditor(self):
-        self.edit()
-
-    @pyqtSlot(bool)
-    def on_qplaintexteditSynopsis_showPreview(self):
-        self.preview()
+    # def on_qplaintexteditSynopsis_sliderMoved(self, value):
+    #     p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
+    #     s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
+    #
+    #     s_position = self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition()
+    #     p_position = s_position * float(p_height) / s_height
+    #
+    #     self.qwebviewPreview.page().mainFrame().setScrollPosition(QPoint(0, p_position))
+    #
+    # def on_qwebviewPreview_scrollRequested(self, dx, dy, rectToScroll):
+    #     p_height = self.qwebviewPreview.page().mainFrame().scrollBarMaximum(Qt.Vertical)
+    #     s_height = self.qplaintexteditSynopsis.verticalScrollBar().maximum()
+    #
+    #     p_position = self.qwebviewPreview.page().mainFrame().scrollPosition().y()
+    #     s_position = p_position * float(s_height) / p_height
+    #
+    #     self.qplaintexteditSynopsis.verticalScrollBar().setValue(s_position)
 
     def preview(self):
         self.save()
@@ -144,13 +103,89 @@ class QdockwidgetSynopsis(Qdockwidget):
 
     def toggle_preview(self, show):
         self.show()
-        show and self.preview() or self.edit()
+        if show:
+            self.preview()
+        else:
+            self.edit()
 
     def append(self, text):
         self.qplaintexteditSynopsis.appendPlainText(text)
 
         if self.stackedWidget.currentIndex():
             self.save()
+
+    def save(self):
+        try:
+            with open(self.path_synopsis(), "r+") as oput:
+                self.save_file(oput)
+        except IOError as error:
+            if error.errno != 2:
+                raise
+
+            if not self.qplaintexteditSynopsis.toPlainText():
+                return
+
+            with open(self.path_synopsis(), "ab+") as oput:
+                self.save_file(oput)
+
+    def save_file(self, oput):
+        text = self.qplaintexteditSynopsis.toPlainText()
+        if text == oput.read():
+            return
+
+        oput.seek(0)
+        oput.write(text)
+        oput.truncate()
+
+        self.qwebviewPreview.set_body(text)
+        self.qplaintexteditSynopsis.document().setModified(False)
+
+    def set_path_source(self, path):
+        self.path_source = path
+        self.load()
+
+    def path_synopsis(self):
+        self.update_config()
+        if not self.synopsis_extension:
+            raise ValueError("synopsis extension unset")
+
+        return filepath_relative(self.path_source, extension=self.synopsis_extension)
+
+    def load(self):
+        try:
+            with open(self.path_synopsis(), "r") as iput:
+                text = iput.read()
+
+                self.qwebviewPreview.set_body(text)
+                self.qplaintexteditSynopsis.setPlainText(text)
+
+        except IOError as error:
+            if error.errno == 2:
+                self.qplaintexteditSynopsis.clear()
+            else:
+                raise
+
+    def state_save(self):
+        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+
+        vprefs.set('synopsis_mode', self.stackedWidget.currentIndex())
+
+    def state_restore(self):
+        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+
+        self.stackedWidget.setCurrentIndex(int(vprefs.get('synopsis_mode', None)))
+
+    @pyqtSlot(bool)
+    def on_toolButtonPreview_clicked(self, checked):
+        self.preview()
+
+    @pyqtSlot(bool)
+    def on_qwebviewPreview_showEditor(self):
+        self.edit()
+
+    @pyqtSlot(bool)
+    def on_qplaintexteditSynopsis_showPreview(self):
+        self.preview()
 
     @pyqtSlot(bool)
     def on_qactionSave_triggered(self):
@@ -187,77 +222,3 @@ class QdockwidgetSynopsis(Qdockwidget):
     @pyqtSlot(bool)
     def on_toolButtonSave_clicked(self, checked):
         self.save()
-
-    def save(self):
-        try:
-            with open(self.path_synopsis(), "r+") as oput:
-                self.write_to_file(oput)
-        except IOError as error:
-            if error.errno != 2:
-                raise
-
-            if not self.qplaintexteditSynopsis.toPlainText():
-                return
-
-            with open(self.path_synopsis(), "ab+") as oput:
-                self.write_to_file(oput)
-
-    def write_to_file(self, oput):
-        text = self.qplaintexteditSynopsis.toPlainText()
-        if text == oput.read():
-            return
-
-        oput.seek(0)
-        oput.write(text)
-        oput.truncate()
-
-        self.qwebviewPreview.set_body(text)
-        self.qplaintexteditSynopsis.document().setModified(False)
-
-    def set_path_source(self, path):
-        self.path_source = path
-        self.load()
-
-    def path_synopsis(self):
-        self.update_config()
-        if not self.synopsis_extension:
-            raise ValueError("synopsis extension unset")
-
-        return filepath_relative(self.path_source, extension=self.synopsis_extension)
-
-    def load(self):
-        try:
-            with open(self.path_synopsis(), "r") as iput:
-                text = iput.read()
-
-                self.qwebviewPreview.set_body(
-                    text, self.p_position if self.synopsis_position else None)
-                self.qplaintexteditSynopsis.setPlainText(
-                    text, self.s_position if self.synopsis_position else None)
-
-        except IOError as error:
-            if error.errno == 2:
-                self.qplaintexteditSynopsis.clear()
-            else:
-                raise
-
-    def state_save(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
-
-        vprefs.set('synopsis_mode', self.stackedWidget.currentIndex())
-        vprefs.set(
-            'synopsis_position_edit',
-            self.qplaintexteditSynopsis.verticalScrollBar().sliderPosition())
-        vprefs.set(
-            'synopsis_position_preview',
-            self.qwebviewPreview.page().mainFrame().scrollPosition().y())
-
-    def state_restore(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
-
-        mode = vprefs.get('synopsis_mode', None)
-        if mode is not None:
-            self.stackedWidget.setCurrentIndex(int(mode))
-
-        self.s_position = vprefs.get('synopsis_position_edit', None)
-        self.p_position = vprefs.get('synopsis_position_preview', None)

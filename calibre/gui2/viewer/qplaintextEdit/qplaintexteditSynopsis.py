@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QTextCursor
 
+from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextEdit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhiglighterMarkdown import \
     QsyntaxhighlighterMarkdown
@@ -9,22 +10,19 @@ from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhiglighterMarkdown import \
 
 class QplaintexteditSynopsis(Qplaintextedit):
     showPreview = pyqtSignal(bool)
-    positionSave = pyqtSignal(int)
+    positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(QplaintexteditSynopsis, self).__init__(*args, **kwargs)
 
-        QsyntaxhighlighterMarkdown(self)
+        QobjectScrollPosition(self)
+        # QsyntaxhighlighterMarkdown(self)
 
-    def setPlainText(self, p_str, position=None):
-        self.positionSave.emit(position)
+    def setPlainText(self, p_str):
+        self.positionSave.emit()
         super(QplaintexteditSynopsis, self).setPlainText(p_str)
         self.positionLoad.emit()
-
-    def scroll_to_bottom(self):
-        self.moveCursor(QTextCursor.End)
-        self.ensureCursorVisible()
 
     def keyPressEvent(self, qkeyevent):
         super(QplaintexteditSynopsis, self).keyPressEvent(qkeyevent)

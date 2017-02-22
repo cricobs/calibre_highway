@@ -16,7 +16,7 @@
 
             $("p")
                 .on("dblclick", function (e) {
-                    qwebview.to_position($(this).attr("position"));
+                    qwebview.position_change($(this).attr("position"));
 
                     e.preventDefault();
                     e.stopPropagation();

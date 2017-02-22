@@ -14,7 +14,6 @@ from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QSize, QTime,
                       QPropertyAnimation, QInputDialog, QAction, QModelIndex, pyqtSignal)
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QMenu
-from PyQt5.QtWidgets import QScrollBar
 from PyQt5.QtWidgets import QToolBar
 from PyQt5.QtWidgets import QToolButton
 from PyQt5.QtWidgets import QWidget
@@ -385,7 +384,7 @@ class QmainwindowEbook(Qmainwindow):
         t.timeout.connect(self.hide_cursor)
         t.start()
 
-    def on_qwebviewPreview_toPosition(self, position):
+    def on_qwebviewPreview_positionChange(self, position):
         self.view.document.page_position.to_pos(position)
         self.view.setFocus(Qt.OtherFocusReason)
 
@@ -475,7 +474,6 @@ class QmainwindowEbook(Qmainwindow):
         if self.isFullScreen() and not self.view.document.start_in_fullscreen:
             self.action_full_screen.trigger()
             return False
-        self.qdockwidgetSynopsis.state_save()
         if self.listener is not None:
             self.listener.close()
         return True
@@ -490,7 +488,6 @@ class QmainwindowEbook(Qmainwindow):
             return
         if self.shutdown():
             self.closed = True
-            self.qdockwidgetSynopsis.save()
             return super(QmainwindowEbook, self).closeEvent(e)
 
         else:
@@ -508,8 +505,6 @@ class QmainwindowEbook(Qmainwindow):
         vprefs['in_paged_mode'] = not self.action_toggle_paged_mode.isChecked()
 
     def restore_state(self):
-        self.qdockwidgetSynopsis.state_restore()
-
         state = vprefs.get('main_window_state', None)
         if state is not None:
             try:
