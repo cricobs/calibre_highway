@@ -12,35 +12,35 @@ class QobjectScrollPosition(Qobject):
         super(QobjectScrollPosition, self).__init__(parent, *args, **kwargs)
 
         self.position = None
-
-        self.parent().positionSave.connect(self.on_parent_positionSave)
-        self.parent().positionLoad.connect(self.on_parent_positionLoad)
+        
+        self.qwidget = self.parent()
+        self.qwidget.positionSave.connect(self.on_qwidget_positionSave)
+        self.qwidget.positionLoad.connect(self.on_qwidget_positionLoad)
 
         QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
     def current_position(self):
-        if isinstance(self.parent(), QPlainTextEdit):
-            return self.parent().verticalScrollBar().value()
-        elif isinstance(self.parent(), QWebView):
-            return self.parent().page().mainFrame().scrollBarValue(Qt.Vertical)
+        if isinstance(self.qwidget, QPlainTextEdit):
+            return self.qwidget.verticalScrollBar().value()
+        elif isinstance(self.qwidget, QWebView):
+            return self.qwidget.page().mainFrame().scrollBarValue(Qt.Vertical)
 
     def on_qapplication_aboutToQuit(self):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
-        vprefs.set(self.parent().objectName() + "_position", self.current_position())
+        vprefs.set(self.qwidget.objectName() + "_position", self.current_position())
 
-    def on_parent_positionSave(self):
+    def on_qwidget_positionSave(self):
         if self.position is None:
             from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
-            self.position = vprefs.get(self.parent().objectName() + "_position")
+            self.position = vprefs.get(self.qwidget.objectName() + "_position")
         else:
             self.position = self.current_position()
 
-    def on_parent_positionLoad(self):
-        if isinstance(self.parent(), QPlainTextEdit):
+    def on_qwidget_positionLoad(self):
+        if isinstance(self.qwidget, QPlainTextEdit):
             QTimer().singleShot(
-                111, lambda: self.parent().verticalScrollBar().setValue(self.position))
-
-        elif isinstance(self.parent(), QWebView):
-            self.parent().page().mainFrame().setScrollBarValue(Qt.Vertical, self.position)
+                111, lambda: self.qwidget.verticalScrollBar().setValue(self.position))
+        elif isinstance(self.qwidget, QWebView):
+            self.qwidget.page().mainFrame().setScrollBarValue(Qt.Vertical, self.position)
