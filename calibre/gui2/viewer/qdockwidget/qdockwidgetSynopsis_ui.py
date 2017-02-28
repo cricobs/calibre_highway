@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/mnt/7597ECC22B316B49/programs/linux/calibre/src/calibre/gui2/viewer/qdockwidget/qwebviewPreview.ui'
+# Form implementation generated from reading ui file '/mnt/7597ECC22B316B49/programs/linux/calibre/src/calibre/gui2/viewer/qdockwidget/qdockwidgetSynopsis.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -48,7 +48,6 @@ class Ui_DockWidget(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.qplaintexteditSynopsis = QplaintexteditSynopsis(self.page)
         self.qplaintexteditSynopsis.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.qplaintexteditSynopsis.setStyleSheet("line-height: 44px !important;")
         self.qplaintexteditSynopsis.setObjectName("qplaintexteditSynopsis")
         self.verticalLayout.addWidget(self.qplaintexteditSynopsis)
         self.stackedWidget.addWidget(self.page)

@@ -39,6 +39,12 @@ class QobjectScrollPosition(Qobject):
             self.position = self.current_position()
 
     def on_qwidget_positionLoad(self):
+        try:
+            self.position_load()
+        except TypeError:
+            pass
+
+    def position_load(self):
         if isinstance(self.qwidget, QPlainTextEdit):
             QTimer().singleShot(
                 111, lambda: self.qwidget.verticalScrollBar().setValue(self.position))

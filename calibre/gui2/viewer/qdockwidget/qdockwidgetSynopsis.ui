@@ -100,9 +100,6 @@
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
-          <property name="styleSheet">
-           <string notr="true">line-height: 44px !important;</string>
-          </property>
          </widget>
         </item>
        </layout>

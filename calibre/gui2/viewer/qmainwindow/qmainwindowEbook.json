@@ -77,6 +77,14 @@
     },
     {
       "checkable": true,
+      "widget": "footnotes_dock",
+      "text": "Footnotes",
+      "name": "footnotes",
+      "icon": "column.png",
+      "context": true
+    },
+    {
+      "checkable": true,
       "widget": "qdockwidgetSynopsis",
       "text": "Synopsis",
       "name": "synopsis",

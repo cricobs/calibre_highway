@@ -1,6 +1,5 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QTextCursor
 
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextEdit.qplaintextedit import Qplaintextedit
@@ -17,7 +16,8 @@ class QplaintexteditSynopsis(Qplaintextedit):
         super(QplaintexteditSynopsis, self).__init__(*args, **kwargs)
 
         QobjectScrollPosition(self)
-        # QsyntaxhighlighterMarkdown(self)
+
+        self.qsyntaxhiglighter = QsyntaxhighlighterMarkdown(self.document())
 
     def setPlainText(self, p_str):
         self.positionSave.emit()
