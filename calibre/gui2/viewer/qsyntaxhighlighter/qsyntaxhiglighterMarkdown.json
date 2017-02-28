@@ -1,6 +1,6 @@
 {
   "link": {
-    "expression": "<.*>",
+    "expression": "<[^>]+>",
     "color": "#4E27A6"
   },
   "anchor": {
@@ -57,11 +57,21 @@
     "color": "#008C3F"
   },
   "quote": {
-    "expression": "^> ",
+    "expression": "^>",
     "color": "#93A1A1"
   },
   "attributes": {
     "expression": "^\\{[^\\}]+\\}",
     "color": "#268BD2"
+  },
+  "list_ul": {
+      "weight": 99,
+    "expression": "^(\\s+|)(\\*|\\+|-)+",
+    "color": "#6C78C4"
+  },
+  "list_ol": {
+    "weight": 99,
+    "expression": "^(\\s+|)[0-9]+\\.",
+    "color": "#6C78C4"
   }
 }

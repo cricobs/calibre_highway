@@ -16,6 +16,7 @@ I = I
 # - ScrollSynchronize
 # - save and load position in relation to book
 # - reload synopsis when reloading or changing book
+# - backup and restore unsaved changes
 
 # fixme
 # - showEdit signal not being sent when double clicking on new preview body
