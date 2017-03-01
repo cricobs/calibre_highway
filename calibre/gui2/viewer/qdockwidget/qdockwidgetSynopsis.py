@@ -13,13 +13,15 @@ I = I
 
 
 # todo
-# - ScrollSynchronize
 # - save and load position in relation to book
 # - reload synopsis when reloading or changing book
 # - backup and restore unsaved changes
+# - beautify text
+# - store within .epub file
 
 # fixme
 # - showEdit signal not being sent when double clicking on new preview body
+# - scroll synchronize not working on startup
 
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):
@@ -44,7 +46,7 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        QobjectScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
+        self.qobjectscrollsynchronize = QobjectScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
 
         QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
