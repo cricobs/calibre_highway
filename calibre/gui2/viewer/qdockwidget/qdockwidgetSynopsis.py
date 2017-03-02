@@ -21,7 +21,7 @@ I = I
 
 # fixme
 # - showEdit signal not being sent when double clicking on new preview body
-# - scroll synchronize not working on startup
+# - scroll synchronize not working on startup from qplaintexteditEdit
 
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):
@@ -36,8 +36,6 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.synopsis_size = None
 
         self.setTitleBarWidget(QWidget())
-        self.titleBarWidget_default = self.titleBarWidget()
-
         self.update_config()
 
         self.toolButtonRedo.setIcon(QIcon(I("edit-redo.png")))
@@ -46,7 +44,8 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        self.qobjectscrollsynchronize = QobjectScrollSynchronize(self.qwebviewPreview, self.qplaintexteditSynopsis)
+        self.qobjectscrollsynchronize = QobjectScrollSynchronize(
+            self.qwebviewPreview, self.qplaintexteditSynopsis)
 
         QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
@@ -54,11 +53,12 @@ class QdockwidgetSynopsis(Qdockwidget):
 
     def preview(self):
         self.save()
+        self.qobjectscrollsynchronize.reload()
         self.setTitleBarWidget(QWidget())
         self.stackedWidget.setCurrentIndex(1)
 
     def edit(self):
-        self.setTitleBarWidget(self.titleBarWidget_default)
+        self.qobjectscrollsynchronize.reload()
         self.stackedWidget.setCurrentIndex(0)
         self.qplaintexteditSynopsis.setFocus()
 

@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtWebKitWidgets import QWebView, QWebPage
 from PyQt5.QtWidgets import QAbstractSlider
@@ -23,9 +24,13 @@ class QobjectScrollSynchronize(Qobject):
 
             signal.connect(self.on_qwidget_signal)
 
+    def reload(self):
+        for q in self.qwidgets:
+            self.set_position(q, self.get_position(q))
+
     def on_qwidget_signal(self):
         for q in self.qwidgets:
-            if isinstance(q, QPlainTextEdit)and q.verticalScrollBar() is self.sender():
+            if isinstance(q, QPlainTextEdit) and q.verticalScrollBar() is self.sender():
                 continue
             elif isinstance(q, QWebView) and q.page() is self.sender():
                 continue
@@ -63,7 +68,7 @@ class QobjectScrollSynchronize(Qobject):
             q.page().blockSignals(False)
         elif isinstance(q, QPlainTextEdit):
             q.verticalScrollBar().blockSignals(True)
-            q.verticalScrollBar().setValue(position)
+            QTimer().singleShot(0, lambda: q.verticalScrollBar().setValue(position))
             q.verticalScrollBar().blockSignals(False)
         else:
             raise NotImplementedError
