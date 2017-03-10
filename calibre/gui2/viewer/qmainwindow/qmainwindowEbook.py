@@ -281,8 +281,9 @@ class QmainwindowEbook(Qmainwindow):
         self.metadata = QwebviewMetadata(self.centralwidget)
 
         with open(filepath_relative(self, "json")) as iput:
-            actions = json.load(iput)
-            self.create_actions(actions["root"])
+            self.settings = json.load(iput)
+
+        self.create_actions(self.settings["actions"])
 
         self.history = History(self.action_back, self.action_forward)
         self.full_screen_label = QlabelFullscreen(self.centralwidget)
@@ -1197,32 +1198,12 @@ class QmainwindowEbook(Qmainwindow):
             return super(QmainwindowEbook, self).keyPressEvent(event)
 
         try:
-            bac = self.bookmarks_menu.actions()[0]
+            self.bac = self.bookmarks_menu.actions()[0]
         except (AttributeError, TypeError, IndexError, KeyError):
-            bac = None
+            self.bac = None
 
-        # fixme move to json
-        action = {
-            'Quit': self.action_quit,
-            'Show metadata': self.action_metadata,
-            'Copy': self.view.copy_action,
-            'Font larger': self.action_font_size_larger,
-            'Font smaller': self.action_font_size_smaller,
-            'Fullscreen': self.action_full_screen,
-            'Find next': self.action_find_next,
-            'Find previous': self.action_find_previous,
-            'Search online': self.view.search_online_action,
-            'Lookup word': self.view.dictionary_action,
-            'Next occurrence': self.view.search_action,
-            'Bookmark': bac,
-            'Reload': self.action_reload,
-            'Table of Contents': self.action_table_of_contents,
-            'Print': self.action_print,
-            "Edit": self.action_tool_bar,
-            "Synopsis Save": self.qdockwidgetSynopsis.qactionSave,
-            "Synopsis": self.action_synopsis,
-            "Preferences": self.action_preferences
-        }.get(key, None)
+        names = self.settings["key_actions"].get(key, None)
+        action = reduce(getattr, names, self) if names else None
         if action is not None:
             event.accept()
             action.trigger()
