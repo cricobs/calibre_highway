@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
@@ -139,6 +140,18 @@ class QdockwidgetSynopsis(Qdockwidget):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
         self.stackedWidget.setCurrentIndex(int(vprefs.get('synopsis_mode', None)))
+
+    def keyPressEvent(self, event):
+        index = None
+        if event.key() == Qt.Key_Right:
+            index = self.stackedWidget.currentIndex() - 1
+        elif event.key() == Qt.Key_Left:
+            index = self.stackedWidget.currentIndex() + 1
+
+        if index is not None:
+            self.stackedWidget.setCurrentIndex(index)
+
+        super(QdockwidgetSynopsis, self).keyPressEvent(event)
 
     @pyqtSlot(str)
     def on_qcomboboxMarkdown_activated(self, text):

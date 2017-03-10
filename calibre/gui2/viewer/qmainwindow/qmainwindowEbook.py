@@ -392,6 +392,7 @@ class QmainwindowEbook(Qmainwindow):
         self.sender().findText("")  # clear selection
 
     def on_action_search_triggered(self, checked):
+        self.search.setFocus(Qt.OtherFocusReason)
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
 
     def toggle_toc(self, ev):
@@ -1192,28 +1193,20 @@ class QmainwindowEbook(Qmainwindow):
                 self.action_full_screen.trigger()
                 event.accept()
                 return
+
         try:
             key = self.view.shortcuts.get_match(event)
         except AttributeError:
-            return super(QmainwindowEbook, self).keyPressEvent(event)
+            return
 
-        try:
-            self.bac = self.bookmarks_menu.actions()[0]
-        except (AttributeError, TypeError, IndexError, KeyError):
-            self.bac = None
-
-        names = self.settings["key_actions"].get(key, None)
-        action = reduce(getattr, names, self) if names else None
+        action = self.keyboard_action(key)
         if action is not None:
             event.accept()
             action.trigger()
-            return
-        if key == 'Focus Search':
-            self.search.setFocus(Qt.OtherFocusReason)
-            self.action_search.trigger()
-            return
-        if not self.view.handle_key_press(event):
-            event.ignore()
+
+    def keyboard_action(self, key):
+        names = self.settings["keyboard_action"].get(key, None)
+        return reduce(getattr, names, self) if names else None
 
     def reload_book(self):
         if getattr(self.iterator, 'pathtoebook', None):

@@ -8,3 +8,4 @@ class Qdockwidget(QDockWidget, Qwidget):
         super(Qdockwidget, self).__init__(*args, **kwargs)
 
         self.close()
+        self.toggleviewaction = self.toggleViewAction()

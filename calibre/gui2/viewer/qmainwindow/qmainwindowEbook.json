@@ -279,7 +279,7 @@
       }
     }
   ],
-  "key_actions": {
+  "keyboard_action": {
     "Quit": [
       "action_quit"
     ],
@@ -317,7 +317,10 @@
       "view",
       "search_action"
     ],
-    "Bookmark": ["bac"],
+    "Bookmark": [
+      "bookmarks_dock",
+      "toggleviewaction"
+    ],
     "Reload": [
       "action_reload"
     ],
@@ -339,6 +342,9 @@
     ],
     "Preferences": [
       "action_preferences"
+    ],
+    "Focus Search" : [
+      "action_search"
     ]
   }
 }

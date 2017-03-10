@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="qwebviewPreview/js/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js"></script>
+    <script src="qwebviewPreview/js/jquery.toc/jquery.toc.min.js"></script>
     <link rel="stylesheet" type="text/css" href="qwebviewPreview/css/synopsis.css">
     <script>
         window.onload = function () {
@@ -11,8 +12,7 @@
                 .on("dblclick", function () {
                     qwebview.show_editor();
                 })
-                .first()
-                .html(qwebview.body);
+                .append(qwebview.body);
 
             $("p")
                 .on("dblclick", function (e) {
@@ -21,9 +21,15 @@
                     e.preventDefault();
                     e.stopPropagation();
                 });
+
+            $("#content").toc({headings: "h1:not(.content):not(:empty),h2,h3,h4,h5,h6"})
         };
     </script>
 </head>
 <body>
+<div>
+    <h1 class="content">Content</h1>
+    <ul id="content"></ul>
+</div>
 </body>
 </html>
