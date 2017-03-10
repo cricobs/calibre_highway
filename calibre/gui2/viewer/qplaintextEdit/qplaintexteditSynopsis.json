@@ -1,0 +1,73 @@
+{
+  "formats": {
+    "header": {
+      "newline": true,
+      "start": "# "
+    },
+    "italic": {
+      "start": "*",
+      "end": "*"
+    },
+    "bold": {
+      "start": "**",
+      "end": "**"
+    },
+    "tag underline": {
+      "start": "<u>",
+      "end": "</u>"
+    },
+    "list number": {
+      "newline": true,
+      "start": " 1. "
+    },
+    "list bullet": {
+      "newline": true,
+      "start": " * "
+    },
+    "list dash": {
+      "newline": true,
+      "start": " - "
+    },
+    "image": {
+      "start": "![",
+      "end": "]()"
+    },
+    "link": {
+      "start": "[",
+      "end": "]()"
+    },
+    "code inline": {
+      "start": "`",
+      "end": "`"
+    },
+    "code block": {
+      "newline": true,
+      "start": "    "
+    },
+    "quote": {
+      "newline": true,
+      "start": "> "
+    },
+    "tag cite": {
+      "start": "<cite>",
+      "end": "</cite>"
+    },
+    "tag link": {
+      "start": "<a '",
+      "end": "'/>"
+    },
+    "attribute": {
+      "newline": true,
+      "start": "{: ",
+      "end": "}"
+    },
+    "tag": {
+      "start": "<>",
+      "end": "</>"
+    },
+    "tag inline": {
+      "start": "<",
+      "end": "/>"
+    }
+  }
+}

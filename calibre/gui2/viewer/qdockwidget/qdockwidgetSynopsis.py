@@ -11,15 +11,15 @@ from calibre.library.filepath import filepath_relative
 
 I = I
 
-
 # todo
-# - save and load position in relation to book
-# - reload synopsis when reloading or changing book
 # - backup and restore unsaved changes
 # - beautify text
 # - store within .epub file
+# - separate file for synopsis index
 
 # fixme
+# - save and load position in relation to book
+# - reload synopsis when reloading or changing book
 # - showEdit signal not being sent when double clicking on new preview body
 # - scroll synchronize not working on startup from qplaintexteditEdit
 
@@ -43,6 +43,8 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.toolButtonSave.setIcon(QIcon(I("save.png")))
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
+
+        self.qcomboboxMarkdown.addItems(sorted(self.qplaintexteditSynopsis.formats.keys()))
 
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
             self.qwebviewPreview, self.qplaintexteditSynopsis)
@@ -70,13 +72,6 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.synopsis_size = opts.synopsis_size
 
         self.qplaintexteditSynopsis.setFont(QFont(self.mono_family))
-
-    def toggle_preview(self, show):
-        self.show()
-        if show:
-            self.preview()
-        else:
-            self.edit()
 
     def append(self, text):
         self.qplaintexteditSynopsis.appendPlainText(text)
@@ -144,6 +139,11 @@ class QdockwidgetSynopsis(Qdockwidget):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
         self.stackedWidget.setCurrentIndex(int(vprefs.get('synopsis_mode', None)))
+
+    @pyqtSlot(str)
+    def on_qcomboboxMarkdown_activated(self, text):
+        self.qplaintexteditSynopsis.insertFormat(text)
+        self.qcomboboxMarkdown.setCurrentIndex(0)
 
     @pyqtSlot(bool)
     def on_toolButtonPreview_clicked(self, checked):

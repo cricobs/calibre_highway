@@ -1080,6 +1080,7 @@ class QmainwindowEbook(Qmainwindow):
         worker = Worker(target=partial(self.iterator.__enter__, view_kepub=True))
         worker.path_to_ebook = pathtoebook
         worker.start()
+        # example join a worker while alive
         while worker.isAlive():
             worker.join(0.1)
             QApplication.processEvents()
@@ -1199,6 +1200,8 @@ class QmainwindowEbook(Qmainwindow):
             bac = self.bookmarks_menu.actions()[0]
         except (AttributeError, TypeError, IndexError, KeyError):
             bac = None
+
+        # fixme move to json
         action = {
             'Quit': self.action_quit,
             'Show metadata': self.action_metadata,
@@ -1290,7 +1293,6 @@ class QmainwindowEbook(Qmainwindow):
                       disabled=False, checkable=False, context=False):
 
         toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
-
         qaction = getattr(self, widget).toggleViewAction() if widget else QAction(self)
         qaction.setText(_(text))
         qaction.setIcon(QIcon(I(icon)))
@@ -1300,7 +1302,6 @@ class QmainwindowEbook(Qmainwindow):
 
         if widget:
             setattr(self, qaction.objectName(), qaction)
-
         if not widget and icon:
             toolbar.addAction(qaction)
         if slots:

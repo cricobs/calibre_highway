@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_DockWidget(object):
     def setupUi(self, DockWidget):
         DockWidget.setObjectName("DockWidget")
-        DockWidget.resize(401, 393)
+        DockWidget.resize(408, 393)
         self.dockWidgetContents = QtWidgets.QWidget()
         self.dockWidgetContents.setObjectName("dockWidgetContents")
         self.gridLayout = QtWidgets.QGridLayout(self.dockWidgetContents)
@@ -35,6 +35,9 @@ class Ui_DockWidget(object):
         self.toolButtonPreview = QtWidgets.QToolButton(self.page)
         self.toolButtonPreview.setObjectName("toolButtonPreview")
         self.horizontalLayout.addWidget(self.toolButtonPreview)
+        self.qcomboboxMarkdown = QcomboboxMarkdown(self.page)
+        self.qcomboboxMarkdown.setObjectName("qcomboboxMarkdown")
+        self.horizontalLayout.addWidget(self.qcomboboxMarkdown)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.toolButtonUndo = QtWidgets.QToolButton(self.page)
@@ -81,5 +84,6 @@ class Ui_DockWidget(object):
         self.qactionSave.setText(_("Save"))
         self.qactionPreview.setText(_("Preview"))
 
+from calibre.gui2.viewer.qcombobox.qcomboboxMarkdown import QcomboboxMarkdown
 from calibre.gui2.viewer.qplaintextEdit.qplaintexteditSynopsis import QplaintexteditSynopsis
 from calibre.gui2.viewer.qwebview.qwebviewPreview import QwebviewPreview

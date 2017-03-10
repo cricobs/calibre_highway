@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
+    <width>408</width>
     <height>393</height>
    </rect>
   </property>
@@ -59,6 +59,9 @@
              <string>Preview</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QcomboboxMarkdown" name="qcomboboxMarkdown"/>
           </item>
           <item>
            <spacer name="horizontalSpacer">
@@ -137,6 +140,11 @@
    <class>QplaintexteditSynopsis</class>
    <extends>QPlainTextEdit</extends>
    <header>calibre.gui2.viewer.qplaintextEdit.qplaintexteditSynopsis</header>
+  </customwidget>
+  <customwidget>
+   <class>QcomboboxMarkdown</class>
+   <extends>QComboBox</extends>
+   <header>calibre.gui2.viewer.qcombobox.qcomboboxMarkdown</header>
   </customwidget>
  </customwidgets>
  <resources/>
