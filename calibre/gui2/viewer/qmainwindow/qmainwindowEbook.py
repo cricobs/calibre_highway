@@ -612,7 +612,11 @@ class QmainwindowEbook(Qmainwindow):
 
     def update_pos_label(self, *args):
         if self.pos_label.isVisible():
-            self.pos_label.move(0, self.pos_label.parent().height() - self.pos_label.height())
+            p = self.pos_label
+            pos_w = p.parent().width() - (6 + p.width() + self.vertical_scrollbar.width())
+            pos_h = p.parent().height() - p.height()
+            self.pos_label.move(pos_w, pos_h)
+
             try:
                 value, maximum = args
             except:

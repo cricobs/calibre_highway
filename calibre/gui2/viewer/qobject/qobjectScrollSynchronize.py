@@ -78,6 +78,7 @@ class QobjectScrollSynchronize(Qobject):
         s_position = self.get_position(source)
 
         t_height = self.get_height(target)
-        t_position = int(s_position * float(t_height) / s_height)
+        # fixme find correct value when s_height is 0
+        t_position = int(s_position * float(t_height) / s_height) if s_height != 0 else 0
 
         self.set_position(target, t_position)
