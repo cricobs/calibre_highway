@@ -17,12 +17,15 @@ I = I
 # - beautify text
 # - store within .epub file
 # - separate file for synopsis index
+# - paging information
 
 # fixme
 # - save and load position in relation to book
 # - reload synopsis when reloading or changing book
 # - showEdit signal not being sent when double clicking on new preview body
 # - scroll synchronize not working on startup from qplaintexteditEdit
+# - zerodividion error
+
 
 class QdockwidgetSynopsis(Qdockwidget):
     def __init__(self, *args, **kwargs):

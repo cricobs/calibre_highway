@@ -612,18 +612,20 @@ class QmainwindowEbook(Qmainwindow):
 
     def update_pos_label(self, *args):
         if self.pos_label.isVisible():
+            self.pos_label.move(0, self.pos_label.parent().height() - self.pos_label.height())
             try:
                 value, maximum = args
             except:
                 value, maximum = self.pos.value(), self.pos.maximum()
-            text = '%g/%g' % (value, maximum)
+            # text = '%g/%g' % (value, maximum)
+            text = str(value)
             self.pos_label.setText(text)
             self.pos_label.resize(self.pos_label.sizeHint())
 
     def showNormal(self):
         self.view.document.page_position.save()
         self.clock_label.setVisible(False)
-        self.pos_label.setVisible(False)
+        # self.pos_label.setVisible(False)
         self.clock_timer.stop()
         self.vertical_scrollbar.setVisible(True)
         self.window_mode_changed = 'normal'
@@ -816,6 +818,8 @@ class QmainwindowEbook(Qmainwindow):
 
     def load_finished(self, ok):
         self.close_progress_indicator()
+        self.show_pos_label()
+
         path = self.view.path()
         try:
             index = self.iterator.spine.index(path)
