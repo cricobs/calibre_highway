@@ -22,6 +22,14 @@
                     e.stopPropagation();
                 });
 
+            $("h1,h2,h3,h4,h5,h6").click(function () {
+                console.log("mama");
+                console.log(this.id);
+                $("html, body").animate({
+                    scrollTop: $("#content").find("a[href='#" + this.id + "']").offset().top}, "slow");
+                return false;
+            });
+
             $("#content").toc({headings: "h1:not(.content):not(:empty),h2,h3,h4,h5,h6"})
         };
     </script>
