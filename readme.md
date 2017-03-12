@@ -1,6 +1,6 @@
 # Info
-Branched from [calibre](https://github.com/kovidgoyal/calibre)
-It differs from mainly in the ebook viewer.
+Forked from [calibre](https://github.com/kovidgoyal/calibre)
+It differs mainly in the ebook viewer.
 
 # Features
 - Various interface tweaks.
