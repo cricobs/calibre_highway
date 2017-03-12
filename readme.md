@@ -1,7 +1,9 @@
 # Info
-Forked from [calibre](https://github.com/kovidgoyal/calibre)
-It differs mainly in the ebook viewer.
+Forked from [calibre](https://github.com/kovidgoyal/calibre). It differs mainly in the ebook viewer.
 
 # Features
 - Various interface tweaks.
 - Markdown editor. Useful for taking notes about the book, writing a synopsis, or whatever
+
+![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_edit.png?raw=true "screenshot synopsis preview")
+![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_edit.png?raw=true "screenshot synopsis edit")
