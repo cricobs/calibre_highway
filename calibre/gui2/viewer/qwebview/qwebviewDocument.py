@@ -4,11 +4,11 @@ import json
 import math
 import sys
 from functools import partial
+from future_builtins import map
 
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon, QAction, QMenu,
                       pyqtSignal, QApplication, QKeySequence, QMimeData)
 from PyQt5.QtWebKitWidgets import QWebView
-from future_builtins import map
 
 from calibre import isosx
 from calibre.constants import iswindows
@@ -68,6 +68,7 @@ class QwebviewDocument(QWebView):
         self.shortcuts = Shortcuts(SHORTCUTS, 'shortcuts/viewer')
         self.table_popup = TablePopup(self)
         self.to_bottom = False
+        self.qmenuSynopsis = QMenu(self)
 
         self.document = d = Document(
             self.shortcuts, parent=self, debug_javascript=debug_javascript)
@@ -94,8 +95,10 @@ class QwebviewDocument(QWebView):
 
         self.create_actions(actions["root"])
         self.create_online_actions(actions["search_online"])
+        self.create_synopsis_actions(actions["synopsis"])
         self.create_goto_actions(actions["goto_location"])
 
+        self.synopsis_action.setMenu(self.qmenuSynopsis)
         self.search_online_action.setMenu(self.search_online_menu)
         self.goto_location_action.setMenu(self.goto_location_menu)
 
@@ -103,6 +106,31 @@ class QwebviewDocument(QWebView):
         self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
 
     # --- actions
+    def create_synopsis_action(self, name, text, slot=None, icon=None, shortcut=None,
+                               separator=False, actions=None, qmenu=None):
+        qmenu = qmenu if qmenu else self.qmenuSynopsis
+        qaction = qmenu.addAction(_(text))
+        shortcuts = self.shortcuts.get_sequences(shortcut)
+        if shortcuts:
+            qaction.setShortcut(shortcuts[0])
+        if slot:
+            qaction.triggered.connect(getattr(self, slot))
+        if icon:
+            qaction.setIcon(QIcon(I(icon)))
+        if separator:
+            qmenu.addSeparator()
+        if actions:
+            q = QMenu(self)
+            qaction.setMenu(q)
+            self.create_synopsis_actions(actions, q)
+
+        setattr(self, name + "_action", qaction)
+        self.addAction(qaction)
+
+    def create_synopsis_actions(self, actions, qmenu=None):
+        for options in actions:
+            self.create_synopsis_action(qmenu=qmenu, **options)
+
     def create_goto_action(self, name, call, shortcut, separator=False):
         call = getattr(self, call)
 
@@ -154,14 +182,21 @@ class QwebviewDocument(QWebView):
         self.addAction(action)
 
     def copy_markdown(self, *args, **kwargs):
-        self.copy_text(self.selected_markdown())
+        self.copy_text(self.selected_markdown_text())
 
     def synopsis_append(self, *args, **kwargs):
-        self.manager.qdockwidgetSynopsis.append(
-            self.selected_markdown()
-        )
+        mode = self.sender().text().lower()
+        if mode == "text":
+            text = self.selected_markdown_text()
+        else:
+            text = self.selected_markdown_header(int(mode))
 
-    def selected_markdown(self):
+        self.manager.qdockwidgetSynopsis.append(text)
+
+    def selected_markdown_header(self, level):
+        return "\n{0} {1}".format("#" * level, self.selected_text)
+
+    def selected_markdown_text(self):
         return "\n{0}\n{{: position={1}}}".format(
             self.selected_text, self.document.page_position.current_pos)
 

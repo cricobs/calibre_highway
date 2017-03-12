@@ -7,18 +7,10 @@
       "icon": "copy.png"
     },
     {
-      "slot": "copy_markdown",
-      "name": "copy_markdown",
-      "text": "Copy Markdown",
-      "context": true,
-      "icon": "code.png"
-    },
-    {
-      "slot": "synopsis_append",
-      "name": "synopsis_append",
-      "text": "A&ppend to synopsis",
-      "context": true,
+      "name": "synopsis",
+      "text": "S&ynopsis",
       "icon": "modified.png",
+      "context": true,
       "separator": true
     },
     {
@@ -110,6 +102,60 @@
       "call": "previous_page",
       "name": "Previous Page",
       "shortcut": "Previous Page"
+    }
+  ],
+  "synopsis": [
+    {
+      "slot": "copy_markdown",
+      "name": "copy_markdown",
+      "text": "Copy Markdown"
+    },
+    {
+      "name": "synopsis_append",
+      "text": "Append",
+      "actions": [
+        {
+          "slot": "synopsis_append",
+          "name": "append_text",
+          "text": "Text"
+        },
+        {
+          "name": "append_header",
+          "text": "Header",
+          "actions": [
+            {
+              "slot": "synopsis_append",
+              "name": "header_1",
+              "text": "1"
+            },
+            {
+              "slot": "synopsis_append",
+              "name": "header_2",
+              "text": "2"
+            },
+            {
+              "slot": "synopsis_append",
+              "name": "header_3",
+              "text": "3"
+            },
+            {
+              "slot": "synopsis_append",
+              "name": "header_4",
+              "text": "4"
+            },
+            {
+              "slot": "synopsis_append",
+              "name": "header_5",
+              "text": "5"
+            },
+            {
+              "slot": "synopsis_append",
+              "name": "header_6",
+              "text": "6"
+            }
+          ]
+        }
+      ]
     }
   ],
   "search_online": [
