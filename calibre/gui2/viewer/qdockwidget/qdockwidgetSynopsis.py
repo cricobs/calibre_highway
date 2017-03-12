@@ -12,15 +12,15 @@ from calibre.library.filepath import filepath_relative
 
 I = I
 
-# todo
+# todo 1
+# - reload synopsis when reloading or changing book
 # - store within .epub file
 # - track with git
 # - beautify text
 
-# fixme
+# todo 2
 # - use qtoolbutton + qmenu for markdown format
 # - save and load position in relation to book
-# - reload synopsis when reloading or changing book
 # - showEdit signal not being sent when double clicking on new preview body
 # - scroll synchronize not working on startup from qplaintexteditEdit
 

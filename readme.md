@@ -3,14 +3,12 @@ Forked from [calibre](https://github.com/kovidgoyal/calibre). It differs mainly 
 
 # Features
 - **Interface** Various tweaks.
-- **Markdown editor** Useful for taking notes about the book, writing a synopsis, or whatever.
-- **Online search** More urls, easier to extend and modify.
+- **Markdown editor** Take notes about the book, write a synopsis, or whatever.
+- **Context menu** Easier to extend and modify. More online search options.
 
 # Screenshots
-![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_preview.png?raw=true "screenshot synopsis preview")
-![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_edit.png?raw=true "screenshot synopsis edit")
+![screenshot synopsis preview](/calibre/gui2/viewer/image/screenshot/synopsis_preview.png?raw=true "screenshot synopsis preview")
+![screenshot synopsis edit](/calibre/gui2/viewer/image/screenshot/synopsis_edit.png?raw=true "screenshot synopsis edit")
 
 # Disclaimer
-Heavily based on personal preferences. 
-
-There are a few unmentioned "features".
+A few unmentioned "features".
