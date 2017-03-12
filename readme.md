@@ -9,3 +9,8 @@ Forked from [calibre](https://github.com/kovidgoyal/calibre). It differs mainly 
 # Screenshots
 ![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_preview.png?raw=true "screenshot synopsis preview")
 ![Alt text](/calibre/gui2/viewer/image/screenshot/synopsis_edit.png?raw=true "screenshot synopsis edit")
+
+# Disclaimer
+Heavily based on personal preferences. 
+
+There are a few unmentioned "features".
