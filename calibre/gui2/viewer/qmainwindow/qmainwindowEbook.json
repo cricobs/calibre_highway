@@ -319,7 +319,7 @@
     ],
     "Bookmark": [
       "bookmarks_dock",
-      "toggleviewaction"
+      "toggleViewAction"
     ],
     "Reload": [
       "action_reload"

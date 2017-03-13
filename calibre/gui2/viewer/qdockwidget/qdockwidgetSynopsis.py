@@ -3,7 +3,6 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QWidget
 
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
 from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
@@ -11,6 +10,7 @@ from calibre.gui2.viewer.qobject.qobjectScrollSynchronize import QobjectScrollSy
 from calibre.library.filepath import filepath_relative
 
 I = I
+
 
 # todo 1
 # - reload synopsis when reloading or changing book
@@ -37,7 +37,6 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.default_font_size = None
         self.synopsis_size = None
 
-        self.setTitleBarWidget(QWidget())
         self.update_config()
 
         self.toolButtonRedo.setIcon(QIcon(I("edit-redo.png")))

@@ -1210,7 +1210,10 @@ class QmainwindowEbook(Qmainwindow):
         action = self.keyboard_action(key)
         if action is not None:
             event.accept()
-            action.trigger()
+            try:
+                action.trigger()
+            except AttributeError:
+                action().trigger()
 
     def keyboard_action(self, key):
         names = self.settings["keyboard_action"].get(key, None)
