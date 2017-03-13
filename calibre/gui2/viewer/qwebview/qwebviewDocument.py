@@ -33,13 +33,11 @@ _ = _
 I = I
 dynamic_property = dynamic_property
 
-SHORTCUTS = {
-    'Fullscreen': ((['Ctrl+Meta+F'] if isosx else ['Ctrl+Shift+F', 'F11']), _('Fullscreen')),
-}
-
 with open(filepath_relative(sys.modules[__name__], "json")) as iput:
-    for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items():
-        SHORTCUTS[name] = (shortcuts, _(tooltip))
+    SHORTCUTS = {
+        name: (shortcuts, _(tooltip))
+        for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items()
+    }
 
 
 class QwebviewDocument(QWebView):

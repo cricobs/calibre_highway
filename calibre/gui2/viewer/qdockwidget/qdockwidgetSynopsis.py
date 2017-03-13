@@ -58,7 +58,6 @@ class QdockwidgetSynopsis(Qdockwidget):
     def preview(self):
         self.save()
         self.qobjectscrollsynchronize.reload()
-        self.setTitleBarWidget(QWidget())
         self.stackedWidget.setCurrentIndex(1)
 
     def edit(self):
