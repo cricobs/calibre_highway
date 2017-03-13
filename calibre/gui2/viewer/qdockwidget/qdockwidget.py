@@ -9,3 +9,10 @@ class Qdockwidget(QDockWidget, Qwidget):
 
         self.close()
         self.toggleviewaction = self.toggleViewAction()
+
+    def setVisible(self, bool):
+        super(Qdockwidget, self).setVisible(bool)
+
+        if bool:
+            self.raise_()
+
