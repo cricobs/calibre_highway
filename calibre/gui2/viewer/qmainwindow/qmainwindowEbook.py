@@ -56,9 +56,6 @@ singleinstance_name = 'calibre_viewer'
 _ = _
 I = I
 P = P
-unicode = unicode
-xrange = xrange
-reduce = reduce
 
 
 class ResizeEvent(object):
