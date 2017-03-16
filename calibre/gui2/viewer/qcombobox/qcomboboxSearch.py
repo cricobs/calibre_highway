@@ -144,6 +144,8 @@ class QcomboboxSearch(Qcombobox):  # {{{
         k = event.key()
         if k in (Qt.Key_Enter, Qt.Key_Return):
             return self.do_search()
+        elif k in (Qt.Key_Escape,):
+            self.parent().keyPressEvent(event)
         if k not in (Qt.Key_Up, Qt.Key_Down):
             super(QcomboboxSearch, self).keyPressEvent(event)
         else:
@@ -227,7 +229,7 @@ class QcomboboxSearch(Qcombobox):  # {{{
     def set_text(self, text):
         if not text:
             return
-        
+
         self.lineEdit().setText(text)
 
     @property
