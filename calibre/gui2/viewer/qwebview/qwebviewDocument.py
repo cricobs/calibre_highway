@@ -10,7 +10,6 @@ from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon,
                       pyqtSignal, QApplication, QKeySequence, QMimeData)
 from PyQt5.QtWebKitWidgets import QWebView
 
-from calibre import isosx
 from calibre.constants import iswindows
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
@@ -37,7 +36,7 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
     SHORTCUTS = {
         name: (shortcuts, _(tooltip))
         for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items()
-    }
+        }
 
 
 class QwebviewDocument(QWebView):
@@ -142,21 +141,28 @@ class QwebviewDocument(QWebView):
         for options in actions:
             self.create_goto_action(**options)
 
-    def create_online_action(self, name, url, icon=None, separator=False, shortcut=None):
-        qaction = self.search_online_menu.addAction(name, self.search_online)
-        qaction.setData(url)
+    def create_online_action(self, name, url=None, icon=None, separator=False, shortcut=None,
+                             actions=None, qmenu=None):
+        qmenu = qmenu if qmenu else self.search_online_menu
+        qaction = qmenu.addAction(name, self.search_online)
 
+        if url:
+            qaction.setData(url)
         shortcuts = self.shortcuts.get_sequences(shortcut)
         if shortcuts:
             qaction.setShortcut(shortcuts[0])
         if icon:
             qaction.setIcon(QIcon(I(icon)))
         if separator:
-            self.search_online_menu.addSeparator()
+            qmenu.addSeparator()
+        if actions:
+            q = QMenu(self)
+            qaction.setMenu(q)
+            self.create_online_actions(actions, q)
 
-    def create_online_actions(self, actions):
+    def create_online_actions(self, actions, qmenu=None):
         for action_options in actions:
-            self.create_online_action(**action_options)
+            self.create_online_action(qmenu=qmenu, **action_options)
 
     def create_action(self, name, text, slot=None, icon=None, checkable=False, shortcut=None,
                       context=False, separator=False):

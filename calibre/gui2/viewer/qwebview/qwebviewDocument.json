@@ -181,16 +181,38 @@
     },
     {
       "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
-      "separator": true,
       "name": "etymology"
     },
     {
-      "url": "https://translate.google.com/#en/es/%s",
-      "name": "translate enes"
-    },
-    {
-      "url": "https://translate.google.com/#es/en/%s",
-      "name": "translate esen"
+      "name": "translate",
+      "actions": [
+        {
+          "name": "google",
+          "actions": [
+            {
+              "url": "https://translate.google.com/#en/es/%s",
+              "name": "translate enes"
+            },
+            {
+              "url": "https://translate.google.com/#es/en/%s",
+              "name": "translate esen"
+            }
+          ]
+        },
+        {
+          "name": "wordreference",
+          "actions": [
+            {
+              "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
+              "name": "wordreference enes"
+            },
+            {
+              "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
+              "name": "wordreference esen"
+            }
+          ]
+        }
+      ]
     }
   ],
   "shortcuts": {
