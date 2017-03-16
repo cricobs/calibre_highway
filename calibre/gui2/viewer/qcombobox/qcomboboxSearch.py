@@ -225,6 +225,9 @@ class QcomboboxSearch(Qcombobox):  # {{{
         return self._in_a_search
 
     def set_text(self, text):
+        if not text:
+            return
+        
         self.lineEdit().setText(text)
 
     @property
