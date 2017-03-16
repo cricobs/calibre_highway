@@ -195,14 +195,17 @@ class QwebviewDocument(QWebView):
         else:
             text = self.selected_markdown_header(int(mode))
 
-        self.manager.qdockwidgetSynopsis.append(text)
+        if text:
+             self.manager.qdockwidgetSynopsis.append(text)
 
     def selected_markdown_header(self, level):
-        return "\n{0} {1}".format("#" * level, self.selected_text)
+        if self.selected_text:
+            return "\n{0} {1}".format("#" * level, self.selected_text)
 
     def selected_markdown_text(self):
-        return "\n{0}\n{{: position={1}}}".format(
-            self.selected_text, self.document.page_position.current_pos)
+        if self.selected_text:
+            return "\n{0}\n{{: position={1}}}".format(
+                self.selected_text, self.document.page_position.current_pos)
 
     def create_actions(self, actions):
         for action_options in actions:
