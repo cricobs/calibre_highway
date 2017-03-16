@@ -16,7 +16,7 @@ I = I
 # - reload synopsis when reloading or changing book
 # - store within .epub file
 # - track with git
-# - beautify text
+# - editor format text
 
 # todo 2
 # - use qtoolbutton + qmenu for markdown format

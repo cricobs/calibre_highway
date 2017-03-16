@@ -389,8 +389,10 @@ class QmainwindowEbook(Qmainwindow):
         self.sender().findText("")  # clear selection
 
     def on_action_search_triggered(self, checked):
-        self.search.setFocus(Qt.OtherFocusReason)
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
+        if self.qwidgetSearch.isVisible():
+            self.search.setFocus(Qt.OtherFocusReason)
+            self.search.set_text(self.view.selected_text)
 
     def toggle_toc(self, ev):
         try:

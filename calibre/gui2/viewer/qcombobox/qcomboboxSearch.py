@@ -224,6 +224,9 @@ class QcomboboxSearch(Qcombobox):  # {{{
     def in_a_search(self):
         return self._in_a_search
 
+    def set_text(self, text):
+        self.lineEdit().setText(text)
+
     @property
     def current_text(self):
         return unicode(self.lineEdit().text())
