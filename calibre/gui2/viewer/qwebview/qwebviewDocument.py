@@ -103,13 +103,15 @@ class QwebviewDocument(QWebView):
         self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
 
     # --- actions
-    def create_synopsis_action(self, name, text, slot=None, icon=None, shortcut=None,
+    def create_synopsis_action(self, name, text, section=None, slot=None, icon=None, shortcut=None,
                                separator=False, actions=None, qmenu=None):
         qmenu = qmenu if qmenu else self.qmenuSynopsis
         qaction = qmenu.addAction(_(text))
         shortcuts = self.shortcuts.get_sequences(shortcut)
         if shortcuts:
             qaction.setShortcut(shortcuts[0])
+        if section:
+            qaction.setData(section)
         if slot:
             qaction.triggered.connect(getattr(self, slot))
         if icon:
@@ -186,14 +188,16 @@ class QwebviewDocument(QWebView):
         self.addAction(action)
 
     def copy_markdown(self, *args, **kwargs):
-        self.copy_text(self.selected_markdown_text())
+        self.copy_text(self.selected_markdown_body())
 
     def synopsis_append(self, *args, **kwargs):
-        mode = self.sender().text().lower()
-        if mode == "text":
-            text = self.selected_markdown_text()
+        section = self.sender().data().lower()
+        if section == "body":
+            text = self.selected_markdown_body()
+        elif section == "header":
+            text = self.selected_markdown_header(int(section))
         else:
-            text = self.selected_markdown_header(int(mode))
+            raise NotImplementedError(section)
 
         if text:
             self.manager.qdockwidgetSynopsis.append(text)
@@ -202,7 +206,7 @@ class QwebviewDocument(QWebView):
         if self.selected_text:
             return "\n{0} {1}".format("#" * level, self.selected_text)
 
-    def selected_markdown_text(self):
+    def selected_markdown_body(self):
         if self.selected_text:
             return "\n{0}\n{{: position={1}}}".format(
                 self.selected_text, self.document.page_position.current_pos)
