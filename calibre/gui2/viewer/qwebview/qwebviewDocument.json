@@ -108,59 +108,53 @@
     {
       "slot": "copy_markdown",
       "name": "copy_markdown",
-      "text": "Copy Markdown"
+      "text": "C&opy Markdown"
     },
     {
-      "name": "synopsis_append",
-      "text": "Append",
+      "slot": "synopsis_append",
+      "name": "append_text",
+      "text": "Append &Text",
+      "shortcut": "Synopsis Append Text"
+    },
+    {
+      "name": "append_header",
+      "text": "Append &Header",
       "actions": [
         {
           "slot": "synopsis_append",
-          "name": "append_text",
-          "text": "Text",
-          "shortcut": "Synopsis Append Text"
+          "name": "header_1",
+          "text": "1",
+          "shortcut": "Synopsis Append H1"
         },
         {
-          "name": "append_header",
-          "text": "Header",
-          "actions": [
-            {
-              "slot": "synopsis_append",
-              "name": "header_1",
-              "text": "1",
-              "shortcut": "Synopsis Append H1"
-            },
-            {
-              "slot": "synopsis_append",
-              "name": "header_2",
-              "text": "2",
-              "shortcut": "Synopsis Append H2"
-            },
-            {
-              "slot": "synopsis_append",
-              "name": "header_3",
-              "shortcut": "Synopsis Append H3",
-              "text": "3"
-            },
-            {
-              "slot": "synopsis_append",
-              "name": "header_4",
-              "shortcut": "Synopsis Append H4",
-              "text": "4"
-            },
-            {
-              "slot": "synopsis_append",
-              "name": "header_5",
-              "shortcut": "Synopsis Append H5",
-              "text": "5"
-            },
-            {
-              "slot": "synopsis_append",
-              "name": "header_6",
-              "shortcut": "Synopsis Append H6",
-              "text": "6"
-            }
-          ]
+          "slot": "synopsis_append",
+          "name": "header_2",
+          "text": "2",
+          "shortcut": "Synopsis Append H2"
+        },
+        {
+          "slot": "synopsis_append",
+          "name": "header_3",
+          "shortcut": "Synopsis Append H3",
+          "text": "3"
+        },
+        {
+          "slot": "synopsis_append",
+          "name": "header_4",
+          "shortcut": "Synopsis Append H4",
+          "text": "4"
+        },
+        {
+          "slot": "synopsis_append",
+          "name": "header_5",
+          "shortcut": "Synopsis Append H5",
+          "text": "5"
+        },
+        {
+          "slot": "synopsis_append",
+          "name": "header_6",
+          "shortcut": "Synopsis Append H6",
+          "text": "6"
         }
       ]
     }

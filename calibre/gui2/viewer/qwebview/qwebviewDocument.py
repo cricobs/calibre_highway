@@ -196,7 +196,7 @@ class QwebviewDocument(QWebView):
             text = self.selected_markdown_header(int(mode))
 
         if text:
-             self.manager.qdockwidgetSynopsis.append(text)
+            self.manager.qdockwidgetSynopsis.append(text)
 
     def selected_markdown_header(self, level):
         if self.selected_text:
