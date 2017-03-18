@@ -269,11 +269,21 @@ class QmainwindowEbook(Qmainwindow):
         self.window_mode_changed = None
         self.context_actions = []
 
-        self.view.initialize_view(debug_javascript)
-        self.view.footnotes.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
-        self.qdockwidgetFootnote.qwidgetFootnote.follow_link.connect(self.view.follow_footnote_link)
-
+        self.base_window_title = unicode(self.windowTitle())
+        self.full_screen_label = QlabelFullscreen(self.centralwidget)
+        self.clock_label = QlabelClock(self.centralwidget)
+        self.pos_label = QlabelPos(self.centralwidget)
+        self.full_screen_label_anim = QPropertyAnimation(self.full_screen_label, b'size')
+        self.pi = ProgressIndicator(self)
         self.metadata = QwebviewMetadata(self.centralwidget)
+        self.reference = self.qwidgetSearch.reference
+        self.toc_search.toc_view = self.toc
+
+        self.view.initialize_view(debug_javascript)
+        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
+        self.view.set_manager(self)
+        self.view.magnification_changed.connect(self.magnification_changed)
+        self.view.document.settings_changed.connect(self.settings_changed)
 
         with open(filepath_relative(self, "json")) as iput:
             self.settings = json.load(iput)
@@ -281,11 +291,6 @@ class QmainwindowEbook(Qmainwindow):
         self.create_actions(self.settings["actions"])
 
         self.history = History(self.action_back, self.action_forward)
-        self.full_screen_label = QlabelFullscreen(self.centralwidget)
-        self.clock_label = QlabelClock(self.centralwidget)
-        self.pos_label = QlabelPos(self.centralwidget)
-        self.full_screen_label_anim = QPropertyAnimation(self.full_screen_label, b'size')
-        self.pi = ProgressIndicator(self)
 
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
@@ -294,23 +299,25 @@ class QmainwindowEbook(Qmainwindow):
         self.clock_timer = QTimer(self)
         self.clock_timer.timeout.connect(self.update_clock)
 
-        self.autosave_timer = t = QTimer(self)
-        t.setInterval(self.AUTOSAVE_INTERVAL * 1000)
-        t.setSingleShot(True)
-        t.timeout.connect(self.autosave)
+        self.autosave_timer = QTimer(self)
+        self.autosave_timer.setInterval(self.AUTOSAVE_INTERVAL * 1000)
+        self.autosave_timer.setSingleShot(True)
+        self.autosave_timer.timeout.connect(self.autosave)
 
-        self.toc_search.toc_view = self.toc
-        self.pos = self.qwidgetSearch.pos
-        self.reference = self.qwidgetSearch.reference
         self.search = self.qwidgetSearch.search
+        self.search.search.connect(self.find)
+        self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
+
+        self.pos = self.qwidgetSearch.pos
+        self.pos.value_changed.connect(self.update_pos_label)
+        self.pos.value_changed.connect(self.autosave_timer.start)
+        self.pos.setMinimumWidth(150)
+        self.pos.editingFinished.connect(self.goto_page_num)
 
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
         self.open_history_menu.triggered.connect(self.open_recent)
         self.reference.goto.connect(self.goto)
         self.themes_menu.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
-
-        self.search.search.connect(self.find)
-        self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
 
         self.toc.pressed[QModelIndex].connect(self.toc_clicked)
         self.toc.searched.connect(partial(self.toc_clicked, force=True))
@@ -320,16 +327,6 @@ class QmainwindowEbook(Qmainwindow):
         self.bookmarks.activated.connect(self.goto_bookmark)
         self.bookmarks.create_requested.connect(self.bookmark)
 
-        self.view.set_manager(self)
-        self.view.magnification_changed.connect(self.magnification_changed)
-        self.view.document.settings_changed.connect(self.settings_changed)
-
-        self.pos.value_changed.connect(self.update_pos_label)
-        self.pos.value_changed.connect(self.autosave_timer.start)
-        self.pos.setMinimumWidth(150)
-        self.pos.editingFinished.connect(self.goto_page_num)
-
-        self.base_window_title = unicode(self.windowTitle())
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
         self.setFocusPolicy(Qt.StrongFocus)
@@ -346,12 +343,11 @@ class QmainwindowEbook(Qmainwindow):
             t = Thread(name='ConnListener', target=listen, args=(self,))
             t.daemon = True
             t.start()
-            self.msg_from_anotherinstance.connect(self.another_instance_wants_to_talk,
-                                                  type=Qt.QueuedConnection)
+            self.msg_from_anotherinstance.connect(
+                self.another_instance_wants_to_talk, type=Qt.QueuedConnection)
         if pathtoebook is None:
             recents = vprefs.get('viewer_open_history', [])
             pathtoebook = recents[0] if recents else None
-
         if pathtoebook is not None:
             f = functools.partial(self.load_ebook, pathtoebook, open_at=open_at)
             QTimer.singleShot(50, f)
@@ -360,9 +356,8 @@ class QmainwindowEbook(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        qtypes = [QToolBar, QDockWidget]
-        for qtype in qtypes:
-            for qwidget in self.findChildren(qtype):
+        for q in [QToolBar, QDockWidget]:
+            for qwidget in self.findChildren(q):
                 for action in qwidget.actions():
                     # So that the keyboard shortcuts for these actions will
                     # continue to function even when the toolbars are hidden
@@ -374,10 +369,11 @@ class QmainwindowEbook(Qmainwindow):
         QApplication.instance().shutdown_signal_received.connect(self.action_quit.trigger)
         file_events.got_file.connect(self.load_ebook)
 
-        self.hide_cursor_timer = t = QTimer(self)
-        t.setSingleShot(True), t.setInterval(3000)
-        t.timeout.connect(self.hide_cursor)
-        t.start()
+        self.hide_cursor_timer = QTimer(self)
+        self.hide_cursor_timer.setSingleShot(True)
+        self.hide_cursor_timer.setInterval(3000)
+        self.hide_cursor_timer.timeout.connect(self.hide_cursor)
+        self.hide_cursor_timer.start()
 
     def on_qwebviewPreview_positionChange(self, position):
         self.view.document.page_position.to_pos(position)

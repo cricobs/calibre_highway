@@ -46,6 +46,10 @@ class QwebviewDocument(QWebView):
     last_loaded_path = None
     context_actions = []
 
+    def set_footnotes_view(self, view):
+        self.footnotes.set_footnotes_view(view)
+        view.follow_link.connect(self.follow_footnote_link)
+
     def initialize_view(self, debug_javascript=False):
         self._ignore_scrollbar_signals = False
         self._reference_mode = False
