@@ -13,6 +13,7 @@ I = I
 
 
 # todo 1
+# - editor shortcuts
 # - store within .epub file
 # - track with git
 # - editor format text

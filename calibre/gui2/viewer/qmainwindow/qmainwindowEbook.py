@@ -1277,7 +1277,6 @@ class QmainwindowEbook(Qmainwindow):
                       menu=None, slots=None, popup="MenuButtonPopup", separator=False,
                       disabled=False, checkable=False, context=False):
 
-        toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
         qaction = getattr(self, widget).toggleViewAction() if widget else QAction(self)
         qaction.setText(_(text))
         qaction.setIcon(QIcon(I(icon)))
@@ -1285,10 +1284,11 @@ class QmainwindowEbook(Qmainwindow):
         qaction.setDisabled(disabled)
         qaction.setCheckable(checkable)
 
+        toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
+        toolbar.addAction(qaction)
+
         if widget:
             setattr(self, qaction.objectName(), qaction)
-        if not widget and icon:
-            toolbar.addAction(qaction)
         if slots:
             for signal, names in slots.items():
                 slot = reduce(getattr, names, self)
