@@ -1285,7 +1285,8 @@ class QmainwindowEbook(Qmainwindow):
         qaction.setCheckable(checkable)
 
         toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
-        toolbar.addAction(qaction)
+        if icon:
+            toolbar.addAction(qaction)
 
         if widget:
             setattr(self, qaction.objectName(), qaction)

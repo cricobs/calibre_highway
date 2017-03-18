@@ -73,7 +73,8 @@
       "popup": "InstantPopup",
       "name": "bookmark",
       "icon": "bookmarks.png",
-      "context": true
+      "context": true,
+      "separator": true
     },
     {
       "checkable": true,
@@ -101,29 +102,6 @@
           "metadata",
           "setVisible"
         ]
-      },
-      "separator": true
-    },
-    {
-      "text": "Search",
-      "name": "search",
-      "context": true,
-      "icon": "search.png",
-      "slots": {
-        "triggered": [
-          "on_action_search_triggered"
-        ]
-      }
-    },
-    {
-      "disabled": true,
-      "text": "Copy to clipboard",
-      "name": "copy",
-      "icon": "edit-copy.png",
-      "slots": {
-        "triggered": [
-          "copy"
-        ]
       }
     },
     {
@@ -147,8 +125,30 @@
       "shortcut": "Edit",
       "name": "tool_bar",
       "icon": "edit_input.png",
+      "context": true
+    },
+    {
+      "text": "Search",
+      "name": "search",
       "context": true,
+      "icon": "search.png",
+      "slots": {
+        "triggered": [
+          "on_action_search_triggered"
+        ]
+      },
       "separator": true
+    },
+    {
+      "disabled": true,
+      "text": "Copy to clipboard",
+      "name": "copy",
+      "icon": "edit-copy.png",
+      "slots": {
+        "triggered": [
+          "copy"
+        ]
+      }
     },
     {
       "text": "Increase font size",
@@ -343,7 +343,7 @@
     "Preferences": [
       "action_preferences"
     ],
-    "Focus Search" : [
+    "Focus Search": [
       "action_search"
     ]
   }
