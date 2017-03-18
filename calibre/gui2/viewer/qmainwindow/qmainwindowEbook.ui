@@ -123,7 +123,7 @@
    </attribute>
    <widget class="QwidgetBookmark" name="bookmarks"/>
   </widget>
-  <widget class="Qdockwidget" name="footnotes_dock">
+  <widget class="QdockwidgetFootnote" name="qdockwidgetFootnote">
    <property name="contextMenuPolicy">
     <enum>Qt::CustomContextMenu</enum>
    </property>
@@ -133,7 +133,6 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QwidgetFootnote" name="footnotes_view"/>
   </widget>
   <widget class="QdockwidgetSynopsis" name="qdockwidgetSynopsis">
    <property name="windowTitle">
@@ -173,12 +172,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>QwidgetFootnote</class>
-   <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwidget.qwidgetFootnote</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>Qdockwidget</class>
    <extends>QDockWidget</extends>
    <header>calibre.gui2.viewer.qdockwidget.qdockwidget</header>
@@ -199,6 +192,12 @@
    <class>QdockwidgetSynopsis</class>
    <extends>QDockWidget</extends>
    <header>calibre.gui2.viewer.qdockwidget.qdockwidgetSynopsis</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QdockwidgetFootnote</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidgetFootnote</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

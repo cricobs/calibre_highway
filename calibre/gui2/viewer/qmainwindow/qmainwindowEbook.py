@@ -270,10 +270,8 @@ class QmainwindowEbook(Qmainwindow):
         self.context_actions = []
 
         self.view.initialize_view(debug_javascript)
-        self.view.footnotes.set_footnotes_view(self.footnotes_view)
-
-        self.footnotes_view.follow_link.connect(self.view.follow_footnote_link)
-        self.footnotes_view.close_view.connect(self.footnotes_dock.close)
+        self.view.footnotes.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
+        self.qdockwidgetFootnote.qwidgetFootnote.follow_link.connect(self.view.follow_footnote_link)
 
         self.metadata = QwebviewMetadata(self.centralwidget)
 
@@ -1130,7 +1128,7 @@ class QmainwindowEbook(Qmainwindow):
             self.build_recent_menu()
             self.view.set_book_data(self.iterator)
 
-            self.footnotes_dock.close()
+            self.qdockwidgetFootnote.close()
             self.action_table_of_contents.setDisabled(not self.iterator.toc)
             self.current_book_has_toc = bool(self.iterator.toc)
             self.current_title = title
@@ -1251,7 +1249,7 @@ class QmainwindowEbook(Qmainwindow):
 
     # --- ui
     def show_footnote_view(self):
-        self.footnotes_dock.show()
+        self.qdockwidgetFootnote.show()
 
     def resizeEvent(self, ev):
         if self.metadata.isVisible():
@@ -1264,7 +1262,7 @@ class QmainwindowEbook(Qmainwindow):
         self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
         self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
-        self.footnotes_dock.close()
+        self.qdockwidgetFootnote.close()
 
     def themes_menu_shown(self):
         if len(self.themes_menu.actions()) == 0:
@@ -1287,7 +1285,6 @@ class QmainwindowEbook(Qmainwindow):
         toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
         if icon:
             toolbar.addAction(qaction)
-
         if widget:
             setattr(self, qaction.objectName(), qaction)
         if slots:
