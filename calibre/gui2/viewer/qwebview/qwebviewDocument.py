@@ -195,7 +195,7 @@ class QwebviewDocument(QWebView):
         if section == "body":
             text = self.selected_markdown_body()
         elif section == "header":
-            text = self.selected_markdown_header(int(section))
+            text = self.selected_markdown_header(int(self.sender().text()))
         else:
             raise NotImplementedError(section)
 
