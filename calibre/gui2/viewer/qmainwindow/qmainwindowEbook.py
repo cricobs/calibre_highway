@@ -357,15 +357,15 @@ class QmainwindowEbook(Qmainwindow):
         if pathtoebook is not None:
             f = functools.partial(self.load_ebook, pathtoebook, open_at=open_at)
             QTimer.singleShot(50, f)
-            self.qdockwidgetSynopsis.set_path_source(pathtoebook)
+            self.qdockwidgetSynopsis.load(pathtoebook)
         elif continue_reading:
             QTimer.singleShot(50, self.continue_reading)
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        qwidget_types = [QToolBar, QDockWidget]
-        for qwidget_type in qwidget_types:
-            for qwidget in self.findChildren(qwidget_type):
+        qtypes = [QToolBar, QDockWidget]
+        for qtype in qtypes:
+            for qwidget in self.findChildren(qtype):
                 for action in qwidget.actions():
                     # So that the keyboard shortcuts for these actions will
                     # continue to function even when the toolbars are hidden
@@ -460,7 +460,7 @@ class QmainwindowEbook(Qmainwindow):
             m.addSeparator()
         count = 0
         for path in recent:
-            if count > 9:
+            if count > 11:
                 break
             if os.path.exists(path):
                 m.addAction(RecentAction(path, m))
@@ -1163,6 +1163,8 @@ class QmainwindowEbook(Qmainwindow):
                         self.pending_goto_page = open_at
                     else:
                         self.goto_page(open_at, loaded_check=False)
+
+            print("loaded")
 
     def set_vscrollbar_value(self, pagenum):
         self.vertical_scrollbar.blockSignals(True)

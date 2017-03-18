@@ -105,10 +105,6 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.qwebviewPreview.set_body(text)
         self.qplaintexteditSynopsis.document().setModified(False)
 
-    def set_path_source(self, path):
-        self.path_source = path
-        self.load()
-
     def path_synopsis(self):
         self.update_config()
         if not self.synopsis_extension:
@@ -116,7 +112,12 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         return filepath_relative(self.path_source, extension=self.synopsis_extension)
 
-    def load(self):
+    def reload(self):
+        if self.path_source:
+            self.load(self.path_source)
+
+    def load(self, path):
+        self.path_source = path
         try:
             with open(self.path_synopsis(), "r") as iput:
                 text = iput.read()
@@ -199,7 +200,7 @@ class QdockwidgetSynopsis(Qdockwidget):
 
     @pyqtSlot(bool)
     def on_toolButtonReload_clicked(self, checked):
-        self.load()
+        self.reload()
 
     @pyqtSlot(bool)
     def on_toolButtonSave_clicked(self, checked):
