@@ -357,7 +357,6 @@ class QmainwindowEbook(Qmainwindow):
         if pathtoebook is not None:
             f = functools.partial(self.load_ebook, pathtoebook, open_at=open_at)
             QTimer.singleShot(50, f)
-            self.qdockwidgetSynopsis.load(pathtoebook)
         elif continue_reading:
             QTimer.singleShot(50, self.continue_reading)
         else:
@@ -1164,7 +1163,7 @@ class QmainwindowEbook(Qmainwindow):
                     else:
                         self.goto_page(open_at, loaded_check=False)
 
-            print("loaded")
+            self.qdockwidgetSynopsis.load(pathtoebook)
 
     def set_vscrollbar_value(self, pagenum):
         self.vertical_scrollbar.blockSignals(True)

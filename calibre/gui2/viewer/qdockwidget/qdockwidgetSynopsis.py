@@ -13,7 +13,6 @@ I = I
 
 
 # todo 1
-# - reload synopsis when reloading or changing book
 # - store within .epub file
 # - track with git
 # - editor format text
@@ -117,6 +116,9 @@ class QdockwidgetSynopsis(Qdockwidget):
             self.load(self.path_source)
 
     def load(self, path):
+        if self.path_source:
+            self.save()
+
         self.path_source = path
         try:
             with open(self.path_synopsis(), "r") as iput:
