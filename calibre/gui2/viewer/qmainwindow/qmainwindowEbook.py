@@ -1262,7 +1262,6 @@ class QmainwindowEbook(Qmainwindow):
         self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
         self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
-        self.qdockwidgetFootnote.close()
 
     def themes_menu_shown(self):
         if len(self.themes_menu.actions()) == 0:
