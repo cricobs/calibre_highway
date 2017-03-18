@@ -108,6 +108,7 @@
     {
       "slot": "copy_markdown",
       "name": "copy_markdown",
+      "shortcut": "Copy Markdown",
       "text": "&Copy Markdown"
     },
     {
@@ -243,6 +244,12 @@
         "Ctrl+B"
       ],
       "Bookmark the current location"
+    ],
+    "Copy Markdown": [
+      [
+        "Ctrl+Alt+C"
+      ],
+      "Copy selected text with markdown formatting"
     ],
     "Previous Page": [
       [
