@@ -15,20 +15,6 @@ class QwidgetFootnote(Qwidget):
         self._page = QwebpageFootnote(self.view)
         self.view.setPage(self._page)
 
-        self.goto_button.setIcon(QIcon(I('forward.png')))
-        self.goto_button.setToolTip(_('Go to this footnote in the main view'))
-
-        self.close_button.setIcon(QIcon(I('window-close.png')))
-        self.close_button.setToolTip(_('Close the footnotes window'))
-
-    @pyqtSlot()
-    def on_goto_button_clicked(self):
-        self.follow_link.emit()
-
-    @pyqtSlot()
-    def on_close_button_clicked(self):
-        self.close_view.emit()
-
     def page(self):
         return self._page
 
