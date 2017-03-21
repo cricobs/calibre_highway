@@ -5,9 +5,9 @@ from calibre.gui2 import error_dialog
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
-class QwidgetContent(Qwidget):
+class QwidgetContentSearch(Qwidget):
     def __init__(self, *args, **kwargs):
-        super(QwidgetContent, self).__init__(*args, **kwargs)
+        super(QwidgetContentSearch, self).__init__(*args, **kwargs)
 
         self.search.initialize('viewer_toc_search_history', help_text=_('Search Content'))
         self.toolButton.setIcon(QIcon(I('search.png')))

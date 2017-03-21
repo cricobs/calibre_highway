@@ -277,7 +277,6 @@ class QmainwindowEbook(Qmainwindow):
         self.pi = ProgressIndicator(self)
         self.metadata = QwebviewMetadata(self.centralwidget)
         self.reference = self.qwidgetSearch.reference
-        self.toc_search.toc_view = self.toc
 
         self.view.initialize_view(debug_javascript)
         self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
@@ -319,6 +318,7 @@ class QmainwindowEbook(Qmainwindow):
         self.reference.goto.connect(self.goto)
         self.themes_menu.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
+        self.toc = self.qdockwidgetContent.qtreeviewContent
         self.toc.pressed[QModelIndex].connect(self.toc_clicked)
         self.toc.searched.connect(partial(self.toc_clicked, force=True))
         self.toc.handle_shortcuts = self.toggle_toc
@@ -437,7 +437,7 @@ class QmainwindowEbook(Qmainwindow):
             self.load_path(self.view.last_loaded_path)
 
     def set_toc_visible(self, yes):
-        self.toc_dock.setVisible(yes)
+        self.qdockwidgetContent.setVisible(yes)
         if not yes:
             self.show_toc_on_open = False
 
@@ -495,7 +495,7 @@ class QmainwindowEbook(Qmainwindow):
             vprefs.set('viewer_window_geometry', bytearray(self.saveGeometry()))
         if self.current_book_has_toc:
             vprefs.set('viewer_toc_isvisible',
-                       self.show_toc_on_open or bool(self.toc_dock.isVisible()))
+                       self.show_toc_on_open or bool(self.qdockwidgetContent.isVisible()))
         vprefs['multiplier'] = self.view.multiplier
         vprefs['in_paged_mode'] = not self.action_toggle_paged_mode.isChecked()
 
@@ -514,7 +514,7 @@ class QmainwindowEbook(Qmainwindow):
 
         # This will be opened on book open, if the book has a toc and it
         # was previously opened
-        self.toc_dock.close()
+        self.qdockwidgetContent.close()
         self.action_toggle_paged_mode.setChecked(not vprefs.get('in_paged_mode', True))
         self.toggle_paged_mode(self.action_toggle_paged_mode.isChecked(), at_start=True)
 
@@ -1278,7 +1278,7 @@ class QmainwindowEbook(Qmainwindow):
         qaction.setDisabled(disabled)
         qaction.setCheckable(checkable)
 
-        toolbar = getattr(self, toolbar) if toolbar else self.tool_bar
+        toolbar = getattr(self, toolbar) if toolbar else self.qtoolbarEdit
         if icon:
             toolbar.addAction(qaction)
         if widget:
@@ -1300,7 +1300,7 @@ class QmainwindowEbook(Qmainwindow):
             qwidget = toolbar.widgetForAction(qaction)
             qwidget.setPopupMode(getattr(QToolButton, popup))
         if separator:
-            self.tool_bar.addSeparator()
+            self.qtoolbarEdit.addSeparator()
             if context:
                 qaction_separator = QAction(self)
                 qaction_separator.setSeparator(True)

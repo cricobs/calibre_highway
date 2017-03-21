@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>toc_dock</class>
+ <widget class="QDockWidget" name="toc_dock">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>256</width>
+    <height>233</height>
+   </rect>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::CustomContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Table of Contents</string>
+  </property>
+  <widget class="QWidget" name="toc_container">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QwidgetContentSearch" name="qwidgetSearch" native="true"/>
+    </item>
+    <item>
+     <widget class="QtreeviewContent" name="qtreeviewContent"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtreeviewContent</class>
+   <extends>QTreeView</extends>
+   <header>calibre.gui2.viewer.qtreeview.qtreeviewContent</header>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetContentSearch</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetContentSearch</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

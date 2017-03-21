@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_QmainwindowEbook(object):
     def setupUi(self, QmainwindowEbook):
         QmainwindowEbook.setObjectName("QmainwindowEbook")
-        QmainwindowEbook.resize(1081, 648)
+        QmainwindowEbook.resize(898, 648)
         self.centralwidget = QtWidgets.QWidget(QmainwindowEbook)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -34,26 +34,14 @@ class Ui_QmainwindowEbook(object):
         self.qwidgetSearch.setObjectName("qwidgetSearch")
         self.gridLayout.addWidget(self.qwidgetSearch, 0, 0, 1, 1)
         QmainwindowEbook.setCentralWidget(self.centralwidget)
-        self.tool_bar = QtoolbarEdit(QmainwindowEbook)
-        self.tool_bar.setIconSize(QtCore.QSize(18, 18))
-        self.tool_bar.setObjectName("tool_bar")
-        QmainwindowEbook.addToolBar(QtCore.Qt.TopToolBarArea, self.tool_bar)
-        self.toc_dock = Qdockwidget(QmainwindowEbook)
-        self.toc_dock.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.toc_dock.setObjectName("toc_dock")
-        self.toc_container = QtWidgets.QWidget()
-        self.toc_container.setObjectName("toc_container")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.toc_container)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.toc_search = QwidgetContent(self.toc_container)
-        self.toc_search.setObjectName("toc_search")
-        self.verticalLayout.addWidget(self.toc_search)
-        self.toc = QtreeviewContent(self.toc_container)
-        self.toc.setObjectName("toc")
-        self.verticalLayout.addWidget(self.toc)
-        self.toc_dock.setWidget(self.toc_container)
-        QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.toc_dock)
+        self.qtoolbarEdit = QtoolbarEdit(QmainwindowEbook)
+        self.qtoolbarEdit.setIconSize(QtCore.QSize(18, 18))
+        self.qtoolbarEdit.setObjectName("qtoolbarEdit")
+        QmainwindowEbook.addToolBar(QtCore.Qt.TopToolBarArea, self.qtoolbarEdit)
+        self.qdockwidgetContent = QdockwidgetContent(QmainwindowEbook)
+        self.qdockwidgetContent.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.qdockwidgetContent.setObjectName("qdockwidgetContent")
+        QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.qdockwidgetContent)
         self.qdockwidgetBookmark = QdockwidgetBookmark(QmainwindowEbook)
         self.qdockwidgetBookmark.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.qdockwidgetBookmark.setObjectName("qdockwidgetBookmark")
@@ -72,18 +60,16 @@ class Ui_QmainwindowEbook(object):
     def retranslateUi(self, QmainwindowEbook):
 
         QmainwindowEbook.setWindowTitle(_("E-book viewer"))
-        self.tool_bar.setWindowTitle(_("toolBar"))
-        self.toc_dock.setWindowTitle(_("Table of Contents"))
+        self.qtoolbarEdit.setWindowTitle(_("toolBar"))
+        self.qdockwidgetContent.setWindowTitle(_("Table of Contents"))
         self.qdockwidgetBookmark.setWindowTitle(_("Bookmark"))
         self.qdockwidgetFootnote.setWindowTitle(_("Footnotes"))
         self.qdockwidgetSynopsis.setWindowTitle(_("Synopsis"))
 
-from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
 from calibre.gui2.viewer.qdockwidget.qdockwidgetBookmark import QdockwidgetBookmark
+from calibre.gui2.viewer.qdockwidget.qdockwidgetContent import QdockwidgetContent
 from calibre.gui2.viewer.qdockwidget.qdockwidgetFootnote import QdockwidgetFootnote
 from calibre.gui2.viewer.qdockwidget.qdockwidgetSynopsis import QdockwidgetSynopsis
 from calibre.gui2.viewer.qtoolbar.qtoolbarEdit import QtoolbarEdit
-from calibre.gui2.viewer.qtreeview.qtreeviewContent import QtreeviewContent
 from calibre.gui2.viewer.qwebview.qwebviewDocument import QwebviewDocument
-from calibre.gui2.viewer.qwidget.qwidgetContent import QwidgetContent
 from calibre.gui2.viewer.qwidget.qwidgetSearch import QwidgetSearch

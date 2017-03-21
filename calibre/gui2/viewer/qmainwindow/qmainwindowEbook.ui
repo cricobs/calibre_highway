@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1081</width>
+    <width>898</width>
     <height>648</height>
    </rect>
   </property>
@@ -61,7 +61,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QtoolbarEdit" name="tool_bar">
+  <widget class="QtoolbarEdit" name="qtoolbarEdit">
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
@@ -78,7 +78,7 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="Qdockwidget" name="toc_dock">
+  <widget class="QdockwidgetContent" name="qdockwidgetContent">
    <property name="contextMenuPolicy">
     <enum>Qt::CustomContextMenu</enum>
    </property>
@@ -88,28 +88,6 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="toc_container">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QwidgetContent" name="toc_search" native="true"/>
-     </item>
-     <item>
-      <widget class="QtreeviewContent" name="toc"/>
-     </item>
-    </layout>
-   </widget>
   </widget>
   <widget class="QdockwidgetBookmark" name="qdockwidgetBookmark">
    <property name="contextMenuPolicy">
@@ -154,29 +132,6 @@
    <header>calibre.gui2.viewer.qtoolbar.qtoolbarEdit</header>
   </customwidget>
   <customwidget>
-   <class>QtreeviewContent</class>
-   <extends>QTreeView</extends>
-   <header>calibre.gui2.viewer.qtreeview.qtreeviewContent</header>
-  </customwidget>
-  <customwidget>
-   <class>QwidgetContent</class>
-   <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwidget.qwidgetContent</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QwidgetBookmark</class>
-   <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwidget.qwidgetBookmark</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Qdockwidget</class>
-   <extends>QDockWidget</extends>
-   <header>calibre.gui2.viewer.qdockwidget.qdockwidget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>QwebviewDocument</class>
    <extends>QWebView</extends>
    <header>calibre.gui2.viewer.qwebview.qwebviewDocument</header>
@@ -203,6 +158,12 @@
    <class>QdockwidgetBookmark</class>
    <extends>QDockWidget</extends>
    <header>calibre.gui2.viewer.qdockwidget.qdockwidgetBookmark</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QdockwidgetContent</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidgetContent</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

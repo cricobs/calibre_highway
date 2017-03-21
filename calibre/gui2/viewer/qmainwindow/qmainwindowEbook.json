@@ -106,7 +106,7 @@
     },
     {
       "checkable": true,
-      "widget": "toc_dock",
+      "widget": "qdockwidgetContent",
       "shortcut": "Table of Contents",
       "text": "Table of Contents",
       "name": "table_of_contents",
@@ -120,10 +120,10 @@
     },
     {
       "checkable": true,
-      "widget": "tool_bar",
+      "widget": "qtoolbarEdit",
       "text": "Edit",
       "shortcut": "Edit",
-      "name": "tool_bar",
+      "name": "qtoolbarEdit",
       "icon": "edit_input.png",
       "context": true
     },
@@ -221,7 +221,7 @@
     },
     {
       "text": "Toggle paged mode",
-      "toolbar": "tool_bar",
+      "toolbar": "qtoolbarEdit",
       "name": "toggle_paged_mode",
       "checkable": true,
       "icon": "scroll.png",
@@ -331,7 +331,7 @@
       "action_print"
     ],
     "Edit": [
-      "action_tool_bar"
+      "action_qtoolbarEdit"
     ],
     "Synopsis Save": [
       "qdockwidgetSynopsis",
