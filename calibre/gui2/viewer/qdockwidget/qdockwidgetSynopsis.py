@@ -143,7 +143,7 @@ class QdockwidgetSynopsis(Qdockwidget):
     def state_restore(self):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
-        self.stackedWidget.setCurrentIndex(int(vprefs.get('synopsis_mode', None)))
+        self.stackedWidget.setCurrentIndex(int(vprefs.get('synopsis_mode', None) or 0))
 
     def keyPressEvent(self, event):
         index = None
