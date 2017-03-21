@@ -270,14 +270,20 @@ class QmainwindowEbook(Qmainwindow):
         self.context_actions = []
 
         self.base_window_title = unicode(self.windowTitle())
-        self.full_screen_label = QlabelFullscreen(self.centralwidget)
-        self.clock_label = QlabelClock(self.centralwidget)
-        self.pos_label = QlabelPos(self.centralwidget)
+        self.full_screen_label = QlabelFullscreen(self.centralWidget())
+        self.clock_label = QlabelClock(self.centralWidget())
+        self.pos_label = QlabelPos(self.centralWidget())
         self.full_screen_label_anim = QPropertyAnimation(self.full_screen_label, b'size')
         self.pi = ProgressIndicator(self)
-        self.metadata = QwebviewMetadata(self.centralwidget)
-        self.reference = self.qwidgetSearch.reference
+        self.metadata = QwebviewMetadata(self.centralWidget())
 
+        # temp
+        self.reference = self.centralWidget().qwidgetSearch.reference
+        self.qwidgetSearch = self.centralWidget().qwidgetSearch
+        self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
+        self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
+
+        self.view = self.centralWidget().view
         self.view.initialize_view(debug_javascript)
         self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
         self.view.set_manager(self)
