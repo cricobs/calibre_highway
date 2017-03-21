@@ -269,7 +269,6 @@ class QmainwindowEbook(Qmainwindow):
         self.window_mode_changed = None
         self.context_actions = []
 
-        self.base_window_title = unicode(self.windowTitle())
         self.full_screen_label = QlabelFullscreen(self.centralWidget())
         self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
@@ -277,7 +276,6 @@ class QmainwindowEbook(Qmainwindow):
         self.pi = ProgressIndicator(self)
         self.metadata = QwebviewMetadata(self.centralWidget())
 
-        # temp
         self.reference = self.centralWidget().qwidgetSearch.reference
         self.qwidgetSearch = self.centralWidget().qwidgetSearch
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
@@ -1136,7 +1134,7 @@ class QmainwindowEbook(Qmainwindow):
             self.current_book_has_toc = bool(self.iterator.toc)
             self.current_title = title
             self.setWindowTitle(
-                title + ' [%s]' % self.iterator.book_format + ' - ' + self.base_window_title)
+                title + ' [%s]' % self.iterator.book_format + ' - ' + self.windowTitle())
             self.pos.setMaximum(sum(self.iterator.pages))
             self.pos.setSuffix(' / %d' % sum(self.iterator.pages))
             self.vertical_scrollbar.setMinimum(100)
@@ -1319,6 +1317,9 @@ class QmainwindowEbook(Qmainwindow):
         for action_options in actions:
             self.create_action(**action_options)
 
+    def windowTitle(self):
+        return unicode(super(QmainwindowEbook, self).windowTitle())
+
 
 def config(defaults=None):
     desc = _('Options to control the ebook viewer')
@@ -1341,6 +1342,7 @@ def config(defaults=None):
               help=_('Continue reading at the previously opened book'))
 
     return c
+
 
 
 def option_parser():

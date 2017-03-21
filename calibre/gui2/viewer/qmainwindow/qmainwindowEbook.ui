@@ -16,7 +16,7 @@
   <widget class="QwidgetDocument" name="qwidgetDocument"/>
   <widget class="QtoolbarEdit" name="qtoolbarEdit">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Edit</string>
    </property>
    <property name="iconSize">
     <size>
@@ -36,7 +36,7 @@
     <enum>Qt::CustomContextMenu</enum>
    </property>
    <property name="windowTitle">
-    <string>Table of Contents</string>
+    <string>Content</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -58,7 +58,7 @@
     <enum>Qt::CustomContextMenu</enum>
    </property>
    <property name="windowTitle">
-    <string>Footnotes</string>
+    <string>Footnote</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
