@@ -14,6 +14,7 @@ I = I
 
 # todo 1
 # - editor shortcuts
+# - preview table of contents to separate file
 # - store within .epub file
 # - track with git
 # - editor format text

@@ -323,9 +323,10 @@ class QmainwindowEbook(Qmainwindow):
         self.toc.searched.connect(partial(self.toc_clicked, force=True))
         self.toc.handle_shortcuts = self.toggle_toc
 
-        self.bookmarks.edited.connect(self.bookmarks_edited)
-        self.bookmarks.activated.connect(self.goto_bookmark)
-        self.bookmarks.create_requested.connect(self.bookmark)
+        self.qwidgetBookmark = self.qdockwidgetBookmark.qwidgetBookmark
+        self.qwidgetBookmark.edited.connect(self.bookmarks_edited)
+        self.qwidgetBookmark.activated.connect(self.goto_bookmark)
+        self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
@@ -1013,7 +1014,7 @@ class QmainwindowEbook(Qmainwindow):
             bm['title'] = title
             self.iterator.add_bookmark(bm)
             self.set_bookmarks(self.iterator.bookmarks)
-            self.bookmarks.set_current_bookmark(bm)
+            self.qwidgetBookmark.set_current_bookmark(bm)
 
     def autosave(self):
         self.save_current_position(no_copy_to_file=True)
@@ -1026,8 +1027,8 @@ class QmainwindowEbook(Qmainwindow):
     def build_bookmarks_menu(self, bookmarks):
         self.bookmarks_menu.clear()
         sc = _(' or ').join(self.view.shortcuts.get_shortcuts('Bookmark'))
-        self.bookmarks_menu.addAction(_("Toggle Bookmarks"),
-                                      self.bookmarks_dock.toggleViewAction().trigger)
+        self.bookmarks_menu.addAction(
+            _("Toggle Bookmarks"), self.qdockwidgetBookmark.toggleViewAction().trigger)
         self.bookmarks_menu.addAction(_("Bookmark this location [%s]") % sc, self.bookmark)
         self.bookmarks_menu.addSeparator()
         current_page = None
@@ -1042,7 +1043,7 @@ class QmainwindowEbook(Qmainwindow):
         return current_page
 
     def set_bookmarks(self, bookmarks):
-        self.bookmarks.set_bookmarks(bookmarks)
+        self.qwidgetBookmark.set_bookmarks(bookmarks)
         return self.build_bookmarks_menu(bookmarks)
 
     @property

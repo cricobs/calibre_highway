@@ -111,17 +111,16 @@
     </layout>
    </widget>
   </widget>
-  <widget class="Qdockwidget" name="bookmarks_dock">
+  <widget class="QdockwidgetBookmark" name="qdockwidgetBookmark">
    <property name="contextMenuPolicy">
     <enum>Qt::CustomContextMenu</enum>
    </property>
    <property name="windowTitle">
-    <string>Bookmarks</string>
+    <string>Bookmark</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QwidgetBookmark" name="bookmarks"/>
   </widget>
   <widget class="QdockwidgetFootnote" name="qdockwidgetFootnote">
    <property name="contextMenuPolicy">
@@ -198,6 +197,12 @@
    <class>QdockwidgetFootnote</class>
    <extends>QDockWidget</extends>
    <header>calibre.gui2.viewer.qdockwidget.qdockwidgetFootnote</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QdockwidgetBookmark</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidgetBookmark</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

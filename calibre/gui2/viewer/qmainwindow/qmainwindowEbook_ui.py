@@ -54,13 +54,10 @@ class Ui_QmainwindowEbook(object):
         self.verticalLayout.addWidget(self.toc)
         self.toc_dock.setWidget(self.toc_container)
         QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.toc_dock)
-        self.bookmarks_dock = Qdockwidget(QmainwindowEbook)
-        self.bookmarks_dock.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.bookmarks_dock.setObjectName("bookmarks_dock")
-        self.bookmarks = QwidgetBookmark()
-        self.bookmarks.setObjectName("bookmarks")
-        self.bookmarks_dock.setWidget(self.bookmarks)
-        QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.bookmarks_dock)
+        self.qdockwidgetBookmark = QdockwidgetBookmark(QmainwindowEbook)
+        self.qdockwidgetBookmark.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.qdockwidgetBookmark.setObjectName("qdockwidgetBookmark")
+        QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.qdockwidgetBookmark)
         self.qdockwidgetFootnote = QdockwidgetFootnote(QmainwindowEbook)
         self.qdockwidgetFootnote.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.qdockwidgetFootnote.setObjectName("qdockwidgetFootnote")
@@ -77,16 +74,16 @@ class Ui_QmainwindowEbook(object):
         QmainwindowEbook.setWindowTitle(_("E-book viewer"))
         self.tool_bar.setWindowTitle(_("toolBar"))
         self.toc_dock.setWindowTitle(_("Table of Contents"))
-        self.bookmarks_dock.setWindowTitle(_("Bookmarks"))
+        self.qdockwidgetBookmark.setWindowTitle(_("Bookmark"))
         self.qdockwidgetFootnote.setWindowTitle(_("Footnotes"))
         self.qdockwidgetSynopsis.setWindowTitle(_("Synopsis"))
 
 from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
+from calibre.gui2.viewer.qdockwidget.qdockwidgetBookmark import QdockwidgetBookmark
 from calibre.gui2.viewer.qdockwidget.qdockwidgetFootnote import QdockwidgetFootnote
 from calibre.gui2.viewer.qdockwidget.qdockwidgetSynopsis import QdockwidgetSynopsis
 from calibre.gui2.viewer.qtoolbar.qtoolbarEdit import QtoolbarEdit
 from calibre.gui2.viewer.qtreeview.qtreeviewContent import QtreeviewContent
 from calibre.gui2.viewer.qwebview.qwebviewDocument import QwebviewDocument
-from calibre.gui2.viewer.qwidget.qwidgetBookmark import QwidgetBookmark
 from calibre.gui2.viewer.qwidget.qwidgetContent import QwidgetContent
 from calibre.gui2.viewer.qwidget.qwidgetSearch import QwidgetSearch
