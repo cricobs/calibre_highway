@@ -5,8 +5,8 @@ from PyQt5.QtCore import pyqtSignal
 
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextEdit.qplaintextedit import Qplaintextedit
-from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhiglighterMarkdown import \
-    QsyntaxhighlighterMarkdown
+from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
+    QsyntaxhighlighterSynopsis
 from calibre.library.filepath import filepath_relative
 
 
@@ -20,7 +20,10 @@ class QplaintexteditSynopsis(Qplaintextedit):
 
         QobjectScrollPosition(self)
 
-        self.qsyntaxhiglighter = QsyntaxhighlighterMarkdown(self.document())
+        # self.dict = enchant.Dict()
+
+        self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
+        # self.qsyntaxhiglighter.setDict(self.dict)
 
         with open(filepath_relative(self, "json")) as iput:
             self.formats = json.load(iput)["formats"]

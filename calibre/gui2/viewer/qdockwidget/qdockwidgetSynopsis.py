@@ -18,6 +18,7 @@ I = I
 # - store within .epub file
 # - track with git
 # - editor format text
+# - spell check
 
 # todo 2
 # - use qtoolbutton + qmenu for markdown format

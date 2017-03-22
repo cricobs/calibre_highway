@@ -65,7 +65,7 @@
     "color": "#268BD2"
   },
   "list_ul": {
-      "weight": 99,
+    "weight": 99,
     "expression": "^(\\s+|)(\\*|\\+|-)+",
     "color": "#6C78C4"
   },
