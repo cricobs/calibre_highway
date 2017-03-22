@@ -23,9 +23,11 @@
                 });
 
             var selector_header = "h1:not(.content):not(:empty),h2,h3,h4,h5,h6";
-            $(selector_header).click(function () {
-                $("html, body").animate({
-                    scrollTop: $("#content").find("a[href='#" + this.id + "']").offset().top}, "slow");
+            $(".header").click(function () {
+                qwebview.position_change($(this).attr("position"));
+
+//                $("html, body").animate({
+//                    scrollTop: $("#content").find("a[href='#" + this.id + "']").offset().top}, "slow");
                 return false;
             });
 

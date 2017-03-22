@@ -208,7 +208,8 @@ class QwebviewDocument(QWebView):
 
     def selected_markdown_header(self, level):
         if self.selected_text:
-            return "\n{0} {1}".format("#" * level, self.selected_text)
+            return "\n{0} <a class='header' position='{1}'>{2}</a>".format(
+                "#" * level, self.document.page_position.current_pos, self.selected_text)
 
     def selected_markdown_body(self):
         if self.selected_text:
