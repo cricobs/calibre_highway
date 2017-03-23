@@ -75,11 +75,13 @@ class QdockwidgetSynopsis(Qdockwidget):
 
         self.qplaintexteditSynopsis.setFont(QFont(self.mono_family))
 
-    def append(self, text):
+    def append(self, text, position=None):
         self.qplaintexteditSynopsis.appendPlainText(text)
 
         if self.stackedWidget.currentIndex():
             self.save()
+            if position:
+                self.qwebviewPreview.scroll_to_position(position)
 
     def save(self):
         try:

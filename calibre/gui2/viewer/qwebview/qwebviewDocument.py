@@ -196,25 +196,25 @@ class QwebviewDocument(QWebView):
 
     def synopsis_append(self, *args, **kwargs):
         section = self.sender().data().lower()
+        position = self.document.page_position.current_pos
         if section == "body":
-            text = self.selected_markdown_body()
+            text = self.selected_markdown_body(position)
         elif section == "header":
-            text = self.selected_markdown_header(int(self.sender().text()))
+            text = self.selected_markdown_header(int(self.sender().text()), position)
         else:
             raise NotImplementedError(section)
 
         if text:
-            self.manager.qdockwidgetSynopsis.append(text)
+            self.manager.qdockwidgetSynopsis.append(text, position)
 
-    def selected_markdown_header(self, level):
+    def selected_markdown_header(self, level, position):
         if self.selected_text:
             return "\n{0} <a class='header' position='{1}'>{2}</a>".format(
-                "#" * level, self.document.page_position.current_pos, self.selected_text)
+                "#" * level, position, self.selected_text)
 
-    def selected_markdown_body(self):
+    def selected_markdown_body(self, position):
         if self.selected_text:
-            return "\n{0}\n{{: position={1}}}".format(
-                self.selected_text, self.document.page_position.current_pos)
+            return "\n{0}\n{{: position={1}}}".format(self.selected_text, position)
 
     def create_actions(self, actions):
         for action_options in actions:

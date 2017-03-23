@@ -26,12 +26,18 @@
             $(".header").click(function () {
                 qwebview.position_change($(this).attr("position"));
 
-//                $("html, body").animate({
-//                    scrollTop: $("#content").find("a[href='#" + this.id + "']").offset().top}, "slow");
                 return false;
             });
 
-            $("#content").toc({headings: selector_header})
+            $("#content").toc({headings: selector_header});
+
+            if (qwebview.position) {
+                $('html, body').animate({
+                    scrollTop: $("[position='" + qwebview.position +"']").last().offset().top
+                }, 'slow');
+
+                qwebview.position = null;
+            }
         };
     </script>
 </head>

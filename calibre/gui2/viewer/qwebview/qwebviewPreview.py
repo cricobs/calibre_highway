@@ -2,9 +2,9 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtCore import pyqtSignal
+
 from calibre.ebooks import markdown
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
-
 from calibre.gui2.viewer.qwebpage.qwebpagePreview import QwebpagePreview
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 from calibre.library.filepath import filepath_relative
@@ -19,6 +19,7 @@ class QwebviewPreview(Qwebview):
     def __init__(self, *args, **kwargs):
         super(QwebviewPreview, self).__init__(*args, **kwargs)
         self._body = None
+        self._position = None
 
         QobjectScrollPosition(self)
 
@@ -56,3 +57,14 @@ class QwebviewPreview(Qwebview):
     @pyqtSlot(str)
     def position_change(self, position):
         self.positionChange.emit(position)
+
+    @pyqtProperty(str)
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self, value):
+        self._position = value
+
+    def scroll_to_position(self, position):
+        self.position = position
