@@ -9,6 +9,9 @@ class QdockwidgetContent(Qdockwidget):
 
     def raise_(self):
         super(QdockwidgetContent, self).raise_()
-        index = self.qtreeviewContent.model().currently_viewed_entry.index()
-        self.qtreeviewContent.scrollTo(index, self.qtreeviewContent.PositionAtTop)
+        entry = self.qtreeviewContent.model().currently_viewed_entry
+        if not entry:
+            return
+
+        self.qtreeviewContent.scrollTo(entry.index(), self.qtreeviewContent.PositionAtTop)
 

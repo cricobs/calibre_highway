@@ -79,9 +79,10 @@ class QdockwidgetSynopsis(Qdockwidget):
         self.qplaintexteditSynopsis.appendPlainText(text)
 
         if self.stackedWidget.currentIndex():
-            self.save()
             if position:
                 self.qwebviewPreview.scroll_to_position(position)
+
+            self.save()
 
     def save(self):
         try:

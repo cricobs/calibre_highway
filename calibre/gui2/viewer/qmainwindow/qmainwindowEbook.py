@@ -826,13 +826,13 @@ class QmainwindowEbook(Qmainwindow):
             index = self.iterator.spine.index(path)
         except (ValueError, AttributeError):
             return -1
+
         self.current_page = self.iterator.spine[index]
         self.current_index = index
         self.set_page_number(self.view.scroll_fraction)
         QTimer.singleShot(100, self.update_indexing_state)
         if self.pending_search is not None:
-            self.do_search(self.pending_search,
-                           self.pending_search_dir == 'backwards')
+            self.do_search(self.pending_search, self.pending_search_dir == 'backwards')
             self.pending_search = None
             self.pending_search_dir = None
         if self.pending_anchor is not None:
