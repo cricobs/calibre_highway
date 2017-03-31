@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="qwebviewPreview/js/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js"></script>
+    <script src="qwebview/js/http_ajax.googleapis.com_ajax_libs_jquery_3.1.0_jquery.js"></script>
     <script src="qwebviewPreview/js/jquery.toc/jquery.toc.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="qwebviewPreview/css/synopsis.css">
+    <link rel="stylesheet" type="text/css" href="qwebviewPreview/css/preview.css">
     <script>
         window.onload = function () {
             $("body")
@@ -29,7 +29,9 @@
                 return false;
             });
 
-            $("#content").toc({headings: selector_header});
+            var content = $("#content");
+            content.toc({headings: selector_header});
+            qwebview.content = content.html();
 
             if (qwebview.position) {
                 $('html, body').animate({

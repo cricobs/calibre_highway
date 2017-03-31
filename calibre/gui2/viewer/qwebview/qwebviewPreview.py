@@ -15,19 +15,22 @@ class QwebviewPreview(Qwebview):
     positionChange = pyqtSignal(str)
     positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
+    contentChange = pyqtSignal(str)
 
     def __init__(self, *args, **kwargs):
         super(QwebviewPreview, self).__init__(*args, **kwargs)
         self._body = None
         self._position = None
+        self._content = None
 
         QobjectScrollPosition(self)
 
         self.setPage(QwebpagePreview(self))
 
-        self.page().mainFrame().contentsSizeChanged.connect(self.on_mainFrame_contentsSizeChanged)
+        self.page().mainFrame().javaScriptWindowObjectCleared.connect(
+            self.on_mainFrame_javaScriptWindowObjectCleared)
 
-    def on_mainFrame_contentsSizeChanged(self):
+    def on_mainFrame_javaScriptWindowObjectCleared(self):
         self.positionLoad.emit()
 
     def keyPressEvent(self, qkeyevent):
@@ -45,6 +48,15 @@ class QwebviewPreview(Qwebview):
 
         self.positionSave.emit()
         self.load(QUrl.fromLocalFile(filepath_relative(self, "html")))
+
+    @pyqtProperty(str)
+    def content(self):
+        return self._content
+
+    @content.setter
+    def content(self, value):
+        self._content = value
+        self.contentChange.emit(self._content)
 
     @pyqtProperty(str)
     def body(self):

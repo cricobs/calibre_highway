@@ -6,139 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>393</height>
+    <width>94</width>
+    <height>43</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Synopsis</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <item row="0" column="0">
-     <widget class="QStackedWidget" name="stackedWidget">
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="page">
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="leftMargin">
-         <number>6</number>
-        </property>
-        <property name="topMargin">
-         <number>6</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>6</number>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QToolButton" name="toolButtonReload">
-            <property name="text">
-             <string>Reload</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonSave">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Save</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonPreview">
-            <property name="text">
-             <string>Preview</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QcomboboxMarkdown" name="qcomboboxMarkdown"/>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonUndo">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Undo</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="toolButtonRedo">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Redo</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QplaintexteditSynopsis" name="qplaintexteditSynopsis">
-          <property name="focusPolicy">
-           <enum>Qt::StrongFocus</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="page_2">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QwebviewPreview" name="qwebviewPreview" native="true"/>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QstackedwidgetSynopsis" name="qstackedwidgetSynopsis"/>
     </item>
    </layout>
   </widget>
@@ -155,20 +33,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QwebviewPreview</class>
-   <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwebview.qwebviewPreview</header>
+   <class>QstackedwidgetSynopsis</class>
+   <extends>QStackedWidget</extends>
+   <header>calibre.gui2.viewer.qstackedwidget.qstackedwidgetSynopsis</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QplaintexteditSynopsis</class>
-   <extends>QPlainTextEdit</extends>
-   <header>calibre.gui2.viewer.qplaintextEdit.qplaintexteditSynopsis</header>
-  </customwidget>
-  <customwidget>
-   <class>QcomboboxMarkdown</class>
-   <extends>QComboBox</extends>
-   <header>calibre.gui2.viewer.qcombobox.qcomboboxMarkdown</header>
   </customwidget>
  </customwidgets>
  <resources/>

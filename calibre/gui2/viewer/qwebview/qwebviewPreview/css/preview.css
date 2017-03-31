@@ -379,3 +379,6 @@ pre code, pre tt {
     border: none;
 }
 
+#content, .content {
+    display: none;
+}

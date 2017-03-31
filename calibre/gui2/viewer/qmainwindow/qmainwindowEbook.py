@@ -1162,7 +1162,7 @@ class QmainwindowEbook(Qmainwindow):
                     else:
                         self.goto_page(open_at, loaded_check=False)
 
-            self.qdockwidgetSynopsis.load(pathtoebook)
+            self.qdockwidgetSynopsis.qstackedwidgetSynopsis.load(pathtoebook)
 
     def set_vscrollbar_value(self, pagenum):
         self.vertical_scrollbar.blockSignals(True)

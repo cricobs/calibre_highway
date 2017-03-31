@@ -1,0 +1,12 @@
+body {
+    font-family: "Liberation Sans", sans-serif, Verdana;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 10px 30px;
+    background-color: white;
+    text-align: justify;
+}
+
+li {
+    list-style-type: none;
+}

@@ -9,3 +9,10 @@ class Qwebpage(QWebPage, Qobject):
 
         # self.setLinkDelegationPolicy(self.DelegateAllLinks)
         self.settings().setAttribute(self.settings().DeveloperExtrasEnabled, True)
+
+        self.mainFrame().javaScriptWindowObjectCleared.connect(
+            self.on_mainFrame_javaScriptWindowObjectCleared
+        )
+
+    def on_mainFrame_javaScriptWindowObjectCleared(self):
+        self.mainFrame().addToJavaScriptWindowObject("qwebview", self.view())
