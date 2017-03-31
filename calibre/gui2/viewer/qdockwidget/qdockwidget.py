@@ -9,7 +9,11 @@ class Qdockwidget(QDockWidget, Qwidget):
         super(Qdockwidget, self).__init__(*args, **kwargs)
 
         self.setTitleBarWidget(self.qwidgettitlebar)
-        self.close()
+        self.setVisible(self.start_visible)
+
+    @property
+    def start_visible(self):
+        return False
 
     @property
     def qwidgettitlebar(self):

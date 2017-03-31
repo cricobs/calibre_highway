@@ -27,7 +27,7 @@
   <customwidget>
    <class>QWebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>PyQt5.QtWebKitWidgets</header>
   </customwidget>
  </customwidgets>
  <resources/>

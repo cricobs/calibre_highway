@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>108</width>
-    <height>118</height>
+    <height>149</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -72,6 +72,14 @@
     <number>1</number>
    </attribute>
   </widget>
+  <widget class="QdockwidgetQwebinspector" name="qdockwidgetQwebinspector">
+   <property name="windowTitle">
+    <string>Inspect</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -101,6 +109,12 @@
    <class>QdockwidgetContent</class>
    <extends>QDockWidget</extends>
    <header>calibre.gui2.viewer.qdockwidget.qdockwidgetContent</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QdockwidgetQwebinspector</class>
+   <extends>QDockWidget</extends>
+   <header>calibre.gui2.viewer.qdockwidget.qdockwidgetQwebinspector</header>
    <container>1</container>
   </customwidget>
   <customwidget>

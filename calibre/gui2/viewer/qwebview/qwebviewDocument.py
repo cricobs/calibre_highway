@@ -17,10 +17,10 @@ from calibre.gui2.shortcuts import Shortcuts
 from calibre.gui2.viewer.qdialog.gestures import GestureHandler
 from calibre.gui2.viewer.qdialog.qdialogConfig import config, load_themes
 from calibre.gui2.viewer.qdialog.qdialogImage import ImagePopup
-from calibre.gui2.viewer.qdialog.qdialogInspect import QdialogInspect
 from calibre.gui2.viewer.qdialog.qdialogTablePopup import TablePopup
 from calibre.gui2.viewer.qwebpage.qwebpageDocument import Document
 from calibre.gui2.viewer.qwebpage.qwebpageFootnote import Footnotes
+from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 from calibre.gui2.viewer.qwidget.qwidgetSlideFlip import QwidgetSlideFlip
 from calibre.library.filepath import filepath_relative
 
@@ -39,7 +39,7 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
         }
 
 
-class QwebviewDocument(QWebView):
+class QwebviewDocument(Qwebview):
     magnification_changed = pyqtSignal(object)
     DISABLED_BRUSH = QBrush(Qt.lightGray, Qt.Dense5Pattern)
     gesture_handler = lambda s, e: False
@@ -81,7 +81,7 @@ class QwebviewDocument(QWebView):
         d.page_turn.connect(self.page_turn_requested)
         d.selectionChanged[()].connect(self.selection_changed)
 
-        self.inspector = QdialogInspect(self, d)
+        # self.inspector = QdialogInspect(self, d)
 
         self.loadFinished.connect(self.load_finished)
         self.setPage(d)
@@ -421,8 +421,8 @@ class QwebviewDocument(QWebView):
         menu.exec_(ev.globalPos())
 
     def inspect(self):
-        self.inspector.show()
-        self.inspector.raise_()
+        # self.inspector.show()
+        # self.inspector.raise_()
         self.pageAction(self.document.InspectElement).trigger()
 
     def lookup(self, *args):
