@@ -205,7 +205,7 @@ class QwebviewDocument(QWebView):
             raise NotImplementedError(section)
 
         if text:
-            self.manager.qdockwidgetSynopsis.append(text, position)
+            self.manager.qdockwidgetSynopsis.qstackedwidgetSynopsis.append(text, position)
 
     def selected_markdown_header(self, level, position=None):
         if self.selected_text:

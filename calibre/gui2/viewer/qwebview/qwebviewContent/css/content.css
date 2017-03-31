@@ -34,6 +34,17 @@ a {
     padding: 6px 0;
 }
 
+/*a::before {*/
+    /*color: black;*/
+    /*text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);*/
+    /*content: attr(data-hover);*/
+    /*position: absolute;*/
+    /*-webkit-transition: -webkit-transform 0.1s, opacity 0.1s;*/
+    /*-moz-transition: -moz-transform 0.1s, opacity 0.1s;*/
+    /*transition: transform 0.1s, opacity 0.1s;*/
+    /*pointer-events: none;*/
+/*}*/
+
 a::after {
     content: '';
     position: absolute;
