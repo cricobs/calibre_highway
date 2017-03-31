@@ -16,3 +16,6 @@ class Qwebpage(QWebPage, Qobject):
 
     def on_mainFrame_javaScriptWindowObjectCleared(self):
         self.mainFrame().addToJavaScriptWindowObject("qwebview", self.view())
+
+    def goto_hash(self, hash):
+        self.mainFrame().evaluateJavaScript("window.location.hash = '" + hash + "';")

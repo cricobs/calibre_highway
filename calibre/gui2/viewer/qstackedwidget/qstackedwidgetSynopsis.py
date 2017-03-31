@@ -13,7 +13,6 @@ I = I
 
 # todo 1
 # - editor shortcuts
-# - preview table of contents to separate file
 # - store within .epub file
 # - track with git
 # - editor format text
@@ -54,8 +53,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
         self.state_restore()
-
-        self.setCurrentIndex(1)  # fixme
 
     def preview(self):
         self.save()
@@ -149,6 +146,11 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
 
         self.setCurrentIndex(int(vprefs.get('synopsis_mode', None) or 0))
+
+    @pyqtSlot(str)
+    def on_qwebviewContent_contentClick(self, hash):
+        self.qwebviewPreview.goto_hash(hash)
+        self.setCurrentIndex(self.indexOf(self.qwebviewPreview.parent()))
 
     @pyqtSlot(str)
     def on_qwebviewPreview_contentChange(self, content):

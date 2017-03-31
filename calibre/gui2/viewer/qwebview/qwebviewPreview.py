@@ -30,6 +30,9 @@ class QwebviewPreview(Qwebview):
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared)
 
+    def goto_hash(self, hash):
+        self.page().goto_hash(hash)
+
     def on_mainFrame_javaScriptWindowObjectCleared(self):
         self.positionLoad.emit()
 

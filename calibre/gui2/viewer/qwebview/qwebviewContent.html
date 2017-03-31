@@ -8,6 +8,12 @@
     <script>
         window.onload = function () {
             $("body").append(qwebview.body);
+            $("a").click(
+                function (e) {
+                    qwebview.content_click($(this).attr("href"));
+                    return false
+                }
+            )
         };
     </script>
 </head>
