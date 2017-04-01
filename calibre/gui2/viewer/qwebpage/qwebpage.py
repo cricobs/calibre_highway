@@ -8,8 +8,6 @@ class Qwebpage(QWebPage, Qobject):
         super(Qwebpage, self).__init__(*args, **kwargs)
 
         # self.setLinkDelegationPolicy(self.DelegateAllLinks)
-        self.settings().setAttribute(self.settings().DeveloperExtrasEnabled, True)
-
         self.mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared
         )

@@ -81,8 +81,6 @@ class QwebviewDocument(Qwebview):
         d.page_turn.connect(self.page_turn_requested)
         d.selectionChanged[()].connect(self.selection_changed)
 
-        # self.inspector = QdialogInspect(self, d)
-
         self.loadFinished.connect(self.load_finished)
         self.setPage(d)
 
@@ -421,8 +419,6 @@ class QwebviewDocument(Qwebview):
         menu.exec_(ev.globalPos())
 
     def inspect(self):
-        # self.inspector.show()
-        # self.inspector.raise_()
         self.pageAction(self.document.InspectElement).trigger()
 
     def lookup(self, *args):
@@ -443,7 +439,6 @@ class QwebviewDocument(Qwebview):
             self.do_search_online(t, self.sender())
 
     def do_search_online(self, text, action):
-        # url = self.document.search_online_url.replace('%s', QUrl().toPercentEncoding(text))
         url = action.data().replace('%s', QUrl().toPercentEncoding(text))
         if not isinstance(url, bytes):
             url = url.encode('utf-8')
@@ -555,16 +550,16 @@ class QwebviewDocument(Qwebview):
             if self.manager is not None:
                 self.manager.load_started()
 
-        load_html(path, self, codec=getattr(path, 'encoding', 'utf-8'), mime_type=getattr(path,
-                                                                                          'mime_type',
-                                                                                          'text/html'),
-                  loading_url=url, pre_load_callback=callback)
+        load_html(
+            path, self, codec=getattr(path, 'encoding', 'utf-8'),
+            mime_type=getattr(path, 'mime_type', 'text/html'), loading_url=url,
+            pre_load_callback=callback)
 
     def on_unhandled_load_error(self, name, tb):
-        error_dialog(self, _('Failed to load file'), _(
-            'Failed to load the file: {}. Click "Show details" for more information').format(name),
-                     det_msg=tb,
-                     show=True)
+        error_dialog(
+            self, _('Failed to load file'),
+            _('Failed to load the file: {}. Click "Show details" for more information').format(
+                name), det_msg=tb, show=True)
 
     def initialize_scrollbar(self):
         if getattr(self, 'scrollbar', None) is not None:
