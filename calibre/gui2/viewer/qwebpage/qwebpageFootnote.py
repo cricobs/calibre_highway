@@ -38,6 +38,10 @@ class QwebpageFootnote(QWebPage):
             for x in 'utils extract'.split():
                 evaljs(self.js_loader.get(x))
 
+    @pyqtSlot()
+    def double_click(self):
+        self.doubleClick.emit()
+
     @pyqtSlot(str)
     def debug(self, msg):
         prints(msg)
@@ -49,8 +53,10 @@ class QwebpageFootnote(QWebPage):
     def set_footnote_data(self, target, known_targets):
         self._footnote_data = json.dumps({'target': target, 'known_targets': known_targets})
         if self._footnote_data:
-            self.mainFrame().evaluateJavaScript(
-                'data = JSON.parse(py_bridge.footnote_data()); calibre_extract.show_footnote(data["target"], data["known_targets"])')
+            self.mainFrame().evaluateJavaScript("""
+data = JSON.parse(py_bridge.footnote_data());
+calibre_extract.show_footnote(data["target"], data["known_targets"])
+            """)
 
     def javaScriptAlert(self, frame, msg):
         prints('FootnoteView:alert::', msg)
@@ -108,7 +114,7 @@ class Footnotes(object):
                                      path == current_path}
             self.view.document.bridge_value = linked_to_anchors
             if a.evaluateJavaScript('calibre_extract.is_footnote_link(this, "%s://%s")' % (
-            FAKE_PROTOCOL, FAKE_HOST)):
+                    FAKE_PROTOCOL, FAKE_HOST)):
                 if dest_path not in self.known_footnote_targets:
                     self.known_footnote_targets[dest_path] = s = set()
                     for item in self.view.manager.iterator.spine:

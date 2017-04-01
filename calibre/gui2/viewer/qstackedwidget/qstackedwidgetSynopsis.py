@@ -12,6 +12,7 @@ I = I
 
 
 # todo 1
+# - editor replace
 # - editor shortcuts
 # - store within .epub file
 # - track with git
@@ -24,6 +25,8 @@ I = I
 # - showEdit signal not being sent when double clicking on new preview body
 # - scroll synchronize not working on startup from qplaintexteditEdit
 
+# todo 3
+# - use QtabwidgetSynopsis instead of QstackedwidgetSynopsis
 
 class QstackedwidgetSynopsis(Qstackedwidget):
     def __init__(self, *args, **kwargs):

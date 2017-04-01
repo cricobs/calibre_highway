@@ -2,16 +2,15 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
-from calibre.gui2.viewer.qcombobox.qcombobox import Qcombobox
-
 from calibre.gui2 import config
+from calibre.gui2.viewer.qcombobox.qcombobox import Qcombobox
 from calibre.gui2.viewer.qlineedit.qlineeditSearch import QlineeditSearch
 
 _ = _
 I = I
 
-class AsYouType(unicode):
 
+class AsYouType(unicode):
     def __new__(cls, text):
         self = unicode.__new__(cls, text)
         self.as_you_type = True
@@ -38,7 +37,7 @@ class QcomboboxSearch(Qcombobox):  # {{{
     INTERVAL = 1500  #: Time to wait before emitting search signal
     MAX_COUNT = 25
 
-    search  = pyqtSignal(object)
+    search = pyqtSignal(object)
     cleared = pyqtSignal()
     changed = pyqtSignal()
     focus_to_library = pyqtSignal()
@@ -126,8 +125,8 @@ class QcomboboxSearch(Qcombobox):  # {{{
     def key_pressed(self, event):
         k = event.key()
         if k in (Qt.Key_Left, Qt.Key_Right, Qt.Key_Up, Qt.Key_Down,
-                Qt.Key_Home, Qt.Key_End, Qt.Key_PageUp, Qt.Key_PageDown,
-                Qt.Key_unknown):
+                 Qt.Key_Home, Qt.Key_End, Qt.Key_PageUp, Qt.Key_PageDown,
+                 Qt.Key_unknown):
             return
         self.normalize_state()
         if self._in_a_search:
@@ -175,7 +174,7 @@ class QcomboboxSearch(Qcombobox):  # {{{
         self.search.emit(text)
 
         if store_in_history:
-            idx = self.findText(text, Qt.MatchFixedString|Qt.MatchCaseSensitive)
+            idx = self.findText(text, Qt.MatchFixedString | Qt.MatchCaseSensitive)
             self.block_signals(True)
             if idx < 0:
                 self.insertItem(0, text)
@@ -186,7 +185,7 @@ class QcomboboxSearch(Qcombobox):  # {{{
             self.setCurrentIndex(0)
             self.block_signals(False)
             history = [unicode(self.itemText(i)) for i in
-                    range(self.count())]
+                       range(self.count())]
             config[self.opt_name] = history
 
     def do_search(self, *args):
