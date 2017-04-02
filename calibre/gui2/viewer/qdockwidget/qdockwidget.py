@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QWidget
 
@@ -22,7 +23,7 @@ class Qdockwidget(QDockWidget, Qwidget):
         return False
 
     def auto_hide(self):
-        if self.is_auto_hide and not self.hasFocus():
+        if self.is_auto_hide:
             self.qtimerHide.start()
 
     def show(self):
@@ -31,7 +32,8 @@ class Qdockwidget(QDockWidget, Qwidget):
 
     def setVisible(self, bool):
         super(Qdockwidget, self).setVisible(bool)
-        self.auto_hide()
+        if bool:
+            self.auto_hide()
 
     @property
     def start_visible(self):
