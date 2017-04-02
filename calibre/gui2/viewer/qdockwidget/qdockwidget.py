@@ -22,7 +22,7 @@ class Qdockwidget(QDockWidget, Qwidget):
         return False
 
     def auto_hide(self):
-        if self.is_auto_hide:
+        if self.is_auto_hide and not self.hasFocus():
             self.qtimerHide.start()
 
     def show(self):
