@@ -1,5 +1,4 @@
 from PyQt5.QtCore import QTimer
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QWidget
 
@@ -17,6 +16,12 @@ class Qdockwidget(QDockWidget, Qwidget):
         self.qtimerHide.timeout.connect(self.hide)
         self.qtimerHide.setInterval(3333)
         self.qtimerHide.setSingleShot(True)
+
+        self.toggleViewAction().triggered.connect(self.on_toggleViewAction_triggered)
+
+    def on_toggleViewAction_triggered(self, checked):
+        if checked:
+            self.auto_hide()
 
     @property
     def is_auto_hide(self):

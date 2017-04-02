@@ -1129,7 +1129,6 @@ class QmainwindowEbook(Qmainwindow):
             self.build_recent_menu()
             self.view.set_book_data(self.iterator)
 
-            self.qdockwidgetFootnote.close()
             self.action_table_of_contents.setDisabled(not self.iterator.toc)
             self.current_book_has_toc = bool(self.iterator.toc)
             self.current_title = title
