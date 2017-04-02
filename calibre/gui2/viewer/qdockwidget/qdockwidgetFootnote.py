@@ -6,6 +6,5 @@ class QdockwidgetFootnote(Qdockwidget):
         super(QdockwidgetFootnote, self).__init__(*args, **kwargs)
 
     @property
-    def qwidgettitlebar(self):
-        return self.titleBarWidget()
-
+    def is_auto_hide(self):
+        return True
