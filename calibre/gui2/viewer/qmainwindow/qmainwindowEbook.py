@@ -22,8 +22,9 @@ from calibre import as_unicode, force_unicode, isbytestring, prints
 from calibre.constants import islinux, filesystem_encoding, DEBUG, iswindows
 from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
-from calibre.gui2 import (Application, choose_files, info_dialog, error_dialog, open_url,
+from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
+from calibre.gui2.viewer.qapplication.qapplication import Qapplication
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qlabel.qlabelFullscreen import QlabelFullscreen
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
@@ -1434,7 +1435,7 @@ def main(args=sys.argv):
     listener = None
     override = 'calibre-ebook-viewer' if islinux else None
     acc = EventAccumulator()
-    app = Application(args, override_program_name=override, color_prefs=vprefs)
+    app = Qapplication(args, override_program_name=override, color_prefs=vprefs)
     app.file_event_hook = acc
     app.load_builtin_fonts()
     app.setWindowIcon(QIcon(I('viewer.png')))

@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QWidget
 
@@ -12,12 +13,14 @@ class Qdockwidget(QDockWidget, Qwidget):
         self.setTitleBarWidget(self.qwidgettitlebar)
         self.setVisible(self.start_visible)
 
-        self.qtimerHide = QTimer(self)
-        self.qtimerHide.timeout.connect(self.hide)
-        self.qtimerHide.setInterval(3333)
-        self.qtimerHide.setSingleShot(True)
+        self.qapplication = QApplication.instance()
+        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
 
         self.toggleViewAction().triggered.connect(self.on_toggleViewAction_triggered)
+
+    def on_qapplication_inactivityTimeout(self):
+        if self.is_auto_hide:
+            self.close()
 
     def on_toggleViewAction_triggered(self, checked):
         if checked:
@@ -29,7 +32,7 @@ class Qdockwidget(QDockWidget, Qwidget):
 
     def auto_hide(self):
         if self.is_auto_hide:
-            self.qtimerHide.start()
+            self.qapplication.inactivity_wait(6666)
 
     def show(self):
         super(Qdockwidget, self).show()
