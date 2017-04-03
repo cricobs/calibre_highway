@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="Qwebview" name="view" native="true">
+    <widget class="QwebviewFootnote" name="view" native="true">
      <property name="url" stdset="0">
       <url>
        <string>about:blank</string>
@@ -27,9 +27,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Qwebview</class>
+   <class>QwebviewFootnote</class>
    <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwebview.qwebview</header>
+   <header>calibre.gui2.viewer.qwebview.qwebviewFootnote</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

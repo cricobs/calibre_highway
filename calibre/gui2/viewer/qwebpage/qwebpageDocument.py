@@ -115,6 +115,7 @@ class Document(QWebPage):
         data = 'data:text/css;charset=utf-8;base64,'
         data += b64encode(raw.encode('utf-8'))
         self.settings().setUserStyleSheetUrl(QUrl(data))
+        self.view().setStyleSheet(raw)
 
     def findText(self, q, flags):
         if self.hyphenatable:

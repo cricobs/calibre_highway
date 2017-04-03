@@ -4,6 +4,7 @@ from __future__ import (unicode_literals, division, absolute_import,
                         print_function)
 
 import json
+from base64 import b64decode, b64encode
 from collections import defaultdict
 
 from PyQt5.Qt import (
@@ -80,11 +81,21 @@ class Footnotes(object):
     def clone_settings(self):
         source = self.view.document.settings()
         settings = self.footnotes_view.page().settings()
-        for x in 'DefaultFontSize DefaultFixedFontSize MinimumLogicalFontSize MinimumFontSize StandardFont SerifFont SansSerifFont FixedFont'.split():
-            func = 'setFontSize' if x.endswith('FontSize') else 'setFontFamily'
-            getattr(settings, func)(getattr(QWebSettings, x),
-                                    getattr(source, 'f' + func[4:])(getattr(QWebSettings, x)))
-        settings.setUserStyleSheetUrl(source.userStyleSheetUrl())
+        for x in filter(lambda y: y.endswith(("FontSize", "Font")), QWebSettings.__dict__.keys()):
+            name = 'setFontSize' if x.endswith('FontSize') else 'setFontFamily'
+
+            try:
+                value = getattr(source, 'f' + name[4:])(getattr(QWebSettings, x))
+            except TypeError:
+                continue
+
+            getattr(settings, name)(getattr(QWebSettings, x), value)
+
+        raw = self.view.styleSheet() + self.footnotes_view.view.styleSheet()
+        data = 'data:text/css;charset=utf-8;base64,'
+        data += b64encode(raw.encode('utf-8'))
+
+        settings.setUserStyleSheetUrl(QUrl(data))
 
     def clear(self):
         self.known_footnote_targets = defaultdict(set)
