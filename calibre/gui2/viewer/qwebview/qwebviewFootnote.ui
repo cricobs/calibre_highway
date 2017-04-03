@@ -19,17 +19,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">	* {
-	    font-size: 15px !important;
-        line-height: 28px !important;
-    }
-
-    body {
-        margin: 0 11px !important;
-    }
-   </string>
-  </property>
   <property name="renderHints">
    <set>QPainter::Antialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
   </property>

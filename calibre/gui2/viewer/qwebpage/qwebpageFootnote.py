@@ -91,7 +91,18 @@ class Footnotes(object):
 
             getattr(settings, name)(getattr(QWebSettings, x), value)
 
-        raw = self.view.styleSheet() + self.footnotes_view.view.styleSheet()
+        raw = b64decode(
+            source.userStyleSheetUrl().toString().lstrip("data:text/css;charset=utf-8;base64,"))
+        raw += """
+* {
+    font-size: 15px !important;
+    line-height: 28px !important;
+}
+
+body {
+    margin: 0 11px !important;
+}
+        """
         data = 'data:text/css;charset=utf-8;base64,'
         data += b64encode(raw.encode('utf-8'))
 
