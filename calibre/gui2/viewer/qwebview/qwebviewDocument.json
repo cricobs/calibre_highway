@@ -417,7 +417,7 @@
     ],
     "Synopsis": [
       [
-        "Ctrl+Alt+S"
+        "Ctrl+Y"
       ],
       "Toggle the Synopsis"
     ],
@@ -474,6 +474,12 @@
         "Alt+W"
       ],
       "Search wordreference enes"
-    ]
+    ],
+        "Search encyclopedia": [
+      [
+        "Alt+E"
+      ],
+      "Search encyclopedia"
+]
   }
 }
