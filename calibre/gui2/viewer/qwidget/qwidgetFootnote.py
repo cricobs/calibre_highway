@@ -24,16 +24,8 @@ class QwidgetFootnote(Qwidget):
 
         return super(QwidgetFootnote, self).eventFilter(qobject, qevent)
 
-    def on_qwebpagefootnote_doubleClick(self):
-        print ("mama")
-
     def page(self):
         return self.qwebpagefootnote
-
-    def mouseDoubleClickEvent(self, qmouseevent):
-        super(QwidgetFootnote, self).mouseDoubleClickEvent(qmouseevent)
-
-        print ("mama")
 
     def sizeHint(self):
         return QSize(400, 200)

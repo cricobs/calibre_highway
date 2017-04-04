@@ -10,6 +10,8 @@ class Qdockwidget(QDockWidget, Qwidget):
     def __init__(self, *args, **kwargs):
         super(Qdockwidget, self).__init__(*args, **kwargs)
 
+        self.interval_hide = 6666
+
         self.setTitleBarWidget(self.qwidgettitlebar)
         self.setVisible(self.start_visible)
 
@@ -18,8 +20,11 @@ class Qdockwidget(QDockWidget, Qwidget):
 
         self.toggleViewAction().triggered.connect(self.on_toggleViewAction_triggered)
 
-    def on_qapplication_inactivityTimeout(self):
-        if self.is_auto_hide:
+    def on_qapplication_inactivityTimeout(self, target, interval):
+        if target != self:
+            return
+
+        if self.is_auto_hide and interval == self.interval_hide:
             self.close()
 
     def on_toggleViewAction_triggered(self, checked):
@@ -32,7 +37,7 @@ class Qdockwidget(QDockWidget, Qwidget):
 
     def auto_hide(self):
         if self.is_auto_hide:
-            self.qapplication.inactivity_wait(6666)
+            self.qapplication.qtimer_inactivity(self, False, True, self.interval_hide)
 
     def show(self):
         super(Qdockwidget, self).show()

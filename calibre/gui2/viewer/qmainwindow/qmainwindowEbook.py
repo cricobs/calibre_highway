@@ -269,6 +269,7 @@ class QmainwindowEbook(Qmainwindow):
         self.was_maximized = False
         self.window_mode_changed = None
         self.context_actions = []
+        self.interval_hide_cursor = 3333
 
         self.full_screen_label = QlabelFullscreen(self.centralWidget())
         self.clock_label = QlabelClock(self.centralWidget())
@@ -372,14 +373,20 @@ class QmainwindowEbook(Qmainwindow):
         for plugin in self.view.document.all_viewer_plugins:
             plugin.customize_ui(self)
 
-        QApplication.instance().shutdown_signal_received.connect(self.action_quit.trigger)
         file_events.got_file.connect(self.load_ebook)
 
-        self.hide_cursor_timer = QTimer(self)
-        self.hide_cursor_timer.setSingleShot(True)
-        self.hide_cursor_timer.setInterval(3000)
-        self.hide_cursor_timer.timeout.connect(self.hide_cursor)
-        self.hide_cursor_timer.start()
+        self.qapplication = QApplication.instance()
+        self.qapplication.shutdown_signal_received.connect(self.action_quit.trigger)
+        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
+        self.qapplication.activity.connect(self.on_qapplication_activity)
+        self.qapplication.qtimer_inactivity(self, interval=self.interval_hide_cursor)
+
+    def on_qapplication_activity(self):
+        self.qapplication.restoreOverrideCursor()
+
+    def on_qapplication_inactivityTimeout(self, target, interval):
+        if target == self and interval == self.interval_hide_cursor:
+            self.qapplication.setOverrideCursor(Qt.BlankCursor)
 
     def on_qwebviewPreview_positionChange(self, position):
         self.view.document.page_position.to_pos(position)
@@ -409,19 +416,6 @@ class QmainwindowEbook(Qmainwindow):
     def process_file_events(self):
         if self.file_events:
             self.load_ebook(self.file_events[-1])
-
-    def eventFilter(self, obj, ev):
-        if ev.type() == ev.MouseMove:
-            if self.cursor_hidden:
-                self.cursor_hidden = False
-                QApplication.instance().restoreOverrideCursor()
-            self.hide_cursor_timer.start()
-
-        return False
-
-    def hide_cursor(self):
-        self.cursor_hidden = True
-        QApplication.instance().setOverrideCursor(Qt.BlankCursor)
 
     def toggle_paged_mode(self, checked, at_start=False):
         in_paged_mode = not self.action_toggle_paged_mode.isChecked()
@@ -1342,7 +1336,6 @@ def config(defaults=None):
               help=_('Continue reading at the previously opened book'))
 
     return c
-
 
 
 def option_parser():
