@@ -234,7 +234,6 @@ def test_history():
 
 class QmainwindowEbook(Qmainwindow):
     STATE_VERSION = 2
-    AUTOSAVE_INTERVAL = 10  # seconds
     FLOW_MODE_TT = _(
         'Switch to paged mode - where the text is broken up into pages like a paper book')
     PAGED_MODE_TT = _('Switch to flow mode - where the text is not broken up into pages')
@@ -270,6 +269,7 @@ class QmainwindowEbook(Qmainwindow):
         self.window_mode_changed = None
         self.context_actions = []
         self.interval_hide_cursor = 3333
+        self.interval_autosave = 10000
 
         self.full_screen_label = QlabelFullscreen(self.centralWidget())
         self.clock_label = QlabelClock(self.centralWidget())
@@ -305,7 +305,7 @@ class QmainwindowEbook(Qmainwindow):
         self.clock_timer.timeout.connect(self.update_clock)
 
         self.autosave_timer = QTimer(self)
-        self.autosave_timer.setInterval(self.AUTOSAVE_INTERVAL * 1000)
+        self.autosave_timer.setInterval(self.interval_autosave)
         self.autosave_timer.setSingleShot(True)
         self.autosave_timer.timeout.connect(self.autosave)
 
@@ -336,7 +336,6 @@ class QmainwindowEbook(Qmainwindow):
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
-        self.setFocusPolicy(Qt.StrongFocus)
         self.read_settings()
         self.build_recent_menu()
         self.restore_state()
@@ -392,7 +391,7 @@ class QmainwindowEbook(Qmainwindow):
         self.view.document.page_position.to_pos(position)
         self.view.setFocus(Qt.OtherFocusReason)
 
-        self.sender().findText("")  # clear selection
+        self.sender().findText("")  # fixme clear selection; do it on sender before signal
 
     def on_action_search_triggered(self, checked):
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
@@ -621,7 +620,6 @@ class QmainwindowEbook(Qmainwindow):
     def showNormal(self):
         self.view.document.page_position.save()
         self.clock_label.setVisible(False)
-        # self.pos_label.setVisible(False)
         self.clock_timer.stop()
         self.vertical_scrollbar.setVisible(True)
         self.window_mode_changed = 'normal'

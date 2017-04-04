@@ -206,7 +206,8 @@
           "actions": [
             {
               "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
-              "name": "wordreference enes"
+              "name": "wordreference enes",
+              "shortcut": "Search wordreference enes"
             },
             {
               "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
@@ -221,8 +222,7 @@
     "Quit": [
       [
         "Ctrl+Q",
-        "Ctrl+W",
-        "Alt+F4"
+        "Ctrl+W"
       ],
       "Quit"
     ],
@@ -286,7 +286,7 @@
     ],
     "Edit": [
       [
-        "Alt+E"
+        "Ctrl+E"
       ],
       "Toggle the Edit Toolbar"
     ],
@@ -305,13 +305,13 @@
     ],
     "Show metadata": [
       [
-        "Alt+M"
+        "Ctrl+M"
       ],
       "Show metadata"
     ],
     "Preferences": [
       [
-        "Alt+S"
+        "Ctrl+Alt+S"
       ],
       "Preferences"
     ],
@@ -354,7 +354,7 @@
     ],
     "Find previous": [
       [
-        "Shift+F3"
+        "Ctrl+Shift+F"
       ],
       "Find previous"
     ],
@@ -379,7 +379,7 @@
     ],
     "Back": [
       [
-        "Alt+Left"
+        "Ctrl+Left"
       ],
       "Back"
     ],
@@ -392,7 +392,7 @@
     ],
     "Table of Contents": [
       [
-        "Alt+T"
+        "Ctrl+T"
       ],
       "Toggle the Table of Contents"
     ],
@@ -401,12 +401,6 @@
         "Alt+Right"
       ],
       "Forward"
-    ],
-    "Search online": [
-      [
-        "Ctrl+E"
-      ],
-      "Search online for word"
     ],
     "Next Section": [
       [
@@ -417,55 +411,55 @@
     ],
     "Synopsis Save": [
       [
-        "Ctrl+S"
+        "Alt+S"
       ],
       "Save synopsis file"
     ],
     "Synopsis": [
       [
-        "Alt+S"
+        "Ctrl+Alt+S"
       ],
       "Toggle the Synopsis"
     ],
     "Synopsis Append Text": [
       [
-        "Ctrl+T"
+        "Alt+T"
       ],
       "Append to Synopsis as text"
     ],
     "Synopsis Append H1": [
       [
-        "Ctrl+1"
+        "Alt+1"
       ],
       "Append to Synopsis as H1"
     ],
     "Synopsis Append H2": [
       [
-        "Ctrl+2"
+        "Alt+2"
       ],
       "Append to Synopsis as H2"
     ],
     "Synopsis Append H3": [
       [
-        "Ctrl+3"
+        "Alt+3"
       ],
       "Append to Synopsis as H3"
     ],
     "Synopsis Append H4": [
       [
-        "Ctrl+4"
+        "Alt+4"
       ],
       "Append to Synopsis as H4"
     ],
     "Synopsis Append H5": [
       [
-        "Ctrl+5"
+        "Alt+5"
       ],
       "Append to Synopsis as H5"
     ],
     "Synopsis Append H6": [
       [
-        "Ctrl+6"
+        "Alt+6"
       ],
       "Append to Synopsis as H6"
     ],
@@ -474,6 +468,12 @@
         "Ctrl+Meta+F"
       ],
       "Fullscreen"
+    ],
+    "Search wordreference enes": [
+      [
+        "Alt+W"
+      ],
+      "Search wordreference enes"
     ]
   }
 }
