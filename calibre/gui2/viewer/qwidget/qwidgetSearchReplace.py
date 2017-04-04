@@ -14,7 +14,7 @@ class QwidgetSearchReplace(Qwidget):
         self._position_width = None
 
         self.relative = relative
-    
+
         self.hide()
 
     @property
