@@ -17,6 +17,10 @@ class QwebviewContent(Qwebview):
 
         self.setPage(QwebpageContent(self))
 
+    @property
+    def is_search_replace(self):
+        return True
+
     @pyqtSlot(str)
     def content_click(self, content):
         self.contentClick.emit(content)

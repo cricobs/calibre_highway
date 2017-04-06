@@ -27,6 +27,9 @@ class QplaintexteditEdit(Qplaintextedit):
 
         with open(filepath_relative(self, "json")) as iput:
             self.formats = json.load(iput)["formats"]
+    @property
+    def is_search_replace(self):
+        return True
 
     def insertFormat(self, format):
         c = self.textCursor()

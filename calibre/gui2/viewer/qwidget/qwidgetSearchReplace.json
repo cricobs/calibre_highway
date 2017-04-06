@@ -1,0 +1,22 @@
+{
+  "actions": [
+    {
+      "name": "SearchReplace",
+      "icon": "search.png",
+      "checkable": true,
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "slots": {
+        "triggered": [
+          "setVisible"
+        ]
+      },
+      "signals": {
+        "visibilityChanged": [
+          "setChecked"
+        ]
+      }
+    }
+  ]
+}

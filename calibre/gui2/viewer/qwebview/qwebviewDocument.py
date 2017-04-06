@@ -46,9 +46,16 @@ class QwebviewDocument(Qwebview):
     last_loaded_path = None
     context_actions = []
 
+    def __init__(self, *args, **kwargs):
+        super(QwebviewDocument, self).__init__(*args, **kwargs)
+
     def set_footnotes_view(self, view):
         self.footnotes.set_footnotes_view(view)
         view.follow_link.connect(self.follow_footnote_link)
+
+    @property
+    def is_search_replace(self):
+        return True
 
     def initialize_view(self, debug_javascript=False):
         self._ignore_scrollbar_signals = False
@@ -89,9 +96,7 @@ class QwebviewDocument(Qwebview):
             d.OpenImageInNewWindow, d.OpenLink, d.Reload, d.InspectElement]
         self.unimplemented_actions = list(map(self.pageAction, a))
 
-        with open(filepath_relative(self, "json")) as iput:
-            actions = json.load(iput)
-
+        actions = self.settings["actions"]
         self.create_actions(actions["root"])
         self.create_online_actions(actions["search_online"])
         self.create_synopsis_actions(actions["synopsis"])
@@ -169,7 +174,8 @@ class QwebviewDocument(Qwebview):
             self.create_online_action(qmenu=qmenu, **action_options)
 
     def create_action(self, name, text, slot=None, icon=None, checkable=False, shortcut=None,
-                      context=False, separator=False):
+                      context=False, separator=False, qmenu=None):
+        # fixme use superclass
         action = QAction(_(text), self)
         action.setCheckable(checkable)
         action.setData(shortcut)
@@ -215,10 +221,6 @@ class QwebviewDocument(Qwebview):
         if self.selected_text:
             position = position if position else self.document.page_position.current_pos
             return "\n{0}\n{{: position={1}}}".format(self.selected_text, position)
-
-    def create_actions(self, actions):
-        for action_options in actions:
-            self.create_action(**action_options)
 
     # --- goto
     def goto_next_section(self, *args):

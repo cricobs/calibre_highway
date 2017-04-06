@@ -1,223 +1,225 @@
 {
-  "root": [
-    {
-      "slot": "copy_position",
-      "text": "Copy Position",
-      "name": "copy_position",
-      "icon": "copy.png"
-    },
-    {
-      "name": "synopsis",
-      "text": "S&ynopsis",
-      "icon": "modified.png",
-      "context": true,
-      "separator": true
-    },
-    {
-      "slot": "search_online",
-      "text": "",
-      "name": "search_online",
-      "context": true,
-      "icon": "search.png"
-    },
-    {
-      "slot": "lookup",
-      "name": "dictionary",
-      "text": "&Lookup in dictionary",
-      "shortcut": "Lookup word",
-      "context": true,
-      "icon": "dictionary.png"
-    },
-    {
-      "slot": "search_next",
-      "name": "search",
-      "text": "&Search for next occurrence",
-      "shortcut": "Next occurrence",
-      "context": true,
-      "icon": "dictionary.png"
-    },
-    {
-      "slot": "image_popup",
-      "text": "View &image...",
-      "name": "view_image",
-      "icon": "view-image.png"
-    },
-    {
-      "slot": "popup_table",
-      "text": "View &table...",
-      "name": "view_table",
-      "icon": "view.png"
-    },
-    {
-      "slot": "restore_font_size",
-      "checkable": true,
-      "name": "restore_fonts",
-      "text": "Default font size"
-    },
-    {
-      "text": "Go to...",
-      "name": "goto_location"
-    }
-  ],
-  "goto_location": [
-    {
-      "call": "goto_next_section",
-      "name": "Next Section",
-      "shortcut": "Next Section"
-    },
-    {
-      "separator": true,
-      "call": "goto_previous_section",
-      "name": "Previous Section",
-      "shortcut": "Previous Section"
-    },
-    {
-      "call": "goto_document_start",
-      "name": "Document Start",
-      "shortcut": "Document Top"
-    },
-    {
-      "separator": true,
-      "call": "goto_document_end",
-      "name": "Document End",
-      "shortcut": "Document Bottom"
-    },
-    {
-      "call": "goto_section_start",
-      "name": "Section Start",
-      "shortcut": "Section Top"
-    },
-    {
-      "separator": true,
-      "call": "goto_section_end",
-      "name": "Section End",
-      "shortcut": "Section Bottom"
-    },
-    {
-      "call": "next_page",
-      "name": "Next Page",
-      "shortcut": "Next Page"
-    },
-    {
-      "call": "previous_page",
-      "name": "Previous Page",
-      "shortcut": "Previous Page"
-    }
-  ],
-  "synopsis": [
-    {
-      "slot": "copy_markdown",
-      "name": "copy_markdown",
-      "shortcut": "Copy Markdown",
-      "text": "&Copy Markdown"
-    },
-    {
-      "slot": "synopsis_append",
-      "name": "append_text",
-      "text": "Append &Text",
-      "shortcut": "Synopsis Append Text",
-      "section": "body"
-    },
-    {
-      "name": "append_header",
-      "text": "Append &Header",
-      "actions": [
-        {
-          "slot": "synopsis_append",
-          "name": "header_1",
-          "text": "1",
-          "shortcut": "Synopsis Append H1",
-          "section": "header"
-        },
-        {
-          "slot": "synopsis_append",
-          "name": "header_2",
-          "text": "2",
-          "shortcut": "Synopsis Append H2",
-          "section": "header"
-        },
-        {
-          "slot": "synopsis_append",
-          "name": "header_3",
-          "shortcut": "Synopsis Append H3",
-          "text": "3",
-          "section": "header"
-        },
-        {
-          "slot": "synopsis_append",
-          "name": "header_4",
-          "shortcut": "Synopsis Append H4",
-          "text": "4",
-          "section": "header"
-        },
-        {
-          "slot": "synopsis_append",
-          "name": "header_5",
-          "shortcut": "Synopsis Append H5",
-          "text": "5",
-          "section": "header"
-        },
-        {
-          "slot": "synopsis_append",
-          "name": "header_6",
-          "shortcut": "Synopsis Append H6",
-          "text": "6",
-          "section": "header"
-        }
-      ]
-    }
-  ],
-  "search_online": [
-    {
-      "url": "https://www.google.com/search?q=%s",
-      "name": "engine"
-    },
-    {
-      "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
-      "name": "encyclopedia",
-      "shortcut": "Search encyclopedia"
-    },
-    {
-      "url": "http://www.merriam-webster.com/dictionary?s=%s",
-      "name": "dictionary"
-    },
-    {
-      "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
-      "name": "etymology"
-    },
-    {
-      "name": "translate",
-      "actions": [
-        {
-          "name": "google",
-          "actions": [
-            {
-              "url": "https://translate.google.com/#en/es/%s",
-              "name": "translate enes"
-            },
-            {
-              "url": "https://translate.google.com/#es/en/%s",
-              "name": "translate esen"
-            }
-          ]
-        },
-        {
-          "name": "wordreference",
-          "actions": [
-            {
-              "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
-              "name": "wordreference enes",
-              "shortcut": "Search wordreference enes"
-            },
-            {
-              "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
-              "name": "wordreference esen"
-            }
-          ]
-        }
-      ]
-    }
-  ],
+  "actions": {
+    "root": [
+      {
+        "slot": "copy_position",
+        "text": "Copy Position",
+        "name": "copy_position",
+        "icon": "copy.png"
+      },
+      {
+        "name": "synopsis",
+        "text": "S&ynopsis",
+        "icon": "modified.png",
+        "context": true,
+        "separator": true
+      },
+      {
+        "slot": "search_online",
+        "text": "",
+        "name": "search_online",
+        "context": true,
+        "icon": "search.png"
+      },
+      {
+        "slot": "lookup",
+        "name": "dictionary",
+        "text": "&Lookup in dictionary",
+        "shortcut": "Lookup word",
+        "context": true,
+        "icon": "dictionary.png"
+      },
+      {
+        "slot": "search_next",
+        "name": "search",
+        "text": "&Search for next occurrence",
+        "shortcut": "Next occurrence",
+        "context": true,
+        "icon": "dictionary.png"
+      },
+      {
+        "slot": "image_popup",
+        "text": "View &image...",
+        "name": "view_image",
+        "icon": "view-image.png"
+      },
+      {
+        "slot": "popup_table",
+        "text": "View &table...",
+        "name": "view_table",
+        "icon": "view.png"
+      },
+      {
+        "slot": "restore_font_size",
+        "checkable": true,
+        "name": "restore_fonts",
+        "text": "Default font size"
+      },
+      {
+        "text": "Go to...",
+        "name": "goto_location"
+      }
+    ],
+    "goto_location": [
+      {
+        "call": "goto_next_section",
+        "name": "Next Section",
+        "shortcut": "Next Section"
+      },
+      {
+        "separator": true,
+        "call": "goto_previous_section",
+        "name": "Previous Section",
+        "shortcut": "Previous Section"
+      },
+      {
+        "call": "goto_document_start",
+        "name": "Document Start",
+        "shortcut": "Document Top"
+      },
+      {
+        "separator": true,
+        "call": "goto_document_end",
+        "name": "Document End",
+        "shortcut": "Document Bottom"
+      },
+      {
+        "call": "goto_section_start",
+        "name": "Section Start",
+        "shortcut": "Section Top"
+      },
+      {
+        "separator": true,
+        "call": "goto_section_end",
+        "name": "Section End",
+        "shortcut": "Section Bottom"
+      },
+      {
+        "call": "next_page",
+        "name": "Next Page",
+        "shortcut": "Next Page"
+      },
+      {
+        "call": "previous_page",
+        "name": "Previous Page",
+        "shortcut": "Previous Page"
+      }
+    ],
+    "synopsis": [
+      {
+        "slot": "copy_markdown",
+        "name": "copy_markdown",
+        "shortcut": "Copy Markdown",
+        "text": "&Copy Markdown"
+      },
+      {
+        "slot": "synopsis_append",
+        "name": "append_text",
+        "text": "Append &Text",
+        "shortcut": "Synopsis Append Text",
+        "section": "body"
+      },
+      {
+        "name": "append_header",
+        "text": "Append &Header",
+        "actions": [
+          {
+            "slot": "synopsis_append",
+            "name": "header_1",
+            "text": "1",
+            "shortcut": "Synopsis Append H1",
+            "section": "header"
+          },
+          {
+            "slot": "synopsis_append",
+            "name": "header_2",
+            "text": "2",
+            "shortcut": "Synopsis Append H2",
+            "section": "header"
+          },
+          {
+            "slot": "synopsis_append",
+            "name": "header_3",
+            "shortcut": "Synopsis Append H3",
+            "text": "3",
+            "section": "header"
+          },
+          {
+            "slot": "synopsis_append",
+            "name": "header_4",
+            "shortcut": "Synopsis Append H4",
+            "text": "4",
+            "section": "header"
+          },
+          {
+            "slot": "synopsis_append",
+            "name": "header_5",
+            "shortcut": "Synopsis Append H5",
+            "text": "5",
+            "section": "header"
+          },
+          {
+            "slot": "synopsis_append",
+            "name": "header_6",
+            "shortcut": "Synopsis Append H6",
+            "text": "6",
+            "section": "header"
+          }
+        ]
+      }
+    ],
+    "search_online": [
+      {
+        "url": "https://www.google.com/search?q=%s",
+        "name": "engine"
+      },
+      {
+        "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
+        "name": "encyclopedia",
+        "shortcut": "Search encyclopedia"
+      },
+      {
+        "url": "http://www.merriam-webster.com/dictionary?s=%s",
+        "name": "dictionary"
+      },
+      {
+        "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
+        "name": "etymology"
+      },
+      {
+        "name": "translate",
+        "actions": [
+          {
+            "name": "google",
+            "actions": [
+              {
+                "url": "https://translate.google.com/#en/es/%s",
+                "name": "translate enes"
+              },
+              {
+                "url": "https://translate.google.com/#es/en/%s",
+                "name": "translate esen"
+              }
+            ]
+          },
+          {
+            "name": "wordreference",
+            "actions": [
+              {
+                "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
+                "name": "wordreference enes",
+                "shortcut": "Search wordreference enes"
+              },
+              {
+                "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
+                "name": "wordreference esen"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "shortcuts": {
     "Quit": [
       [
@@ -475,11 +477,11 @@
       ],
       "Search wordreference enes"
     ],
-        "Search encyclopedia": [
+    "Search encyclopedia": [
       [
         "Alt+E"
       ],
       "Search encyclopedia"
-]
+    ]
   }
 }

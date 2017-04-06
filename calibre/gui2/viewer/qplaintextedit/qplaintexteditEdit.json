@@ -68,6 +68,11 @@
     "tag inline": {
       "start": "<",
       "end": "/>"
+    },
+    "tag comment": {
+      "newline": true,
+      "start": "<!--",
+      "end": "-->"
     }
   }
 }

@@ -30,6 +30,10 @@ class QwebviewPreview(Qwebview):
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared)
 
+    @property
+    def is_search_replace(self):
+        return True
+
     def goto_hash(self, hash):
         self.page().goto_hash(hash)
 

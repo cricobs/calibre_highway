@@ -3,7 +3,6 @@
 from __future__ import unicode_literals, division, absolute_import, print_function
 
 import functools
-import json
 import os
 import sys
 import traceback
@@ -33,7 +32,6 @@ from calibre.gui2.viewer.qstandarditemmodel.qstandarditemmodelContent import \
     QstandarditemmodelContent
 from calibre.gui2.viewer.qwebview.qwebviewMetadata import QwebviewMetadata
 from calibre.gui2.widgets import ProgressIndicator
-from calibre.library.filepath import filepath_relative
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.ipc import viewer_socket_address, RC
@@ -290,9 +288,6 @@ class QmainwindowViewer(Qmainwindow):
         self.view.magnification_changed.connect(self.magnification_changed)
         self.view.document.settings_changed.connect(self.settings_changed)
 
-        with open(filepath_relative(self, "json")) as iput:
-            self.settings = json.load(iput)
-
         self.create_actions(self.settings["actions"])
 
         self.history = History(self.action_back, self.action_forward)
@@ -374,7 +369,7 @@ class QmainwindowViewer(Qmainwindow):
 
         file_events.got_file.connect(self.load_ebook)
 
-        self.qapplication = QApplication.instance()
+        self.qapplication = QapplicationViewer.instance()
         self.qapplication.shutdown_signal_received.connect(self.action_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
@@ -1265,8 +1260,8 @@ class QmainwindowViewer(Qmainwindow):
 
     def create_action(self, name, text=None, icon=None, widget=None, toolbar=None, shortcut=None,
                       menu=None, slots=None, popup="MenuButtonPopup", separator=False,
-                      disabled=False, checkable=False, context=False):
-
+                      disabled=False, checkable=False, context=False, qmenu=None):
+        # fixme use superclass
         qaction = getattr(self, widget).toggleViewAction() if widget else QAction(self)
         qaction.setText(_(text))
         qaction.setIcon(QIcon(I(icon)))
@@ -1305,12 +1300,11 @@ class QmainwindowViewer(Qmainwindow):
 
         setattr(self, qaction.objectName(), qaction)
 
-    def create_actions(self, actions):
-        for action_options in actions:
-            self.create_action(**action_options)
-
     def windowTitle(self):
         return unicode(super(QmainwindowViewer, self).windowTitle())
+
+    def load_settings(self, settings):
+        pass  # fixme use superclass
 
 
 def config(defaults=None):
