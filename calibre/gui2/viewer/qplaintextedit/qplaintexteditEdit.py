@@ -35,7 +35,7 @@ class QplaintexteditEdit(Qplaintextedit):
         if qwidget is not self:
             return
 
-        self.setReadOnly(True)
+        self.setReadOnly(True)  # hack QlineditSearchReplace return pressed is propagated
         self.find(search)
 
         QTimer.singleShot(0, lambda: self.setReadOnly(False))

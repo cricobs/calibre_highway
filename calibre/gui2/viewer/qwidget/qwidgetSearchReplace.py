@@ -19,6 +19,11 @@ class QwidgetSearchReplace(Qwidget):
         self.qapplication = QApplication.instance()
         self.qapplication.focusChanged.connect(self.on_qapplication_focusChanged)
 
+    def showEvent(self, qshowevent):
+        super(QwidgetSearchReplace, self).showEvent(qshowevent)
+
+        self.qcomboboxSearch.lineEdit().setFocus()
+
     @pyqtSlot(str)
     def on_qcomboboxSearch_returnPressed(self, text):
         self.qapplication.search.emit(self.relative, text)

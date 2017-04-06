@@ -14,9 +14,6 @@ class Qwidget(QWidget, Qobject):
             self.qapplication.search.connect(self.on_qapplication_search)
             self.qapplication.replace.connect(self.on_qapplication_replace)
 
-    def on_qapplication_undo(self):
-        pass
-
     def on_qapplication_search(self, qwidget, search):
         pass
 
