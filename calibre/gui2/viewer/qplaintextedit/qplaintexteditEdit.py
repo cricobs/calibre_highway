@@ -4,19 +4,19 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
-from calibre.gui2.viewer.qplaintextEdit.qplaintextedit import Qplaintextedit
+from calibre.gui2.viewer.qplaintextedit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
     QsyntaxhighlighterSynopsis
 from calibre.library.filepath import filepath_relative
 
 
-class QplaintexteditSynopsis(Qplaintextedit):
+class QplaintexteditEdit(Qplaintextedit):
     showPreview = pyqtSignal(bool)
     positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
-        super(QplaintexteditSynopsis, self).__init__(*args, **kwargs)
+        super(QplaintexteditEdit, self).__init__(*args, **kwargs)
 
         QobjectScrollPosition(self)
 
@@ -50,10 +50,10 @@ class QplaintexteditSynopsis(Qplaintextedit):
 
     def setPlainText(self, p_str):
         self.positionSave.emit()
-        super(QplaintexteditSynopsis, self).setPlainText(p_str)
+        super(QplaintexteditEdit, self).setPlainText(p_str)
         self.positionLoad.emit()
 
     def keyPressEvent(self, qkeyevent):
-        super(QplaintexteditSynopsis, self).keyPressEvent(qkeyevent)
+        super(QplaintexteditEdit, self).keyPressEvent(qkeyevent)
         if qkeyevent.key() == Qt.Key_Escape:
             self.showPreview.emit(True)

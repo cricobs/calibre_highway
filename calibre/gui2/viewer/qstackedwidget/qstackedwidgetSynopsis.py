@@ -48,10 +48,10 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        self.qcomboboxMarkdown.addItems(sorted(self.qplaintexteditSynopsis.formats.keys()))
+        self.qcomboboxMarkdown.addItems(sorted(self.qplaintexteditEdit.formats.keys()))
 
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
-            self.qwebviewPreview, self.qplaintexteditSynopsis)
+            self.qwebviewPreview, self.qplaintexteditEdit)
 
         QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
@@ -65,7 +65,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
     def edit(self):
         self.qobjectscrollsynchronize.reload()
         self.setCurrentIndex(0)
-        self.qplaintexteditSynopsis.setFocus()
+        self.qplaintexteditEdit.setFocus()
 
     def update_config(self):
         opts = config().parse()
@@ -74,10 +74,10 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.default_font_size = opts.default_font_size
         self.synopsis_size = opts.synopsis_size
 
-        self.qplaintexteditSynopsis.setFont(QFont(self.mono_family))
+        self.qplaintexteditEdit.setFont(QFont(self.mono_family))
 
     def append(self, text, position=None):
-        self.qplaintexteditSynopsis.appendPlainText(text)
+        self.qplaintexteditEdit.appendPlainText(text)
 
         if self.currentIndex():
             if position:
@@ -93,14 +93,14 @@ class QstackedwidgetSynopsis(Qstackedwidget):
             if error.errno != 2:
                 raise
 
-            if not self.qplaintexteditSynopsis.toPlainText():
+            if not self.qplaintexteditEdit.toPlainText():
                 return
 
             with open(self.path_synopsis(), "ab+") as oput:
                 self.save_file(oput)
 
     def save_file(self, oput):
-        text = self.qplaintexteditSynopsis.toPlainText()
+        text = self.qplaintexteditEdit.toPlainText()
         if text == oput.read():
             return
 
@@ -109,7 +109,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         oput.truncate()
 
         self.qwebviewPreview.set_body(text)
-        self.qplaintexteditSynopsis.document().setModified(False)
+        self.qplaintexteditEdit.document().setModified(False)
 
     def path_synopsis(self):
         self.update_config()
@@ -132,21 +132,21 @@ class QstackedwidgetSynopsis(Qstackedwidget):
                 text = iput.read()
 
                 self.qwebviewPreview.set_body(text)
-                self.qplaintexteditSynopsis.setPlainText(text)
+                self.qplaintexteditEdit.setPlainText(text)
 
         except IOError as error:
             if error.errno == 2:
-                self.qplaintexteditSynopsis.clear()
+                self.qplaintexteditEdit.clear()
             else:
                 raise
 
     def state_save(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
 
         vprefs.set('synopsis_mode', self.currentIndex())
 
     def state_restore(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
 
         self.setCurrentIndex(int(vprefs.get('synopsis_mode', None) or 0))
 
@@ -161,7 +161,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
 
     @pyqtSlot(str)
     def on_qcomboboxMarkdown_activated(self, text):
-        self.qplaintexteditSynopsis.insertFormat(text)
+        self.qplaintexteditEdit.insertFormat(text)
         self.qcomboboxMarkdown.setCurrentIndex(0)
 
     @pyqtSlot(bool)
@@ -173,7 +173,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.edit()
 
     @pyqtSlot(bool)
-    def on_qplaintexteditSynopsis_showPreview(self):
+    def on_qplaintexteditEdit_showPreview(self):
         self.preview()
 
     @pyqtSlot(bool)
@@ -185,23 +185,23 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.preview()
 
     @pyqtSlot(bool)
-    def on_qplaintexteditSynopsis_modificationChanged(self, changed):
+    def on_qplaintexteditEdit_modificationChanged(self, changed):
         self.toolButtonSave.setEnabled(changed)
 
     @pyqtSlot(bool)
     def on_toolButtonRedo_clicked(self, checked):
-        self.qplaintexteditSynopsis.redo()
+        self.qplaintexteditEdit.redo()
 
     @pyqtSlot(bool)
     def on_toolButtonUndo_clicked(self, checked):
-        self.qplaintexteditSynopsis.undo()
+        self.qplaintexteditEdit.undo()
 
     @pyqtSlot(bool)
-    def on_qplaintexteditSynopsis_redoAvailable(self, available):
+    def on_qplaintexteditEdit_redoAvailable(self, available):
         self.toolButtonRedo.setEnabled(available)
 
     @pyqtSlot(bool)
-    def on_qplaintexteditSynopsis_undoAvailable(self, available):
+    def on_qplaintexteditEdit_undoAvailable(self, available):
         self.toolButtonUndo.setEnabled(available)
 
     @pyqtSlot(bool)

@@ -18,7 +18,7 @@ from calibre.ptempfile import PersistentTemporaryFile
 from calibre.ebooks.conversion.plugins.pdf_output import PAPER_SIZES
 from calibre.gui2 import elided_text, error_dialog, choose_save_file, Application, open_local_file, dynamic
 from calibre.gui2.widgets2 import Dialog
-from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
 from calibre.utils.icu import numeric_sort_key
 from calibre.utils.ipc.simple_worker import start_pipe_worker
 from calibre.utils.filenames import expanduser

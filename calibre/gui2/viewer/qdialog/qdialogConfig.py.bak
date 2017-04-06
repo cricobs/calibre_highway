@@ -237,7 +237,7 @@ class QdialogConfig(Qdialog):
                                      theme[len('theme_'):])
 
     def init_dictionaries(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs
         self.word_lookups = dprefs['word_lookups']
 
     @dynamic_property
@@ -318,7 +318,7 @@ class QdialogConfig(Qdialog):
     def restore_defaults(self):
         opts = config('').parse()
         self.load_options(opts)
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs, vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs, vprefs
         self.word_lookups = dprefs.defaults['word_lookups']
         self.opt_singleinstance.setChecked(vprefs.defaults['singleinstance'])
 
@@ -374,7 +374,7 @@ class QdialogConfig(Qdialog):
             setattr(self, 'current_%s_color' % x, getattr(opts, '%s_color' % x))
         self.update_sample_colors()
         self.opt_show_controls.setChecked(opts.show_controls)
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
         self.opt_singleinstance.setChecked(bool(vprefs['singleinstance']))
 
     def change_color(self, which, reset=False):
@@ -463,6 +463,6 @@ class QdialogConfig(Qdialog):
         c.set('show_controls', self.opt_show_controls.isChecked())
         for x in ('top', 'bottom', 'side'):
             c.set(x + '_margin', int(getattr(self, 'opt_%s_margin' % x).value()))
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs, vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs, vprefs
         dprefs['word_lookups'] = self.word_lookups
         vprefs['singleinstance'] = self.opt_singleinstance.isChecked()

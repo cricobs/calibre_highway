@@ -24,7 +24,7 @@ from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
 from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
-from calibre.gui2.viewer.qapplication.qapplication import Qapplication
+from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qlabel.qlabelFullscreen import QlabelFullscreen
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
@@ -232,7 +232,7 @@ def test_history():
     assert h == [0, 9]
 
 
-class QmainwindowEbook(Qmainwindow):
+class QmainwindowViewer(Qmainwindow):
     STATE_VERSION = 2
     FLOW_MODE_TT = _(
         'Switch to paged mode - where the text is broken up into pages like a paper book')
@@ -244,7 +244,7 @@ class QmainwindowEbook(Qmainwindow):
             self, pathtoebook=None, debug_javascript=False, open_at=None,
             start_in_fullscreen=False, continue_reading=False, listener=None, file_events=(),
             parent=None):
-        super(QmainwindowEbook, self).__init__(parent)
+        super(QmainwindowViewer, self).__init__(parent)
 
         self.closed = False
         self.current_book_has_toc = False
@@ -481,7 +481,7 @@ class QmainwindowEbook(Qmainwindow):
             return
         if self.shutdown():
             self.closed = True
-            return super(QmainwindowEbook, self).closeEvent(e)
+            return super(QmainwindowViewer, self).closeEvent(e)
 
         else:
             e.ignore()
@@ -553,7 +553,7 @@ class QmainwindowEbook(Qmainwindow):
         if not self.view.document.fullscreen_scrollbar:
             self.vertical_scrollbar.setVisible(False)
 
-        super(QmainwindowEbook, self).showFullScreen()
+        super(QmainwindowViewer, self).showFullScreen()
 
     def show_full_screen_label(self):
         f = self.full_screen_label
@@ -626,9 +626,9 @@ class QmainwindowEbook(Qmainwindow):
         self.settings_changed()
         self.full_screen_label.setVisible(False)
         if self.was_maximized:
-            super(QmainwindowEbook, self).showMaximized()
+            super(QmainwindowViewer, self).showMaximized()
         else:
-            super(QmainwindowEbook, self).showNormal()
+            super(QmainwindowViewer, self).showNormal()
 
     def goto(self, ref):
         if ref:
@@ -1248,7 +1248,7 @@ class QmainwindowEbook(Qmainwindow):
         if self.metadata.isVisible():
             self.metadata.update_layout()
 
-        return super(QmainwindowEbook, self).resizeEvent(ev)
+        return super(QmainwindowViewer, self).resizeEvent(ev)
 
     def initialize_dock_state(self):
         self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
@@ -1310,7 +1310,7 @@ class QmainwindowEbook(Qmainwindow):
             self.create_action(**action_options)
 
     def windowTitle(self):
-        return unicode(super(QmainwindowEbook, self).windowTitle())
+        return unicode(super(QmainwindowViewer, self).windowTitle())
 
 
 def config(defaults=None):
@@ -1426,7 +1426,7 @@ def main(args=sys.argv):
     listener = None
     override = 'calibre-ebook-viewer' if islinux else None
     acc = EventAccumulator()
-    app = Qapplication(args, override_program_name=override, color_prefs=vprefs)
+    app = QapplicationViewer(args, override_program_name=override, color_prefs=vprefs)
     app.file_event_hook = acc
     app.load_builtin_fonts()
     app.setWindowIcon(QIcon(I('viewer.png')))
@@ -1440,7 +1440,7 @@ def main(args=sys.argv):
                          det_msg=traceback.format_exc(), show=True)
             raise SystemExit(1)
 
-    main = QmainwindowEbook(
+    main = QmainwindowViewer(
         args[1] if len(args) > 1 else None, debug_javascript=opts.debug_javascript,
         open_at=open_at, continue_reading=opts.continue_reading,
         start_in_fullscreen=opts.full_screen, listener=listener, file_events=acc)

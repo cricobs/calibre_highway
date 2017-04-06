@@ -185,7 +185,7 @@ class QdialogConfig(Qdialog):
         opts = config('').parse()
         self.load_options(opts)
 
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs, vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs, vprefs
         self.word_lookups = dprefs.defaults['word_lookups']
         self.singleinstance.setChecked(vprefs.defaults['singleinstance'])
 
@@ -234,7 +234,7 @@ class QdialogConfig(Qdialog):
 
         self.update_sample_colors()
 
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
         self.singleinstance.setChecked(bool(vprefs['singleinstance']))
 
     def change_color(self, which, reset=False):
@@ -308,7 +308,7 @@ class QdialogConfig(Qdialog):
                                      theme[len('theme_'):])
 
     def init_dictionaries(self):
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs
         self.word_lookups = dprefs['word_lookups']
 
     @dynamic_property
@@ -437,6 +437,6 @@ class QdialogConfig(Qdialog):
 
             c.set(name, value)
 
-        from calibre.gui2.viewer.qmainwindow.qmainwindowEbook import dprefs, vprefs
+        from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import dprefs, vprefs
         dprefs['word_lookups'] = self.word_lookups
         vprefs['singleinstance'] = self.singleinstance.isChecked()

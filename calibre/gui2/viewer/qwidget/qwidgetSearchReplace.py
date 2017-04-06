@@ -32,9 +32,11 @@ class QwidgetSearchReplace(Qwidget):
     @property
     def position_width(self):
         if self._position_width is None:
-            self._position_width = QScrollBar().sizeHint().width()
-            self._position_width += self.layout().contentsMargins().left()
-            self._position_width += self.width()
+            self._position_width = (
+                QScrollBar().sizeHint().width() +
+                self.layout().contentsMargins().left() +
+                self.width()
+            )
 
         return self._position_width
 

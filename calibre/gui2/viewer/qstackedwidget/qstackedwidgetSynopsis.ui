@@ -92,7 +92,7 @@
      </layout>
     </item>
     <item>
-     <widget class="QplaintexteditSynopsis" name="qplaintexteditSynopsis">
+     <widget class="QplaintexteditEdit" name="qplaintexteditEdit">
       <property name="focusPolicy">
        <enum>Qt::StrongFocus</enum>
       </property>
@@ -147,9 +147,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>QplaintexteditSynopsis</class>
+   <class>QplaintexteditEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>calibre.gui2.viewer.qplaintextEdit.qplaintexteditSynopsis</header>
+   <header>calibre.gui2.viewer.qplaintextedit.qplaintexteditEdit</header>
   </customwidget>
   <customwidget>
    <class>QcomboboxMarkdown</class>

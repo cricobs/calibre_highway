@@ -15,10 +15,10 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QcomboboxQlineedit" name="comboBox"/>
+    <widget class="QcomboboxQlineedit" name="qcomboboxSearch"/>
    </item>
    <item>
-    <widget class="QcomboboxQlineedit" name="comboBox_2"/>
+    <widget class="QcomboboxQlineedit" name="qcomboboxReplace"/>
    </item>
   </layout>
  </widget>
