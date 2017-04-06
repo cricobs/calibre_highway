@@ -1,5 +1,4 @@
-from PyQt5.QtCore import QRect
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QApplication
 
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
@@ -19,6 +18,14 @@ class QwidgetSearchReplace(Qwidget):
 
         self.qapplication = QApplication.instance()
         self.qapplication.focusChanged.connect(self.on_qapplication_focusChanged)
+
+    @pyqtSlot(str)
+    def on_qcomboboxSearch_returnPressed(self, text):
+        self.qapplication.search.emit(self.relative, text)
+
+    @pyqtSlot(str)
+    def on_qcomboboxReplace_returnPressed(self, text):
+        self.qapplication.replace.emit(self.relative, self.qcomboboxSearch.lineEdit().text(), text)
 
     def on_qapplication_focusChanged(self, old, now):
         try:
@@ -59,14 +66,14 @@ class QwidgetSearchReplace(Qwidget):
 
     def position_top(self):
         qrect = self.relative.rect()
-        try:
+        try:  # QWebView
             width = self.relative.page().mainFrame().contentsSize().width()
         except:
             pass
         else:
             if width < qrect.width():
                 qrect.setWidth(width)
-        try:
+        try:  # QTextEdit
             qrect = self.relative.viewport().rect()
         except:
             pass

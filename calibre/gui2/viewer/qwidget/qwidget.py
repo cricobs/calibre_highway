@@ -10,6 +10,19 @@ class Qwidget(QWidget, Qobject):
     def __init__(self, *args, **kwargs):
         super(Qwidget, self).__init__(*args, **kwargs)
 
+        if self.is_search_replace:
+            self.qapplication.search.connect(self.on_qapplication_search)
+            self.qapplication.replace.connect(self.on_qapplication_replace)
+
+    def on_qapplication_undo(self):
+        pass
+
+    def on_qapplication_search(self, qwidget, search):
+        pass
+
+    def on_qapplication_replace(self, qwidget, search, replace):
+        pass
+
     @property
     def is_visibility_tracked(self):
         return False

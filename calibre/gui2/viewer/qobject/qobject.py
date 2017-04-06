@@ -2,7 +2,7 @@ import json
 from PyQt5.uic import loadUi
 
 from PyQt5.QtCore import QObject
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMenu
 
@@ -15,6 +15,8 @@ class Qobject(QObject):
         super(Qobject, self).__init__(*args, **kwargs)
 
         self._settings = None
+
+        self.qapplication = QApplication.instance()
 
         ui_path = filepath_relative(self, "ui")
         try:
@@ -33,7 +35,7 @@ class Qobject(QObject):
             with iput:
                 self.settings = json.load(iput)
 
-        qactions = QApplication.instance().qactions.get(self.__class__.__name__)
+        qactions = self.qapplication.qactions.get(self.__class__.__name__)
         if qactions:
             self.add_qapplication_actions(qactions)
 
@@ -57,7 +59,8 @@ class Qobject(QObject):
         for options in actions:
             self.create_action(qmenu=qmenu, **options)
 
-    def create_action(self, name, text=None, slots=None, icon=None, checkable=False, shortcut=None,
+    def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
+                      shortcuts=None,
                       separator=False, qmenu=None, enabled=True, data=None, actions=None,
                       parents=None, signals=None, *args,
                       **kwargs):
@@ -80,8 +83,8 @@ class Qobject(QObject):
                 getattr(self, signal).connect(slot)
         if parents:
             qaction.parents = parents
-        if shortcut:
-            pass
+        if shortcuts:
+            qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
         if qmenu is not None:
             pass
             # qmenu.addAction(qaction)

@@ -1,5 +1,4 @@
-import json
-
+from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
@@ -7,13 +6,14 @@ from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosit
 from calibre.gui2.viewer.qplaintextedit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
     QsyntaxhighlighterSynopsis
-from calibre.library.filepath import filepath_relative
 
 
 class QplaintexteditEdit(Qplaintextedit):
     showPreview = pyqtSignal(bool)
     positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
+
+    formats = None
 
     def __init__(self, *args, **kwargs):
         super(QplaintexteditEdit, self).__init__(*args, **kwargs)
@@ -24,9 +24,22 @@ class QplaintexteditEdit(Qplaintextedit):
 
         self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
         # self.qsyntaxhiglighter.setDict(self.dict)
+        self.installEventFilter(self)
 
-        with open(filepath_relative(self, "json")) as iput:
-            self.formats = json.load(iput)["formats"]
+    def load_settings(self, settings):
+        super(QplaintexteditEdit, self).load_settings(settings)
+
+        self.formats = settings["formats"]
+
+    def on_qapplication_search(self, qwidget, search):
+        if qwidget is not self:
+            return
+
+        self.setReadOnly(True)
+        self.find(search)
+
+        QTimer.singleShot(0, lambda: self.setReadOnly(False))
+
     @property
     def is_search_replace(self):
         return True

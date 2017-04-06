@@ -4,6 +4,9 @@
       "name": "SearchReplace",
       "icon": "search.png",
       "checkable": true,
+      "shortcuts": [
+        "Ctrl+Alt+F"
+      ],
       "parents": [
         "QtoolbarEdit"
       ],

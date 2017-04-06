@@ -49,6 +49,10 @@ class QwebviewDocument(Qwebview):
     def __init__(self, *args, **kwargs):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
 
+    def on_qapplication_search(self, qwidget, search):
+        if qwidget is self:
+            self.search(search)
+
     def set_footnotes_view(self, view):
         self.footnotes.set_footnotes_view(view)
         view.follow_link.connect(self.follow_footnote_link)
