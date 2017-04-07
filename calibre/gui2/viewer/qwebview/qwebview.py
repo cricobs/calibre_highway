@@ -10,7 +10,12 @@ class Qwebview(QWebView, Qwidget):
     def __init__(self, *args, **kwargs):
         super(Qwebview, self).__init__(*args, **kwargs)
 
+    def on_qapplication_search(self, qwidget, search):
+        if qwidget is not self:
+            return
+
+        self.findText(search)
+
     def setPage(self, qwebpage):
         super(Qwebview, self).setPage(qwebpage)
         self.pageChange.emit(qwebpage)
-

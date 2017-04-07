@@ -1,5 +1,5 @@
+from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QApplication
 
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
@@ -16,7 +16,6 @@ class QwidgetSearchReplace(Qwidget):
 
         self.relative = relative
 
-        self.qapplication = QApplication.instance()
         self.qapplication.focusChanged.connect(self.on_qapplication_focusChanged)
 
     def showEvent(self, qshowevent):
@@ -27,10 +26,16 @@ class QwidgetSearchReplace(Qwidget):
     @pyqtSlot(str)
     def on_qcomboboxSearch_returnPressed(self, text):
         self.qapplication.search.emit(self.relative, text)
+        self.hide_and_show()
+
+    def hide_and_show(self):  # hack Qwebview not repainting correctly on scroll
+        self.hide()
+        QTimer.singleShot(0, self.show)
 
     @pyqtSlot(str)
     def on_qcomboboxReplace_returnPressed(self, text):
         self.qapplication.replace.emit(self.relative, self.qcomboboxSearch.lineEdit().text(), text)
+        self.hide_and_show()
 
     def on_qapplication_focusChanged(self, old, now):
         try:

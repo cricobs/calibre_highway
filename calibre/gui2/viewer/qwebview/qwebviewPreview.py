@@ -42,7 +42,7 @@ class QwebviewPreview(Qwebview):
 
     def keyPressEvent(self, qkeyevent):
         super(QwebviewPreview, self).keyPressEvent(qkeyevent)
-        if qkeyevent.key() in [Qt.Key_Escape, Qt.Key_Return]:
+        if qkeyevent.key() in [Qt.Key_Escape]:
             self.showEditor.emit(True)
 
     def mouseDoubleClickEvent(self, qmouseevent):
