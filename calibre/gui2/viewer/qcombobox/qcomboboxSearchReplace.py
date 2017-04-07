@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
 from calibre.gui2.viewer.qcombobox.qcombobox import Qcombobox
@@ -10,10 +11,22 @@ class QcomboboxSearchReplace(Qcombobox):
     def __init__(self, *args, **kwargs):
         super(QcomboboxSearchReplace, self).__init__(*args, **kwargs)
 
+        c = self.completer()
+        c.setCompletionMode(c.PopupCompletion)
+
         self.qlineedit = QlineeditSearchReplace()
-        self.qlineedit.returnPressed.connect(self.on_qlineEdit_returnPressed)
+        self.qlineedit.returnPressed.connect(self.on_qlineedit_returnPressed)
 
         self.setLineEdit(self.qlineedit)
 
-    def on_qlineEdit_returnPressed(self):
-        self.returnPressed.emit(self.sender().text())
+        self.insertItem(0, "zero")
+        self.insertItem(1, "one")
+        self.insertItem(2, "two")
+        self.insertItem(3, "three")
+
+        self.setEditText("")
+
+    def on_qlineedit_returnPressed(self):
+        text = self.sender().text()
+        if text:
+            self.returnPressed.emit(text)

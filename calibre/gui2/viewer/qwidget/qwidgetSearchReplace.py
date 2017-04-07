@@ -4,6 +4,10 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
+# todo
+#  - replace
+#  - store relative search/replace history
+
 class QwidgetSearchReplace(Qwidget):
     TOP = 0
 

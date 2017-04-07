@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>190</width>
+    <width>196</width>
     <height>47</height>
    </rect>
   </property>
@@ -33,6 +33,13 @@
    <item>
     <widget class="QcomboboxSearchReplace" name="qcomboboxReplace"/>
    </item>
+   <item>
+    <widget class="QwidgetUpDown" name="widget" native="true">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0,0,0,0)</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -40,6 +47,12 @@
    <class>QcomboboxSearchReplace</class>
    <extends>QComboBox</extends>
    <header>calibre.gui2.viewer.qcombobox.qcomboboxSearchReplace</header>
+  </customwidget>
+  <customwidget>
+   <class>QwidgetUpDown</class>
+   <extends>QWidget</extends>
+   <header>calibre.gui2.viewer.qwidget.qwidgetUpDown</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

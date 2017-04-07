@@ -2,6 +2,7 @@
   "actions": [
     {
       "name": "SearchReplace",
+      "text": "Search",
       "icon": "search.png",
       "checkable": true,
       "shortcuts": [
