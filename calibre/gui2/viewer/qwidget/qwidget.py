@@ -14,11 +14,19 @@ class Qwidget(QWidget, Qobject):
             self.qapplication.search.connect(self.on_qapplication_search)
             self.qapplication.replace.connect(self.on_qapplication_replace)
 
-    def on_qapplication_search(self, qwidget, search):
+    def search(self, search, backwards=False):
         pass
 
-    def on_qapplication_replace(self, qwidget, search, replace):
+    def replace(self, search, replace, backwards=False):
         pass
+
+    def on_qapplication_search(self, qwidget, search):
+        if qwidget is self:
+            self.search(search)
+
+    def on_qapplication_replace(self, qwidget, search, replace):
+        if qwidget is self:
+            self.replace(search, replace)
 
     @property
     def is_visibility_tracked(self):

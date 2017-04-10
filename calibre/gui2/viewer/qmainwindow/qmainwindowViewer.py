@@ -1438,7 +1438,7 @@ def main(args=sys.argv):
         args[1] if len(args) > 1 else None, debug_javascript=opts.debug_javascript,
         open_at=open_at, continue_reading=opts.continue_reading,
         start_in_fullscreen=opts.full_screen, listener=listener, file_events=acc)
-    app.installEventFilter(main)
+
     # This is needed for paged mode. Without it, the first document that is
     # loaded will have extra blank space at the bottom, as
     # turn_off_internal_scrollbars does not take effect for the first

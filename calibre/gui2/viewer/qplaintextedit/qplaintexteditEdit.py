@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QRegExp
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
@@ -26,17 +27,20 @@ class QplaintexteditEdit(Qplaintextedit):
         # self.qsyntaxhiglighter.setDict(self.dict)
         self.installEventFilter(self)
 
-    def load_settings(self, settings):
-        super(QplaintexteditEdit, self).load_settings(settings)
+    def replace(self, search, replace, backwards=False):
+        self.search(search)
+        t = self.textCursor()
+        if t.hasSelection():
+            t.insertText(replace)
 
-        self.formats = settings["formats"]
-
-    def on_qapplication_search(self, qwidget, search):
-        if qwidget is not self:
-            return
-
+    def search(self, search, backwards=False):
         self.setReadOnly(True)  # hack QlineditSearchReplace return pressed is propagated
-        self.find(search)
+
+        qregexp = QRegExp(search)
+        qtextcursor = self.document().find(qregexp, self.textCursor().position())
+
+        if not qtextcursor.isNull():
+            self.setTextCursor(qtextcursor)
 
         QTimer.singleShot(0, lambda: self.setReadOnly(False))
 
@@ -68,6 +72,11 @@ class QplaintexteditEdit(Qplaintextedit):
         self.positionSave.emit()
         super(QplaintexteditEdit, self).setPlainText(p_str)
         self.positionLoad.emit()
+
+    def load_settings(self, settings):
+        super(QplaintexteditEdit, self).load_settings(settings)
+
+        self.formats = settings["formats"]
 
     def keyPressEvent(self, qkeyevent):
         super(QplaintexteditEdit, self).keyPressEvent(qkeyevent)
