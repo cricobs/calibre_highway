@@ -5,8 +5,7 @@ from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
 # todo
-#  - replace
-#  - store relative search/replace history
+#  - store relative search/replace history in qsettings
 
 class QwidgetSearchReplace(Qwidget):
     TOP = 0
@@ -32,7 +31,7 @@ class QwidgetSearchReplace(Qwidget):
         self.qapplication.search.emit(self.relative, text)
         self.hide_and_show()
 
-    def hide_and_show(self):  # hack Qwebview not repainting correctly on scroll
+    def hide_and_show(self):  # agtft Qwebview not repainting correctly on scroll
         self.hide()
         QTimer.singleShot(0, self.show)
 
@@ -43,11 +42,11 @@ class QwidgetSearchReplace(Qwidget):
 
     def on_qapplication_focusChanged(self, old, now):
         try:
-            is_search_replace = now.is_search_replace
+            mode_search = now.mode_search
         except AttributeError:
             pass
         else:
-            if is_search_replace:
+            if mode_search ^ self.NONE:
                 self.setParent(now)
 
     @property
@@ -75,6 +74,8 @@ class QwidgetSearchReplace(Qwidget):
 
         if self._relative:
             self._relative.installEventFilter(self)
+            self.qcomboboxSearch.setVisible(self._relative.mode_search & self.SEARCH)
+            self.qcomboboxReplace.setVisible(self._relative.mode_search & self.REPLACE)
 
         self.update_position()
 

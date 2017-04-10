@@ -31,7 +31,7 @@ class QdockwidgetQwebinspector(Qdockwidget):
 
     def on_InspectElement_triggered(self):
         self.show()
-        self.setMinimumHeight(0)  # hack not starting with correct size
+        self.setMinimumHeight(0)  # agtft not starting with correct size
         self.qstackedwidget.setCurrentIndex(self.qstackedwidget.indexOf(self.sender().data()))
 
     @property

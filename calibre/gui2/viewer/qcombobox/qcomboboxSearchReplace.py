@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
 from calibre.gui2.viewer.qcombobox.qcombobox import Qcombobox

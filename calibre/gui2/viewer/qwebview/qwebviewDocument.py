@@ -54,8 +54,8 @@ class QwebviewDocument(Qwebview):
         view.follow_link.connect(self.follow_footnote_link)
 
     @property
-    def is_search_replace(self):
-        return True
+    def mode_search(self):
+        return self.SEARCH
 
     def initialize_view(self, debug_javascript=False):
         self._ignore_scrollbar_signals = False

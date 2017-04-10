@@ -6,11 +6,12 @@ from calibre.gui2.viewer.qobject.qobject import Qobject
 
 class Qwidget(QWidget, Qobject):
     visibilityChanged = pyqtSignal(bool)
+    NONE, SEARCH, REPLACE, ALL = list(map(lambda x: 2 ** x, range(4)))
 
     def __init__(self, *args, **kwargs):
         super(Qwidget, self).__init__(*args, **kwargs)
 
-        if self.is_search_replace:
+        if self.mode_search:
             self.qapplication.search.connect(self.on_qapplication_search)
             self.qapplication.replace.connect(self.on_qapplication_replace)
 
@@ -33,8 +34,8 @@ class Qwidget(QWidget, Qobject):
         return False
 
     @property
-    def is_search_replace(self):
-        return False
+    def mode_search(self):
+        return self.NONE
 
     def hideEvent(self, qhideevent):
         super(Qwidget, self).hideEvent(qhideevent)

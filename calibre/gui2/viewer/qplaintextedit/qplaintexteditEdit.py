@@ -34,7 +34,7 @@ class QplaintexteditEdit(Qplaintextedit):
             t.insertText(replace)
 
     def search(self, search, backwards=False):
-        self.setReadOnly(True)  # hack QlineditSearchReplace return pressed is propagated
+        self.setReadOnly(True)  # agtft QlineditSearchReplace return pressed is propagated
 
         qregexp = QRegExp(search)
         qtextcursor = self.document().find(qregexp, self.textCursor().position())
@@ -45,8 +45,8 @@ class QplaintexteditEdit(Qplaintextedit):
         QTimer.singleShot(0, lambda: self.setReadOnly(False))
 
     @property
-    def is_search_replace(self):
-        return True
+    def mode_search(self):
+        return self.SEARCH | self.REPLACE
 
     def insertFormat(self, format):
         c = self.textCursor()
