@@ -1,4 +1,3 @@
-from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QWidget
@@ -24,7 +23,7 @@ class Qdockwidget(QDockWidget, Qwidget):
         if target != self:
             return
 
-        if self.is_auto_hide and interval == self.interval_hide:
+        if self.mode_hide and interval == self.interval_hide:
             self.close()
 
     def on_toggleViewAction_triggered(self, checked):
@@ -32,12 +31,12 @@ class Qdockwidget(QDockWidget, Qwidget):
             self.auto_hide()
 
     @property
-    def is_auto_hide(self):
+    def mode_hide(self):
         return False
 
     def auto_hide(self):
-        if self.is_auto_hide:
-            self.qapplication.qtimer_inactivity(self, False, True, self.interval_hide)
+        if self.mode_hide:
+            self.qapplication.time_inactivity(self, False, True, self.interval_hide)
 
     def show(self):
         super(Qdockwidget, self).show()

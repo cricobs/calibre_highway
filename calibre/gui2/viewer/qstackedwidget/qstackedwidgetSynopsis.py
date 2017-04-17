@@ -1,7 +1,6 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication
 
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
 from calibre.gui2.viewer.qobject.qobjectScrollSynchronize import QobjectScrollSynchronize
@@ -53,8 +52,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
             self.qwebviewPreview, self.qplaintexteditEdit)
 
-        QApplication.instance().aboutToQuit.connect(self.on_qapplication_aboutToQuit)
-
         self.state_restore()
 
     def preview(self):
@@ -83,7 +80,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
             if position:
                 self.qwebviewPreview.scroll_to_position(position)
 
-            self.save()
+        self.save()
 
     def save(self):
         try:
@@ -215,3 +212,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
     def on_qapplication_aboutToQuit(self):
         self.save()
         self.state_save()
+
+    @property
+    def mode_save(self):
+        return True

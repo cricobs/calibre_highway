@@ -11,9 +11,19 @@ class Qwidget(QWidget, Qobject):
     def __init__(self, *args, **kwargs):
         super(Qwidget, self).__init__(*args, **kwargs)
 
-        if self.mode_search:
+        if self.mode_search ^ self.NONE:
             self.qapplication.search.connect(self.on_qapplication_search)
             self.qapplication.replace.connect(self.on_qapplication_replace)
+
+        if self.mode_save:
+            self.qapplication.aboutToQuit.connect(self.on_qapplication_aboutToQuit)
+
+    def on_qapplication_aboutToQuit(self):
+        """
+        called if mode_save is True
+        :return:
+        """
+        pass
 
     def search(self, search, backwards=False):
         pass
@@ -22,15 +32,32 @@ class Qwidget(QWidget, Qobject):
         pass
 
     def on_qapplication_search(self, qwidget, search):
+        """
+        called if mode_search ^ self.NONE
+        :param qwidget:
+        :param search:
+        :return:
+        """
         if qwidget is self:
             self.search(search)
 
     def on_qapplication_replace(self, qwidget, search, replace):
+        """
+        called if mode_search ^ self.NONE
+        :param qwidget:
+        :param search:
+        :param replace:
+        :return:
+        """
         if qwidget is self:
             self.replace(search, replace)
 
     @property
-    def is_visibility_tracked(self):
+    def mode_save(self):
+        return False
+
+    @property
+    def mode_visibility(self):
         return False
 
     @property
@@ -40,10 +67,10 @@ class Qwidget(QWidget, Qobject):
     def hideEvent(self, qhideevent):
         super(Qwidget, self).hideEvent(qhideevent)
 
-        if self.is_visibility_tracked:
+        if self.mode_visibility:
             self.visibilityChanged.emit(False)
 
     def showEvent(self, qshowevent):
         super(Qwidget, self).showEvent(qshowevent)
-        if self.is_visibility_tracked:
+        if self.mode_visibility:
             self.visibilityChanged.emit(True)

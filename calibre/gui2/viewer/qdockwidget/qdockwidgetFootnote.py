@@ -6,5 +6,5 @@ class QdockwidgetFootnote(Qdockwidget):
         super(QdockwidgetFootnote, self).__init__(*args, **kwargs)
 
     @property
-    def is_auto_hide(self):
+    def mode_hide(self):
         return True

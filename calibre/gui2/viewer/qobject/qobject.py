@@ -35,6 +35,9 @@ class Qobject(QObject):
             with iput:
                 self.settings = json.load(iput)
 
+        # todo
+        # connect self.qapplication.qactionAdded to self.add_qapplication_action
+        # if self.__class__.__name__
         qactions = self.qapplication.qactions.get(self.__class__.__name__)
         if qactions:
             self.add_qapplication_actions(qactions)
@@ -60,10 +63,8 @@ class Qobject(QObject):
             self.create_action(qmenu=qmenu, **options)
 
     def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
-                      shortcuts=None,
-                      separator=False, qmenu=None, enabled=True, data=None, actions=None,
-                      parents=None, signals=None, *args,
-                      **kwargs):
+                      shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
+                      actions=None, parents=None, signals=None, *args, **kwargs):
         text = text if text else name
 
         qaction = Qaction(text, self)
@@ -100,6 +101,8 @@ class Qobject(QObject):
             self.create_actions(actions, q)
 
         self.addAction(qaction)
+
+        return qaction
 
     def add_qapplication_actions(self, qactions):
         for qaction in qactions:

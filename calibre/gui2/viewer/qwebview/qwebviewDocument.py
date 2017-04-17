@@ -14,6 +14,7 @@ from calibre.constants import iswindows
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
 from calibre.gui2.shortcuts import Shortcuts
+from calibre.gui2.viewer.qaction.qaction import Qaction
 from calibre.gui2.viewer.qdialog.gestures import GestureHandler
 from calibre.gui2.viewer.qdialog.qdialogConfig import config, load_themes
 from calibre.gui2.viewer.qdialog.qdialogImage import ImagePopup
@@ -38,6 +39,10 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
         for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items()
         }
 
+
+# todo
+# - use Qobject.create_action
+# - replace synopsis insert actions for QdialogEdit
 
 class QwebviewDocument(Qwebview):
     magnification_changed = pyqtSignal(object)
@@ -173,27 +178,60 @@ class QwebviewDocument(Qwebview):
         for action_options in actions:
             self.create_online_action(qmenu=qmenu, **action_options)
 
-    def create_action(self, name, text, slot=None, icon=None, checkable=False, shortcut=None,
-                      context=False, separator=False, qmenu=None):
-        # fixme use superclass
-        action = QAction(_(text), self)
-        action.setCheckable(checkable)
-        action.setData(shortcut)
+    def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
+                      shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
+                      actions=None, parents=None, signals=None, context=None, *args, **kwargs):
+        text = text if text else name
 
-        if slot:
-            action.triggered.connect(getattr(self, slot))
-        if icon:
-            action.setIcon(QIcon(I(icon)))
+        qaction = Qaction(text, self)
+        qaction.setCheckable(checkable)
+        qaction.setIcon(icon)
+        qaction.setObjectName('qaction_' + name)
+        qaction.setEnabled(enabled)
+        qaction.setData(data)
+
+        if slots:
+            for signal, names in slots.items():
+                slot = reduce(getattr, names, self)
+                getattr(qaction, signal).connect(slot)
+        if signals:
+            for signal, names in signals.items():
+                slot = reduce(getattr, names, qaction)
+                getattr(self, signal).connect(slot)
+        if parents:
+            qaction.parents = parents
+        # if shortcuts:
+        #     qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
+        if qmenu is not None:
+            pass
+        if separator:
+            pass
+        if actions:
+            q = QMenu(self)
+            qaction.setMenu(q)
+            self.create_actions(actions, q)
+
+        self.addAction(qaction)
+
+        # --- differences
+        # fixme get shortcuts (from here | function | try)?
+        if shortcuts:
+            for shortcut in shortcuts:
+                qaction.setData(shortcut)
+
+        # fixme add group parameter?
         if context:
-            self.context_actions.append(action)
+            self.context_actions.append(qaction)
         if separator:
             action_separator = QAction(self)
             action_separator.setSeparator(True)
 
             self.context_actions.append(action_separator)
 
-        setattr(self, name + "_action", action)
-        self.addAction(action)
+        # fixme set in Qobject if this is the best method?
+        setattr(self, name + "_action", qaction)
+
+    # ---
 
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())

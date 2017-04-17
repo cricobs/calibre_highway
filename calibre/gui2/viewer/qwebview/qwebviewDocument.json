@@ -1,8 +1,26 @@
 {
   "actions": {
+    "QtoolbarEdit": [
+      {
+        "text": "Previous page",
+        "name": "previous_page",
+        "icon": "previous.png",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "slots": {
+        },
+        "signals": {
+        }
+      }
+    ],
     "root": [
       {
-        "slot": "copy_position",
+        "slots": {
+          "triggered": [
+            "copy_position"
+          ]
+        },
         "text": "Copy Position",
         "name": "copy_position",
         "icon": "copy.png"
@@ -15,42 +33,70 @@
         "separator": true
       },
       {
-        "slot": "search_online",
+        "slots": {
+          "triggered": [
+            "search_online"
+          ]
+        },
         "text": "",
         "name": "search_online",
         "context": true,
         "icon": "search.png"
       },
       {
-        "slot": "lookup",
+        "slots": {
+          "triggered": [
+            "lookup"
+          ]
+        },
         "name": "dictionary",
         "text": "&Lookup in dictionary",
-        "shortcut": "Lookup word",
+        "shortcuts": [
+          "Lookup word"
+        ],
         "context": true,
         "icon": "dictionary.png"
       },
       {
-        "slot": "search_next",
+        "slots": {
+          "triggered": [
+            "search_next"
+          ]
+        },
         "name": "search",
         "text": "&Search for next occurrence",
-        "shortcut": "Next occurrence",
+        "shortcuts": [
+          "Next occurrence"
+        ],
         "context": true,
         "icon": "dictionary.png"
       },
       {
-        "slot": "image_popup",
+        "slots": {
+          "triggered": [
+            "image_popup"
+          ]
+        },
         "text": "View &image...",
         "name": "view_image",
         "icon": "view-image.png"
       },
       {
-        "slot": "popup_table",
+        "slots": {
+          "triggered": [
+            "popup_table"
+          ]
+        },
         "text": "View &table...",
         "name": "view_table",
         "icon": "view.png"
       },
       {
-        "slot": "restore_font_size",
+        "slots": {
+          "triggered": [
+            "restore_font_size"
+          ]
+        },
         "checkable": true,
         "name": "restore_fonts",
         "text": "Default font size"

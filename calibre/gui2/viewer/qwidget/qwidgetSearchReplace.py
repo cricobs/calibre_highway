@@ -50,7 +50,7 @@ class QwidgetSearchReplace(Qwidget):
                 self.setParent(now)
 
     @property
-    def is_visibility_tracked(self):
+    def mode_visibility(self):
         return True
 
     def setParent(self, qwidget, qt_windowflags=Qt.Widget):

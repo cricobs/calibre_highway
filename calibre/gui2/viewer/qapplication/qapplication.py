@@ -62,7 +62,7 @@ class Qapplication(Application):
 
         self.inactivityTimeout.emit(target, qtimer.interval())
 
-    def qtimer_inactivity(self, target, cycle=True, unique=True, interval=6666):
+    def time_inactivity(self, target, cycle=True, unique=True, interval=6666):
         """
         start a qtimer for inactivity
         :param target: the object that will be used to identify the inactivityTimeout signal with

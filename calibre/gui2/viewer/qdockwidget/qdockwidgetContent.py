@@ -8,7 +8,7 @@ class QdockwidgetContent(Qdockwidget):
         self.qwidgetSearch.toc_view = self.qtreeviewContent
 
     @property
-    def is_auto_hide(self):
+    def mode_hide(self):
         return True
 
     def raise_(self):

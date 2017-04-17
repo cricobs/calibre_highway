@@ -333,7 +333,10 @@ class QmainwindowViewer(Qmainwindow):
         self.resize(653, 746)
         self.read_settings()
         self.build_recent_menu()
+
+        # todo use qsettings
         self.restore_state()
+
         self.settings_changed()
         self.set_bookmarks([])
         self.load_theme_menu()
@@ -373,7 +376,7 @@ class QmainwindowViewer(Qmainwindow):
         self.qapplication.shutdown_signal_received.connect(self.action_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
-        self.qapplication.qtimer_inactivity(self, interval=self.interval_hide_cursor)
+        self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
 
     def on_qapplication_activity(self):
         self.qapplication.restoreOverrideCursor()
@@ -500,14 +503,14 @@ class QmainwindowViewer(Qmainwindow):
                 self.restoreState(state, self.STATE_VERSION)
             except:
                 pass
-        self.initialize_dock_state()
+        # self.initialize_dock_state()
         mult = vprefs.get('multiplier', None)
         if mult:
             self.view.multiplier = mult
 
         # This will be opened on book open, if the book has a toc and it
         # was previously opened
-        self.qdockwidgetContent.close()
+        # self.qdockwidgetContent.close()
         self.action_toggle_paged_mode.setChecked(not vprefs.get('in_paged_mode', True))
         self.toggle_paged_mode(self.action_toggle_paged_mode.isChecked(), at_start=True)
 

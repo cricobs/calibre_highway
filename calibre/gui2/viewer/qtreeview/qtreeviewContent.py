@@ -39,6 +39,10 @@ class QtreeviewContent(Qtreeview):
 
         self.customContextMenuRequested.connect(self.context_menu)
 
+    @property
+    def mode_search(self):
+        return self.SEARCH
+
     def mouseMoveEvent(self, ev):
         if self.indexAt(ev.pos()).isValid():
             self.setCursor(Qt.PointingHandCursor)
