@@ -1,20 +1,6 @@
 {
   "actions": {
-    "QtoolbarEdit": [
-      {
-        "text": "Previous page",
-        "name": "previous_page",
-        "icon": "previous.png",
-        "parents": [
-          "QtoolbarEdit"
-        ],
-        "slots": {
-        },
-        "signals": {
-        }
-      }
-    ],
-    "root": [
+    "": [
       {
         "slots": {
           "triggered": [
@@ -26,6 +12,42 @@
         "icon": "copy.png"
       },
       {
+        "slots": {
+          "triggered": [
+            "image_popup"
+          ]
+        },
+        "text": "View &image...",
+        "name": "view_image",
+        "icon": "view-image.png"
+      },
+      {
+        "slots": {
+          "triggered": [
+            "popup_table"
+          ]
+        },
+        "text": "View &table...",
+        "name": "view_table",
+        "icon": "view.png"
+      },
+      {
+        "slots": {
+          "triggered": [
+            "restore_font_size"
+          ]
+        },
+        "checkable": true,
+        "name": "restore_fonts",
+        "text": "Default font size"
+      },
+      {
+        "text": "Go to...",
+        "name": "goto_location"
+      }
+    ],
+    "selection" : [
+            {
         "name": "synopsis",
         "text": "S&ynopsis",
         "icon": "modified.png",
@@ -70,83 +92,81 @@
         ],
         "context": true,
         "icon": "dictionary.png"
-      },
-      {
-        "slots": {
-          "triggered": [
-            "image_popup"
-          ]
-        },
-        "text": "View &image...",
-        "name": "view_image",
-        "icon": "view-image.png"
-      },
-      {
-        "slots": {
-          "triggered": [
-            "popup_table"
-          ]
-        },
-        "text": "View &table...",
-        "name": "view_table",
-        "icon": "view.png"
-      },
-      {
-        "slots": {
-          "triggered": [
-            "restore_font_size"
-          ]
-        },
-        "checkable": true,
-        "name": "restore_fonts",
-        "text": "Default font size"
-      },
-      {
-        "text": "Go to...",
-        "name": "goto_location"
       }
     ],
     "goto_location": [
       {
-        "call": "goto_next_section",
+        "slots": {
+          "triggered": [
+            "goto_next_section"
+          ]
+        },
         "name": "Next Section",
         "shortcut": "Next Section"
       },
       {
+        "slots": {
+          "triggered": [
+            "goto_previous_section"
+          ]
+        },
         "separator": true,
-        "call": "goto_previous_section",
         "name": "Previous Section",
         "shortcut": "Previous Section"
       },
       {
-        "call": "goto_document_start",
+        "slots": {
+          "triggered": [
+            "goto_document_start"
+          ]
+        },
         "name": "Document Start",
         "shortcut": "Document Top"
       },
       {
+        "slots": {
+          "triggered": [
+            "goto_document_end"
+          ]
+        },
         "separator": true,
-        "call": "goto_document_end",
         "name": "Document End",
         "shortcut": "Document Bottom"
       },
       {
-        "call": "goto_section_start",
+        "slots": {
+          "triggered": [
+            "goto_section_start"
+          ]
+        },
         "name": "Section Start",
         "shortcut": "Section Top"
       },
       {
+        "slots": {
+          "triggered": [
+            "goto_section_end"
+          ]
+        },
         "separator": true,
-        "call": "goto_section_end",
         "name": "Section End",
         "shortcut": "Section Bottom"
       },
       {
-        "call": "next_page",
+        "slots": {
+          "triggered": [
+            "next_page"
+          ]
+        },
         "name": "Next Page",
         "shortcut": "Next Page"
       },
       {
-        "call": "previous_page",
+        "slots": {
+          "triggered": [
+            "previous_page"
+          ]
+        },
         "name": "Previous Page",
         "shortcut": "Previous Page"
       }

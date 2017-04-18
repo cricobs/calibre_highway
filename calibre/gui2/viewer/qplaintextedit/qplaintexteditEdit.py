@@ -73,10 +73,10 @@ class QplaintexteditEdit(Qplaintextedit):
         super(QplaintexteditEdit, self).setPlainText(p_str)
         self.positionLoad.emit()
 
-    def load_settings(self, settings):
-        super(QplaintexteditEdit, self).load_settings(settings)
+    def load_options(self, options):
+        super(QplaintexteditEdit, self).load_options(options)
 
-        self.formats = settings["formats"]
+        self.formats = options["formats"]
 
     def keyPressEvent(self, qkeyevent):
         super(QplaintexteditEdit, self).keyPressEvent(qkeyevent)

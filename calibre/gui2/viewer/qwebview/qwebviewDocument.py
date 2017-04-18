@@ -14,7 +14,6 @@ from calibre.constants import iswindows
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
 from calibre.gui2.shortcuts import Shortcuts
-from calibre.gui2.viewer.qaction.qaction import Qaction
 from calibre.gui2.viewer.qdialog.gestures import GestureHandler
 from calibre.gui2.viewer.qdialog.qdialogConfig import config, load_themes
 from calibre.gui2.viewer.qdialog.qdialogImage import ImagePopup
@@ -49,7 +48,6 @@ class QwebviewDocument(Qwebview):
     DISABLED_BRUSH = QBrush(Qt.lightGray, Qt.Dense5Pattern)
     gesture_handler = lambda s, e: False
     last_loaded_path = None
-    context_actions = []
 
     def __init__(self, *args, **kwargs):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
@@ -71,17 +69,17 @@ class QwebviewDocument(Qwebview):
         self.footnotes = Footnotes(self)
         self.gesture_handler = GestureHandler(self)
         self.goto_location_actions = {}
-        self.goto_location_menu = QMenu(self)
+        self.qmenu_goto_location = QMenu(self)
         self.image_popup = ImagePopup(self)
         self.initial_pos = 0.0
         self.is_auto_repeat_event = False
         self.loading_url = None
         self.manager = None
-        self.search_online_menu = QMenu(self)
+        self.qmenu_search_online = QMenu(self)
         self.shortcuts = Shortcuts(SHORTCUTS, 'shortcuts/viewer')
         self.table_popup = TablePopup(self)
         self.to_bottom = False
-        self.qmenuSynopsis = QMenu(self)
+        self.qmenu_synopsis = QMenu(self)
 
         self.document = d = Document(
             self.shortcuts, parent=self, debug_javascript=debug_javascript)
@@ -101,138 +99,28 @@ class QwebviewDocument(Qwebview):
             d.OpenImageInNewWindow, d.OpenLink, d.Reload, d.InspectElement]
         self.unimplemented_actions = list(map(self.pageAction, a))
 
-        actions = self.settings["actions"]
-        self.create_actions(actions["root"])
-        self.create_online_actions(actions["search_online"])
-        self.create_synopsis_actions(actions["synopsis"])
-        self.create_goto_actions(actions["goto_location"])
+        self.create_actions(self.options["actions"])
 
-        self.synopsis_action.setMenu(self.qmenuSynopsis)
-        self.search_online_action.setMenu(self.search_online_menu)
-        self.goto_location_action.setMenu(self.goto_location_menu)
+        self.synopsis_action.setMenu(self.qmenu_synopsis)
+        self.search_online_action.setMenu(self.qmenu_search_online)
+        self.goto_location_action.setMenu(self.qmenu_goto_location)
 
         self.copy_action.setIcon(QIcon(I('edit-copy.png')))
         self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
 
     # --- actions
-    def create_synopsis_action(self, name, text, section=None, slot=None, icon=None, shortcut=None,
-                               separator=False, actions=None, qmenu=None):
-        qmenu = qmenu if qmenu else self.qmenuSynopsis
-        qaction = qmenu.addAction(_(text))
-        shortcuts = self.shortcuts.get_sequences(shortcut)
-        if shortcuts:
-            qaction.setShortcut(shortcuts[0])
-        if section:
-            qaction.setData(section)
-        if slot:
-            qaction.triggered.connect(getattr(self, slot))
-        if icon:
-            qaction.setIcon(QIcon(I(icon)))
-        if separator:
-            qmenu.addSeparator()
-        if actions:
-            q = QMenu(self)
-            qaction.setMenu(q)
-            self.create_synopsis_actions(actions, q)
+    def load_options(self, settings):
+        pass
 
-        setattr(self, name + "_action", qaction)
-        self.addAction(qaction)
+    def addAction(self, qaction):
+        # agtft use qaction.objectName()
+        name = getattr(qaction, "name", None)
+        if name:
+            setattr(self, name + "_action", qaction)
 
-    def create_synopsis_actions(self, actions, qmenu=None):
-        for options in actions:
-            self.create_synopsis_action(qmenu=qmenu, **options)
-
-    def create_goto_action(self, name, call, shortcut, separator=False):
-        call = getattr(self, call)
-
-        self.goto_location_actions[shortcut] = call
-        self.goto_location_menu.addAction(_(name), call, self.shortcuts.get_sequences(shortcut)[0])
-
-        if separator:
-            self.goto_location_menu.addSeparator()
-
-    def create_goto_actions(self, actions):
-        for options in actions:
-            self.create_goto_action(**options)
-
-    def create_online_action(self, name, url=None, icon=None, separator=False, shortcut=None,
-                             actions=None, qmenu=None):
-        qmenu = qmenu if qmenu else self.search_online_menu
-        qaction = qmenu.addAction(name, self.search_online)
-
-        if url:
-            qaction.setData(url)
-        shortcuts = self.shortcuts.get_sequences(shortcut)
-        if shortcuts:
-            qaction.setShortcut(shortcuts[0])
-        if icon:
-            qaction.setIcon(QIcon(I(icon)))
-        if separator:
-            qmenu.addSeparator()
-        if actions:
-            q = QMenu(self)
-            qaction.setMenu(q)
-            self.create_online_actions(actions, q)
-
-    def create_online_actions(self, actions, qmenu=None):
-        for action_options in actions:
-            self.create_online_action(qmenu=qmenu, **action_options)
-
-    def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
-                      shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
-                      actions=None, parents=None, signals=None, context=None, *args, **kwargs):
-        text = text if text else name
-
-        qaction = Qaction(text, self)
-        qaction.setCheckable(checkable)
-        qaction.setIcon(icon)
-        qaction.setObjectName('qaction_' + name)
-        qaction.setEnabled(enabled)
-        qaction.setData(data)
-
-        if slots:
-            for signal, names in slots.items():
-                slot = reduce(getattr, names, self)
-                getattr(qaction, signal).connect(slot)
-        if signals:
-            for signal, names in signals.items():
-                slot = reduce(getattr, names, qaction)
-                getattr(self, signal).connect(slot)
-        if parents:
-            qaction.parents = parents
-        # if shortcuts:
-        #     qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
-        if qmenu is not None:
-            pass
-        if separator:
-            pass
-        if actions:
-            q = QMenu(self)
-            qaction.setMenu(q)
-            self.create_actions(actions, q)
-
-        self.addAction(qaction)
-
-        # --- differences
-        # fixme get shortcuts (from here | function | try)?
-        if shortcuts:
-            for shortcut in shortcuts:
-                qaction.setData(shortcut)
-
-        # fixme add group parameter?
-        if context:
-            self.context_actions.append(qaction)
-        if separator:
-            action_separator = QAction(self)
-            action_separator.setSeparator(True)
-
-            self.context_actions.append(action_separator)
-
-        # fixme set in Qobject if this is the best method?
-        setattr(self, name + "_action", qaction)
+        super(QwebviewDocument, self).addAction(qaction)
 
     # ---
-
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())
 
@@ -394,7 +282,7 @@ class QwebviewDocument(Qwebview):
         text = self._selectedText()
         if text and img.isNull():
             self.search_online_action.setText(text)
-            for action in self.context_actions:
+            for action in self.selection_qactions:
                 if action.isSeparator():
                     menu.addSeparator()
                     continue
@@ -446,14 +334,14 @@ class QwebviewDocument(Qwebview):
         if from_touch:
             from calibre.constants import plugins
             pi = plugins['progress_indicator'][0]
-            for name in (menu, self.goto_location_menu):
+            for name in (menu, self.qmenu_goto_location):
                 if hasattr(pi, 'set_touch_menu_style'):
                     pi.set_touch_menu_style(name)
             helpt = QAction(QIcon(I('help.png')), _('Show supported touch screen gestures'), menu)
             helpt.triggered.connect(self.gesture_handler.show_help)
             menu.insertAction(menu.actions()[0], helpt)
         else:
-            self.goto_location_menu.setStyle(self.style())
+            self.qmenu_goto_location.setStyle(self.style())
 
         self.context_menu = menu
         menu.exec_(ev.globalPos())

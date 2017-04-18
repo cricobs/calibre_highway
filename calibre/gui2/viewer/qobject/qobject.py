@@ -14,7 +14,7 @@ class Qobject(QObject):
     def __init__(self, *args, **kwargs):
         super(Qobject, self).__init__(*args, **kwargs)
 
-        self._settings = None
+        self._options = None
 
         self.qapplication = QApplication.instance()
 
@@ -33,7 +33,7 @@ class Qobject(QObject):
                 raise
         else:
             with iput:
-                self.settings = json.load(iput)
+                self.options = json.load(iput)
 
         # todo
         # connect self.qapplication.qactionAdded to self.add_qapplication_action
@@ -43,37 +43,60 @@ class Qobject(QObject):
             self.add_qapplication_actions(qactions)
 
     @property
-    def settings(self):
-        return self._settings
+    def options(self):
+        return self._options
 
-    @settings.setter
-    def settings(self, settings):
-        self._settings = settings
+    @options.setter
+    def options(self, options):
+        self._options = options
 
-        if self._settings:
-            self.load_settings(self._settings)
+        if self._options:
+            self.load_options(self._options)
 
-    def load_settings(self, settings):
-        actions = settings.get("actions", None)
+    def load_options(self, options):
+        actions = options.get("actions", None)
         if actions:
             self.create_actions(actions)
 
     def create_actions(self, actions, qmenu=None):
+        try:
+            for group, _actions in actions.items():
+                self._create_actions(_actions, qmenu=qmenu, group=group)
+
+        except AttributeError:
+            self._create_actions(actions, qmenu=qmenu)
+
+    def _create_actions(self, actions, qmenu=None, group=None):
         for options in actions:
-            self.create_action(qmenu=qmenu, **options)
+            self.create_action(qmenu=qmenu, group=group, **options)
 
     def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
                       shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
-                      actions=None, parents=None, signals=None, *args, **kwargs):
+                      actions=None, parents=None, signals=None, group=None, *args, **kwargs):
         text = text if text else name
 
-        qaction = Qaction(text, self)
+        if group and not qmenu:
+            qmenu = getattr(self, "qmenu_" + group, None)
+
+        qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
         qaction.setCheckable(checkable)
-        qaction.setIcon(icon)
         qaction.setObjectName('qaction_' + name)
         qaction.setEnabled(enabled)
         qaction.setData(data)
+        qaction.name = name
 
+        try:
+            qaction.setIcon(icon)
+        except TypeError:  # if qaction is created from qmenu
+            pass
+
+        group_actions = None
+        if group:
+            name_group = group + "_qactions"
+            group_actions = getattr(self, name_group, [])
+            group_actions.append(qaction)
+
+            setattr(self, name_group, group_actions)
         if slots:
             for signal, names in slots.items():
                 slot = reduce(getattr, names, self)
@@ -86,15 +109,14 @@ class Qobject(QObject):
             qaction.parents = parents
         if shortcuts:
             qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
-        if qmenu is not None:
-            pass
-            # qmenu.addAction(qaction)
         if separator:
-            pass
-            # if qmenu is None:
-            #     qaction.setSeparator(True)
-            # else:
-            #     qmenu.addSeparator()
+            if qmenu:
+                qmenu.addSeparator()
+            if group_actions:
+                action_separator = Qaction(self)
+                action_separator.setSeparator(True)
+
+                group_actions.append(action_separator)
         if actions:
             q = QMenu(self)
             qaction.setMenu(q)

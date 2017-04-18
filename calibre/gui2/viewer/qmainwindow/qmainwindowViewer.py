@@ -288,7 +288,7 @@ class QmainwindowViewer(Qmainwindow):
         self.view.magnification_changed.connect(self.magnification_changed)
         self.view.document.settings_changed.connect(self.settings_changed)
 
-        self.create_actions(self.settings["actions"])
+        self.create_actions(self.options["actions"])
 
         self.history = History(self.action_back, self.action_forward)
 
@@ -1205,7 +1205,7 @@ class QmainwindowViewer(Qmainwindow):
                 action().trigger()
 
     def keyboard_action(self, key):
-        names = self.settings["keyboard_action"].get(key, None)
+        names = self.options["keyboard_action"].get(key, None)
         return reduce(getattr, names, self) if names else None
 
     def reload_book(self):
@@ -1263,7 +1263,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def create_action(self, name, text=None, icon=None, widget=None, toolbar=None, shortcut=None,
                       menu=None, slots=None, popup="MenuButtonPopup", separator=False,
-                      disabled=False, checkable=False, context=False, qmenu=None):
+                      disabled=False, checkable=False, context=False, qmenu=None, group=None):
         # fixme use superclass
         qaction = getattr(self, widget).toggleViewAction() if widget else QAction(self)
         qaction.setText(_(text))
@@ -1306,7 +1306,7 @@ class QmainwindowViewer(Qmainwindow):
     def windowTitle(self):
         return unicode(super(QmainwindowViewer, self).windowTitle())
 
-    def load_settings(self, settings):
+    def load_options(self, options):
         pass  # fixme use superclass
 
 
