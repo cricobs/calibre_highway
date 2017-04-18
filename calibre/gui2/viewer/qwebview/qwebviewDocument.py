@@ -40,8 +40,10 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
 
 
 # todo
-# - use Qobject.create_action
 # - replace synopsis insert actions for QdialogEdit
+
+# fixme
+# - shortcuts
 
 class QwebviewDocument(Qwebview):
     magnification_changed = pyqtSignal(object)
@@ -69,17 +71,19 @@ class QwebviewDocument(Qwebview):
         self.footnotes = Footnotes(self)
         self.gesture_handler = GestureHandler(self)
         self.goto_location_actions = {}
-        self.qmenu_goto_location = QMenu(self)
         self.image_popup = ImagePopup(self)
         self.initial_pos = 0.0
         self.is_auto_repeat_event = False
         self.loading_url = None
         self.manager = None
-        self.qmenu_search_online = QMenu(self)
         self.shortcuts = Shortcuts(SHORTCUTS, 'shortcuts/viewer')
         self.table_popup = TablePopup(self)
         self.to_bottom = False
+
+        self.qmenu_goto_location = QMenu(self)
         self.qmenu_synopsis = QMenu(self)
+        self.qmenu_search_online = QMenu(self)
+        self.qmenu_search_online.triggered.connect(self.on_qmenu_search_online_triggered)
 
         self.document = d = Document(
             self.shortcuts, parent=self, debug_javascript=debug_javascript)
@@ -121,6 +125,9 @@ class QwebviewDocument(Qwebview):
         super(QwebviewDocument, self).addAction(qaction)
 
     # ---
+    def on_qmenu_search_online_triggered(self, qaction):
+        self.search_online(qaction)
+
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())
 
@@ -361,10 +368,10 @@ class QwebviewDocument(Qwebview):
             if t:
                 self.manager.search.set_search_string(t)
 
-    def search_online(self):
+    def search_online(self, action):
         t = unicode(self.selectedText()).strip()
         if t:
-            self.do_search_online(t, self.sender())
+            self.do_search_online(t, action)
 
     def do_search_online(self, text, action):
         url = action.data().replace('%s', QUrl().toPercentEncoding(text))

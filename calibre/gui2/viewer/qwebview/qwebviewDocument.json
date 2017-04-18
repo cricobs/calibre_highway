@@ -236,20 +236,20 @@
     ],
     "search_online": [
       {
-        "url": "https://www.google.com/search?q=%s",
+        "data": "https://www.google.com/search?q=%s",
         "name": "engine"
       },
       {
-        "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
+        "data": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
         "name": "encyclopedia",
         "shortcut": "Search encyclopedia"
       },
       {
-        "url": "http://www.merriam-webster.com/dictionary?s=%s",
+        "data": "http://www.merriam-webster.com/dictionary?s=%s",
         "name": "dictionary"
       },
       {
-        "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
+        "data": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
         "name": "etymology"
       },
       {
@@ -259,11 +259,11 @@
             "name": "google",
             "actions": [
               {
-                "url": "https://translate.google.com/#en/es/%s",
+                "data": "https://translate.google.com/#en/es/%s",
                 "name": "translate enes"
               },
               {
-                "url": "https://translate.google.com/#es/en/%s",
+                "data": "https://translate.google.com/#es/en/%s",
                 "name": "translate esen"
               }
             ]
@@ -272,12 +272,12 @@
             "name": "wordreference",
             "actions": [
               {
-                "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
+                "data": "http://www.wordreference.com/es/translation.asp?tranword=%s",
                 "name": "wordreference enes",
                 "shortcut": "Search wordreference enes"
               },
               {
-                "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
+                "data": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
                 "name": "wordreference esen"
               }
             ]

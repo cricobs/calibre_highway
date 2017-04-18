@@ -334,7 +334,7 @@ class QmainwindowViewer(Qmainwindow):
         self.read_settings()
         self.build_recent_menu()
 
-        # todo use qsettings
+        # fixme use qsettings
         self.restore_state()
 
         self.settings_changed()
@@ -1261,6 +1261,9 @@ class QmainwindowViewer(Qmainwindow):
                          _('You must first create some themes in the viewer preferences'),
                          show=True)
 
+    def load_options(self, options):
+        pass  # fixme use superclass
+
     def create_action(self, name, text=None, icon=None, widget=None, toolbar=None, shortcut=None,
                       menu=None, slots=None, popup="MenuButtonPopup", separator=False,
                       disabled=False, checkable=False, context=False, qmenu=None, group=None):
@@ -1305,10 +1308,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def windowTitle(self):
         return unicode(super(QmainwindowViewer, self).windowTitle())
-
-    def load_options(self, options):
-        pass  # fixme use superclass
-
 
 def config(defaults=None):
     desc = _('Options to control the ebook viewer')
