@@ -83,7 +83,6 @@ class QwebviewDocument(Qwebview):
         self.qmenu_goto_location = QMenu(self)
         self.qmenu_synopsis = QMenu(self)
         self.qmenu_search_online = QMenu(self)
-        self.qmenu_search_online.triggered.connect(self.on_qmenu_search_online_triggered)
 
         self.document = d = Document(
             self.shortcuts, parent=self, debug_javascript=debug_javascript)
@@ -125,9 +124,6 @@ class QwebviewDocument(Qwebview):
         super(QwebviewDocument, self).addAction(qaction)
 
     # ---
-    def on_qmenu_search_online_triggered(self, qaction):
-        self.search_online(qaction)
-
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())
 
@@ -368,10 +364,10 @@ class QwebviewDocument(Qwebview):
             if t:
                 self.manager.search.set_search_string(t)
 
-    def search_online(self, action):
+    def search_online(self):
         t = unicode(self.selectedText()).strip()
         if t:
-            self.do_search_online(t, action)
+            self.do_search_online(t, self.sender())
 
     def do_search_online(self, text, action):
         url = action.data().replace('%s', QUrl().toPercentEncoding(text))

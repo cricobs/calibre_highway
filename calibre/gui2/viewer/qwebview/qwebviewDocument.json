@@ -46,8 +46,8 @@
         "name": "goto_location"
       }
     ],
-    "selection" : [
-            {
+    "selection": [
+      {
         "name": "synopsis",
         "text": "S&ynopsis",
         "icon": "modified.png",
@@ -173,82 +173,134 @@
     ],
     "synopsis": [
       {
-        "slot": "copy_markdown",
+        "slots": {
+          "triggered": [
+            "copy_markdown"
+          ]
+        },
         "name": "copy_markdown",
         "shortcut": "Copy Markdown",
         "text": "&Copy Markdown"
       },
       {
-        "slot": "synopsis_append",
+        "slots": {
+          "triggered": [
+            "synopsis_append"
+          ]
+        },
         "name": "append_text",
         "text": "Append &Text",
         "shortcut": "Synopsis Append Text",
-        "section": "body"
+        "data": "body"
       },
       {
         "name": "append_header",
         "text": "Append &Header",
         "actions": [
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_1",
             "text": "1",
             "shortcut": "Synopsis Append H1",
-            "section": "header"
+            "data": "header"
           },
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_2",
             "text": "2",
             "shortcut": "Synopsis Append H2",
-            "section": "header"
+            "data": "header"
           },
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_3",
             "shortcut": "Synopsis Append H3",
             "text": "3",
-            "section": "header"
+            "data": "header"
           },
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_4",
             "shortcut": "Synopsis Append H4",
             "text": "4",
-            "section": "header"
+            "data": "header"
           },
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_5",
             "shortcut": "Synopsis Append H5",
             "text": "5",
-            "section": "header"
+            "data": "header"
           },
           {
-            "slot": "synopsis_append",
+            "slots": {
+              "triggered": [
+                "synopsis_append"
+              ]
+            },
             "name": "header_6",
             "shortcut": "Synopsis Append H6",
             "text": "6",
-            "section": "header"
+            "data": "header"
           }
         ]
       }
     ],
     "search_online": [
       {
+        "slots": {
+          "triggered": [
+            "search_online"
+          ]
+        },
         "data": "https://www.google.com/search?q=%s",
         "name": "engine"
       },
       {
+        "slots": {
+          "triggered": [
+            "search_online"
+          ]
+        },
         "data": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
         "name": "encyclopedia",
         "shortcut": "Search encyclopedia"
       },
       {
+        "slots": {
+          "triggered": [
+            "search_online"
+          ]
+        },
         "data": "http://www.merriam-webster.com/dictionary?s=%s",
         "name": "dictionary"
       },
       {
+        "slots": {
+          "triggered": [
+            "search_online"
+          ]
+        },
         "data": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
         "name": "etymology"
       },
@@ -259,10 +311,20 @@
             "name": "google",
             "actions": [
               {
+                "slots": {
+                  "triggered": [
+                    "search_online"
+                  ]
+                },
                 "data": "https://translate.google.com/#en/es/%s",
                 "name": "translate enes"
               },
               {
+                "slots": {
+                  "triggered": [
+                    "search_online"
+                  ]
+                },
                 "data": "https://translate.google.com/#es/en/%s",
                 "name": "translate esen"
               }
@@ -272,11 +334,21 @@
             "name": "wordreference",
             "actions": [
               {
+                "slots": {
+                  "triggered": [
+                    "search_online"
+                  ]
+                },
                 "data": "http://www.wordreference.com/es/translation.asp?tranword=%s",
                 "name": "wordreference enes",
                 "shortcut": "Search wordreference enes"
               },
               {
+                "slots": {
+                  "triggered": [
+                    "search_online"
+                  ]
+                },
                 "data": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
                 "name": "wordreference esen"
               }
