@@ -2,9 +2,9 @@ from PyQt5.QtCore import QUrl, pyqtSlot
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtCore import pyqtSignal
 
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qwebpage.qwebpageContent import QwebpageContent
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
-from calibre.library.filepath import filepath_relative
 
 
 class QwebviewContent(Qwebview):

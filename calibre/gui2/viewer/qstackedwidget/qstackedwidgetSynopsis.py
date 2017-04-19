@@ -2,10 +2,10 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
 
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
 from calibre.gui2.viewer.qobject.qobjectScrollSynchronize import QobjectScrollSynchronize
 from calibre.gui2.viewer.qstackedwidget.qstackedwidget import Qstackedwidget
-from calibre.library.filepath import filepath_relative
 
 I = I
 

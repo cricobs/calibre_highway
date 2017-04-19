@@ -21,8 +21,8 @@ from calibre.constants import iswindows, isxp
 from calibre.gui2 import min_available_height, error_dialog
 from calibre.gui2.languages import LanguagesEdit
 from calibre.gui2.shortcuts import ShortcutConfig
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialog import Qdialog
-from calibre.library.filepath import filepath_relative
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.icu import sort_key
 from calibre.utils.localization import get_language, calibre_langcode_to_name

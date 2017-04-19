@@ -7,8 +7,10 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMenu
 
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qaction.qaction import Qaction
-from calibre.library.filepath import filepath_relative
+
+I = I
 
 
 class Qobject(QObject):

@@ -1,21 +1,20 @@
-import json
-
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QTextCharFormat
 
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighter import Qsyntaxhighlighter
-from calibre.library.filepath import filepath_relative
 
 
 class QsyntaxhighlighterMarkdown(Qsyntaxhighlighter):
+    formats = []
+
     def __init__(self, parent=None):
         super(QsyntaxhighlighterMarkdown, self).__init__(parent)
 
-        self.formats = []
+    def load_options(self, options):
+        super(QsyntaxhighlighterMarkdown, self).load_options(options)
 
-        with open(filepath_relative(self, "json")) as iput:
-            self.add_formats(json.load(iput))
+        self.add_formats(options["formats"])
 
     def add_formats(self, rules):
         for name, values in rules.items():

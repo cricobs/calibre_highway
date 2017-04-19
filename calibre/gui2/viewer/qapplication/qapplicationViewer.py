@@ -4,11 +4,11 @@ import sys
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qabstractlistmodel.qabstractlistmodelShortcut import \
     QabstractlistmodelShortcut
 from calibre.gui2.viewer.qapplication.qapplication import Qapplication
 from calibre.gui2.viewer.qwidget.qwidgetSearchReplace import QwidgetSearchReplace
-from calibre.library.filepath import filepath_relative
 
 with open(filepath_relative(sys.modules[__name__], "json")) as iput:
     SHORTCUTS = {

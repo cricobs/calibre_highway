@@ -1,77 +1,79 @@
 {
-  "link": {
-    "expression": "<[^>]+>",
-    "color": "#4E27A6"
-  },
-  "anchor": {
-    "expression": "\\[.*\\]\\(.*\\)",
-    "color": "#BF6211"
-  },
-  "italic": {
-    "italic": true,
-    "expression": "\\*.*\\*",
-    "color": "#CB4B16"
-  },
-  "bold": {
-    "weight": 99,
-    "expression": "\\*\\*.*\\*\\*",
-    "color": "#CB4B16"
-  },
-  "entity": {
-    "expression": "&.*;",
-    "color": "#8871C4"
-  },
-  "h4": {
-    "weight": 99,
-    "expression": "^####.*$",
-    "color": "#268BD2"
-  },
-  "h5": {
-    "weight": 99,
-    "expression": "^#####.*$",
-    "color": "#268BD2"
-  },
-  "h6": {
-    "weight": 99,
-    "expression": "^######.*$",
-    "color": "#268BD2"
-  },
-  "h1": {
-    "weight": 99,
-    "expression": "^#.*$",
-    "color": "#6C78C4"
-  },
-  "h2": {
-    "weight": 99,
-    "expression": "^##.*$",
-    "color": "#6C78C4"
-  },
-  "h3": {
-    "weight": 99,
-    "expression": "^###.*$",
-    "color": "#6C78C4"
-  },
-  "code": {
-    "weight": 75,
-    "expression": "(`.*`|\t.*)$",
-    "color": "#008C3F"
-  },
-  "quote": {
-    "expression": "^>",
-    "color": "#93A1A1"
-  },
-  "attributes": {
-    "expression": "^\\{[^\\}]+\\}",
-    "color": "#268BD2"
-  },
-  "list_ul": {
-    "weight": 99,
-    "expression": "^(\\s+|)(\\*|\\+|-)+",
-    "color": "#6C78C4"
-  },
-  "list_ol": {
-    "weight": 99,
-    "expression": "^(\\s+|)[0-9]+\\.",
-    "color": "#6C78C4"
+  "formats": {
+    "link": {
+      "expression": "<[^>]+>",
+      "color": "#4E27A6"
+    },
+    "anchor": {
+      "expression": "\\[.*\\]\\(.*\\)",
+      "color": "#BF6211"
+    },
+    "italic": {
+      "italic": true,
+      "expression": "\\*.*\\*",
+      "color": "#CB4B16"
+    },
+    "bold": {
+      "weight": 99,
+      "expression": "\\*\\*.*\\*\\*",
+      "color": "#CB4B16"
+    },
+    "entity": {
+      "expression": "&.*;",
+      "color": "#8871C4"
+    },
+    "h4": {
+      "weight": 99,
+      "expression": "^####.*$",
+      "color": "#268BD2"
+    },
+    "h5": {
+      "weight": 99,
+      "expression": "^#####.*$",
+      "color": "#268BD2"
+    },
+    "h6": {
+      "weight": 99,
+      "expression": "^######.*$",
+      "color": "#268BD2"
+    },
+    "h1": {
+      "weight": 99,
+      "expression": "^#.*$",
+      "color": "#6C78C4"
+    },
+    "h2": {
+      "weight": 99,
+      "expression": "^##.*$",
+      "color": "#6C78C4"
+    },
+    "h3": {
+      "weight": 99,
+      "expression": "^###.*$",
+      "color": "#6C78C4"
+    },
+    "code": {
+      "weight": 75,
+      "expression": "(`.*`|\t.*)$",
+      "color": "#008C3F"
+    },
+    "quote": {
+      "expression": "^>",
+      "color": "#93A1A1"
+    },
+    "attributes": {
+      "expression": "^\\{[^\\}]+\\}",
+      "color": "#268BD2"
+    },
+    "list_ul": {
+      "weight": 99,
+      "expression": "^(\\s+|)(\\*|\\+|-)+",
+      "color": "#6C78C4"
+    },
+    "list_ol": {
+      "weight": 99,
+      "expression": "^(\\s+|)[0-9]+\\.",
+      "color": "#6C78C4"
+    }
   }
 }

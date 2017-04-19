@@ -15,13 +15,15 @@ import calibre
 from calibre import __version__, iswindows, prints
 from calibre.constants import isxp, DEBUG
 from calibre.customize.ui import all_viewer_plugins
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialogConfig import QdialogConfig, config
-from calibre.gui2.viewer.qnetworkacessmanager.qnetworkaccessmanagerFakeNet import QnetworkaccessmanagerFakeNet
-from calibre.library.filepath import filepath_relative
+from calibre.gui2.viewer.qnetworkacessmanager.qnetworkaccessmanagerFakeNet import \
+    QnetworkaccessmanagerFakeNet
 from calibre.utils.localization import lang_as_iso639_1
 from calibre.utils.resources import compiled_coffeescript
 
 dynamic_property = dynamic_property
+P = P
 
 
 class Document(QWebPage):
@@ -555,7 +557,6 @@ def apply_basic_settings(settings):
 
 
 class PagePosition(object):
-
     def __init__(self, document):
         self.document = document
         document.jump_to_cfi_listeners.add(self)
@@ -583,12 +584,13 @@ class PagePosition(object):
             cfi = json.dumps(cfi)
             self.pending_scrolls.add(jid)
             self.document.mainFrame().evaluateJavaScript(
-                    'paged_display.jump_to_cfi(%s, %d)' % (cfi, jid))
+                'paged_display.jump_to_cfi(%s, %d)' % (cfi, jid))
             # jump_to_cfi is async, so we wait for it to complete
             st = time.time()
             WAIT = 1  # seconds
             while jid in self.pending_scrolls and time.time() - st < WAIT:
-                QApplication.processEvents(QEventLoop.ExcludeUserInputEvents | QEventLoop.ExcludeSocketNotifiers)
+                QApplication.processEvents(
+                    QEventLoop.ExcludeUserInputEvents | QEventLoop.ExcludeSocketNotifiers)
                 time.sleep(0.01)
             if jid in self.pending_scrolls:
                 self.pending_scrolls.discard(jid)
