@@ -2,6 +2,7 @@ import json
 from PyQt5.uic import loadUi
 
 from PyQt5.QtCore import QObject
+from PyQt5.QtGui import QIcon
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMenu
@@ -35,9 +36,11 @@ class Qobject(QObject):
             with iput:
                 self.options = json.load(iput)
 
-        # todo
-        # connect self.qapplication.qactionAdded to self.add_qapplication_action
-        # if self.__class__.__name__
+        # fixme
+        """
+        connect self.qapplication.qactionAdded to self.add_qapplication_action with
+        self.__class__.__name__ argument?
+        """
         qactions = self.qapplication.qactions.get(self.__class__.__name__)
         if qactions:
             self.add_qapplication_actions(qactions)
@@ -76,6 +79,7 @@ class Qobject(QObject):
         text = text if text else name
 
         if group and not qmenu:
+            # fixme check if qmenu == True and create qmenu
             qmenu = getattr(self, "qmenu_" + group, None)
 
         qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
@@ -83,15 +87,16 @@ class Qobject(QObject):
         qaction.setObjectName('qaction_' + name)
         qaction.setEnabled(enabled)
         qaction.setData(data)
-        qaction.name = name
+        qaction.name = name  # fixme use qaction.objectName()
 
         try:
             qaction.setIcon(icon)
-        except TypeError:  # if qaction is created from qmenu
-            pass
+        except TypeError:  # fixme if qaction is created from qmenu
+            qaction.setIcon(QIcon(I(icon)))
 
         group_actions = None
         if group:
+            # fixme not well written
             name_group = group + "_qactions"
             group_actions = getattr(self, name_group, [])
             group_actions.append(qaction)
@@ -108,7 +113,15 @@ class Qobject(QObject):
         if parents:
             qaction.parents = parents
         if shortcuts:
-            qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
+            # fixme create proper shorcuts manager
+            if shortcuts:
+                try:
+                    sequences = list(map(lambda s: self.shortcuts.get_sequences(s)[0], shortcuts))
+                except:
+                    qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
+                else:
+                    qaction.setShortcuts(sequences)
+                    qaction.setData(" | ".join(shortcuts))
         if separator:
             if qmenu:
                 qmenu.addSeparator()

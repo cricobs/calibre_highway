@@ -102,7 +102,7 @@
           ]
         },
         "name": "Next Section",
-        "shortcut": "Next Section"
+        "shortcuts": ["Next Section"]
       },
       {
         "slots": {
@@ -112,7 +112,7 @@
         },
         "separator": true,
         "name": "Previous Section",
-        "shortcut": "Previous Section"
+        "shortcuts": ["Previous Section"]
       },
       {
         "slots": {
@@ -121,7 +121,7 @@
           ]
         },
         "name": "Document Start",
-        "shortcut": "Document Top"
+        "shortcuts": ["Document Top"]
       },
       {
         "slots": {
@@ -131,7 +131,7 @@
         },
         "separator": true,
         "name": "Document End",
-        "shortcut": "Document Bottom"
+        "shortcuts": ["Document Bottom"]
       },
       {
         "slots": {
@@ -140,7 +140,7 @@
           ]
         },
         "name": "Section Start",
-        "shortcut": "Section Top"
+        "shortcuts": ["Section Top"]
       },
       {
         "slots": {
@@ -150,7 +150,7 @@
         },
         "separator": true,
         "name": "Section End",
-        "shortcut": "Section Bottom"
+        "shortcuts": ["Section Bottom"]
       },
       {
         "slots": {
@@ -159,7 +159,7 @@
           ]
         },
         "name": "Next Page",
-        "shortcut": "Next Page"
+        "shortcuts": ["Next Page"]
       },
       {
         "slots": {
@@ -168,7 +168,7 @@
           ]
         },
         "name": "Previous Page",
-        "shortcut": "Previous Page"
+        "shortcuts": ["Previous Page"]
       }
     ],
     "synopsis": [
@@ -179,7 +179,7 @@
           ]
         },
         "name": "copy_markdown",
-        "shortcut": "Copy Markdown",
+        "shortcuts": ["Copy Markdown"],
         "text": "&Copy Markdown"
       },
       {
@@ -190,7 +190,7 @@
         },
         "name": "append_text",
         "text": "Append &Text",
-        "shortcut": "Synopsis Append Text",
+        "shortcuts": ["Synopsis Append Text"],
         "data": "body"
       },
       {
@@ -205,7 +205,7 @@
             },
             "name": "header_1",
             "text": "1",
-            "shortcut": "Synopsis Append H1",
+            "shortcuts": ["Synopsis Append H1"],
             "data": "header"
           },
           {
@@ -216,7 +216,7 @@
             },
             "name": "header_2",
             "text": "2",
-            "shortcut": "Synopsis Append H2",
+            "shortcuts": ["Synopsis Append H2"],
             "data": "header"
           },
           {
@@ -226,7 +226,7 @@
               ]
             },
             "name": "header_3",
-            "shortcut": "Synopsis Append H3",
+            "shortcuts": ["Synopsis Append H3"],
             "text": "3",
             "data": "header"
           },
@@ -237,7 +237,7 @@
               ]
             },
             "name": "header_4",
-            "shortcut": "Synopsis Append H4",
+            "shortcuts": ["Synopsis Append H4"],
             "text": "4",
             "data": "header"
           },
@@ -248,7 +248,7 @@
               ]
             },
             "name": "header_5",
-            "shortcut": "Synopsis Append H5",
+            "shortcuts": ["Synopsis Append H5"],
             "text": "5",
             "data": "header"
           },
@@ -259,7 +259,7 @@
               ]
             },
             "name": "header_6",
-            "shortcut": "Synopsis Append H6",
+            "shortcuts": ["Synopsis Append H6"],
             "text": "6",
             "data": "header"
           }
@@ -284,7 +284,7 @@
         },
         "data": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
         "name": "encyclopedia",
-        "shortcut": "Search encyclopedia"
+        "shortcuts": ["Search encyclopedia"]
       },
       {
         "slots": {
@@ -341,7 +341,7 @@
                 },
                 "data": "http://www.wordreference.com/es/translation.asp?tranword=%s",
                 "name": "wordreference enes",
-                "shortcut": "Search wordreference enes"
+                "shortcuts": ["Search wordreference enes"]
               },
               {
                 "slots": {
