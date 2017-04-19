@@ -102,7 +102,9 @@
           ]
         },
         "name": "Next Section",
-        "shortcuts": ["Next Section"]
+        "shortcuts": [
+          "Next Section"
+        ]
       },
       {
         "slots": {
@@ -112,7 +114,9 @@
         },
         "separator": true,
         "name": "Previous Section",
-        "shortcuts": ["Previous Section"]
+        "shortcuts": [
+          "Previous Section"
+        ]
       },
       {
         "slots": {
@@ -121,7 +125,9 @@
           ]
         },
         "name": "Document Start",
-        "shortcuts": ["Document Top"]
+        "shortcuts": [
+          "Document Top"
+        ]
       },
       {
         "slots": {
@@ -131,7 +137,9 @@
         },
         "separator": true,
         "name": "Document End",
-        "shortcuts": ["Document Bottom"]
+        "shortcuts": [
+          "Document Bottom"
+        ]
       },
       {
         "slots": {
@@ -140,7 +148,9 @@
           ]
         },
         "name": "Section Start",
-        "shortcuts": ["Section Top"]
+        "shortcuts": [
+          "Section Top"
+        ]
       },
       {
         "slots": {
@@ -150,7 +160,9 @@
         },
         "separator": true,
         "name": "Section End",
-        "shortcuts": ["Section Bottom"]
+        "shortcuts": [
+          "Section Bottom"
+        ]
       },
       {
         "slots": {
@@ -159,7 +171,9 @@
           ]
         },
         "name": "Next Page",
-        "shortcuts": ["Next Page"]
+        "shortcuts": [
+          "Next Page"
+        ]
       },
       {
         "slots": {
@@ -168,7 +182,9 @@
           ]
         },
         "name": "Previous Page",
-        "shortcuts": ["Previous Page"]
+        "shortcuts": [
+          "Previous Page"
+        ]
       }
     ],
     "synopsis": [
@@ -179,7 +195,9 @@
           ]
         },
         "name": "copy_markdown",
-        "shortcuts": ["Copy Markdown"],
+        "shortcuts": [
+          "Copy Markdown"
+        ],
         "text": "&Copy Markdown"
       },
       {
@@ -190,8 +208,12 @@
         },
         "name": "append_text",
         "text": "Append &Text",
-        "shortcuts": ["Synopsis Append Text"],
-        "data": "body"
+        "shortcuts": [
+          "Synopsis Append Text"
+        ],
+        "data": {
+          "section": "body"
+        }
       },
       {
         "name": "append_header",
@@ -205,8 +227,12 @@
             },
             "name": "header_1",
             "text": "1",
-            "shortcuts": ["Synopsis Append H1"],
-            "data": "header"
+            "shortcuts": [
+              "Synopsis Append H1"
+            ],
+            "data": {
+              "section": "header"
+            }
           },
           {
             "slots": {
@@ -216,8 +242,12 @@
             },
             "name": "header_2",
             "text": "2",
-            "shortcuts": ["Synopsis Append H2"],
-            "data": "header"
+            "shortcuts": [
+              "Synopsis Append H2"
+            ],
+            "data": {
+              "section": "header"
+            }
           },
           {
             "slots": {
@@ -226,9 +256,13 @@
               ]
             },
             "name": "header_3",
-            "shortcuts": ["Synopsis Append H3"],
+            "shortcuts": [
+              "Synopsis Append H3"
+            ],
             "text": "3",
-            "data": "header"
+            "data": {
+              "section": "header"
+            }
           },
           {
             "slots": {
@@ -237,9 +271,13 @@
               ]
             },
             "name": "header_4",
-            "shortcuts": ["Synopsis Append H4"],
+            "shortcuts": [
+              "Synopsis Append H4"
+            ],
             "text": "4",
-            "data": "header"
+            "data": {
+              "section": "header"
+            }
           },
           {
             "slots": {
@@ -248,9 +286,13 @@
               ]
             },
             "name": "header_5",
-            "shortcuts": ["Synopsis Append H5"],
+            "shortcuts": [
+              "Synopsis Append H5"
+            ],
             "text": "5",
-            "data": "header"
+            "data": {
+              "section": "header"
+            }
           },
           {
             "slots": {
@@ -259,9 +301,13 @@
               ]
             },
             "name": "header_6",
-            "shortcuts": ["Synopsis Append H6"],
+            "shortcuts": [
+              "Synopsis Append H6"
+            ],
             "text": "6",
-            "data": "header"
+            "data": {
+              "section": "header"
+            }
           }
         ]
       }
@@ -273,7 +319,9 @@
             "search_online"
           ]
         },
-        "data": "https://www.google.com/search?q=%s",
+        "data": {
+          "url": "https://www.google.com/search?q=%s"
+        },
         "name": "engine"
       },
       {
@@ -282,9 +330,13 @@
             "search_online"
           ]
         },
-        "data": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
+        "data": {
+          "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go"
+        },
         "name": "encyclopedia",
-        "shortcuts": ["Search encyclopedia"]
+        "shortcuts": [
+          "Search encyclopedia"
+        ]
       },
       {
         "slots": {
@@ -292,7 +344,9 @@
             "search_online"
           ]
         },
-        "data": "http://www.merriam-webster.com/dictionary?s=%s",
+        "data": {
+          "url": "http://www.merriam-webster.com/dictionary?s=%s"
+        },
         "name": "dictionary"
       },
       {
@@ -301,7 +355,9 @@
             "search_online"
           ]
         },
-        "data": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s",
+        "data": {
+          "url": "http://etymonline.com/index.php?allowed_in_frame=0&search=%s"
+        },
         "name": "etymology"
       },
       {
@@ -316,7 +372,9 @@
                     "search_online"
                   ]
                 },
-                "data": "https://translate.google.com/#en/es/%s",
+                "data": {
+                  "url": "https://translate.google.com/#en/es/%s"
+                },
                 "name": "translate enes"
               },
               {
@@ -325,7 +383,9 @@
                     "search_online"
                   ]
                 },
-                "data": "https://translate.google.com/#es/en/%s",
+                "data": {
+                  "url": "https://translate.google.com/#es/en/%s"
+                },
                 "name": "translate esen"
               }
             ]
@@ -339,9 +399,13 @@
                     "search_online"
                   ]
                 },
-                "data": "http://www.wordreference.com/es/translation.asp?tranword=%s",
+                "data": {
+                  "url": "http://www.wordreference.com/es/translation.asp?tranword=%s"
+                },
                 "name": "wordreference enes",
-                "shortcuts": ["Search wordreference enes"]
+                "shortcuts": [
+                  "Search wordreference enes"
+                ]
               },
               {
                 "slots": {
@@ -349,7 +413,9 @@
                     "search_online"
                   ]
                 },
-                "data": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen",
+                "data": {
+                  "url": "http://www.wordreference.com/redirect/translation.aspx?w=%s&dict=esen"
+                },
                 "name": "wordreference esen"
               }
             ]

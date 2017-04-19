@@ -128,7 +128,7 @@ class QwebviewDocument(Qwebview):
         self.copy_text(self.selected_markdown_body())
 
     def synopsis_append(self, *args, **kwargs):
-        section = self.sender().data().lower()
+        section = self.sender().data().get("section")
         position = self.document.page_position.current_pos
         if section == "body":
             text = self.selected_markdown_body(position)
@@ -291,7 +291,7 @@ class QwebviewDocument(Qwebview):
                     continue
 
                 text = unicode(action.text())
-                shortcuts = self.shortcuts.get_shortcuts(action.data())
+                shortcuts = self.shortcuts.get_shortcuts(action.data().get("shortcuts", None))
                 if shortcuts:
                     text += ' [{0}]'.format(','.join(shortcuts))
 
@@ -370,7 +370,9 @@ class QwebviewDocument(Qwebview):
             self.do_search_online(t, self.sender())
 
     def do_search_online(self, text, action):
-        url = action.data().replace('%s', QUrl().toPercentEncoding(text))
+        url = action.data().get("url", None)
+        if url:
+            url = url.replace('%s', QUrl().toPercentEncoding(text))
         if not isinstance(url, bytes):
             url = url.encode('utf-8')
 

@@ -120,8 +120,11 @@ class Qobject(QObject):
                 except:
                     qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
                 else:
+                    data = qaction.data() or {}
+                    data["shortcuts"] = " | ".join(shortcuts)
+
+                    qaction.setData(data)
                     qaction.setShortcuts(sequences)
-                    qaction.setData(" | ".join(shortcuts))
         if separator:
             if qmenu:
                 qmenu.addSeparator()
