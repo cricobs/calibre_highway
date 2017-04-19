@@ -89,7 +89,6 @@ class Qobject(QObject):
         qaction.setObjectName('qaction_' + name)
         qaction.setEnabled(enabled)
         qaction.setData(data)
-        qaction.name = name  # fixme use qaction.objectName()
 
         try:
             qaction.setIcon(icon)

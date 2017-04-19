@@ -94,22 +94,21 @@ class QwebviewDocument(Qwebview):
 
         self.create_actions(self.options["actions"])
 
-        self.synopsis_action.setMenu(self.qmenu_synopsis)
-        self.search_online_action.setMenu(self.qmenu_search_online)
-        self.goto_location_action.setMenu(self.qmenu_goto_location)
+        self.qaction_synopsis.setMenu(self.qmenu_synopsis)
+        self.qaction_search_online.setMenu(self.qmenu_search_online)
+        self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
         self.copy_action.setIcon(QIcon(I('edit-copy.png')))
         self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
 
     # --- actions
-    def load_options(self, settings):
+    def load_options(self, options):
         pass
 
     def addAction(self, qaction):
-        # agtft use qaction.objectName()
-        name = getattr(qaction, "name", None)
+        name = qaction.objectName()
         if name:
-            setattr(self, name + "_action", qaction)
+            setattr(self, name, qaction)
 
         super(QwebviewDocument, self).addAction(qaction)
 
@@ -267,14 +266,14 @@ class QwebviewDocument(Qwebview):
                 menu.removeAction(action)
 
         if not img.isNull():
-            menu.addAction(self.view_image_action)
+            menu.addAction(self.qaction_view_image)
         if table is not None:
             self.document.mark_element.emit(table)
-            menu.addAction(self.view_table_action)
+            menu.addAction(self.qaction_view_table)
 
         text = self._selectedText()
         if text and img.isNull():
-            self.search_online_action.setText(text)
+            self.qaction_search_online.setText(text)
             for action in self.selection_qactions:
                 if action.isSeparator():
                     menu.addSeparator()
@@ -296,11 +295,11 @@ class QwebviewDocument(Qwebview):
                 'window.calibre_utils.word_at_point(%f, %f)' % (ev.pos().x(), ev.pos().y())) or '')
             if word:
                 menu.addAction(
-                    self.dictionary_action.icon(),
+                    self.qaction_dictionary.icon(),
                     _('Lookup %s in the dictionary') % word,
                     partial(self.manager.lookup, word))
                 menu.addAction(
-                    self.search_online_action.icon(),
+                    self.qaction_search_online.icon(),
                     _('Search for %s online') % word,
                     partial(self.do_search_online, word))
 
@@ -311,15 +310,15 @@ class QwebviewDocument(Qwebview):
             if self.manager.action_forward.isEnabled():
                 menu.addAction(self.manager.action_forward)
 
-            menu.addAction(self.copy_position_action)
-            menu.addAction(self.goto_location_action)
+            menu.addAction(self.qaction_copy_position)
+            menu.addAction(self.qaction_goto_location)
             if self.manager is not None:
                 menu.addActions(self.manager.context_actions)
                 menu.addAction(self.manager.action_reload)
                 menu.addAction(self.manager.action_quit)
-                menu.insertAction(self.manager.action_font_size_larger, self.restore_fonts_action)
+                menu.insertAction(self.manager.action_font_size_larger, self.qaction_restore_fonts)
 
-                self.restore_fonts_action.setChecked(self.multiplier == 1)
+                self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 
         menu.addSeparator()
         menu.addAction(_('Inspect'), self.inspect)
