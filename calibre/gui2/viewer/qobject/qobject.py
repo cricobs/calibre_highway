@@ -76,8 +76,12 @@ class Qobject(QObject):
         text = text if text else name
 
         if group and not qmenu:
-            # fixme check if qmenu == True and create qmenu
-            qmenu = getattr(self, "qmenu_" + group, None)
+            n = "qmenu_" + group
+            try:
+                qmenu = getattr(self, n)
+            except AttributeError:
+                qmenu = QMenu(self)
+                setattr(self, n, qmenu)
 
         qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
         qaction.setCheckable(checkable)
@@ -92,12 +96,14 @@ class Qobject(QObject):
 
         group_actions = None
         if group:
-            # fixme not well written
-            name_group = group + "_qactions"
-            group_actions = getattr(self, name_group, [])
-            group_actions.append(qaction)
-
-            setattr(self, name_group, group_actions)
+            n = group + "_qactions"
+            try:
+                group_actions = getattr(self, n)
+            except AttributeError:
+                group_actions = []
+                setattr(self, n, group_actions)
+            finally:
+                group_actions.append(qaction)
         if slots:
             for signal, names in slots.items():
                 slot = reduce(getattr, names, self)
@@ -126,10 +132,10 @@ class Qobject(QObject):
             if qmenu:
                 qmenu.addSeparator()
             if group_actions:
-                action_separator = Qaction(self)
-                action_separator.setSeparator(True)
+                a = Qaction(self)
+                a.setSeparator(True)
 
-                group_actions.append(action_separator)
+                group_actions.append(a)
         if actions:
             q = QMenu(self)
             qaction.setMenu(q)

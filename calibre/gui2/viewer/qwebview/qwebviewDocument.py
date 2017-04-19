@@ -4,7 +4,7 @@ import math
 from functools import partial
 from future_builtins import map
 
-from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon, QAction, QMenu,
+from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon, QAction,
                       pyqtSignal, QApplication, QKeySequence, QMimeData)
 from PyQt5.QtWebKitWidgets import QWebView
 
@@ -68,10 +68,6 @@ class QwebviewDocument(Qwebview):
         self.manager = None
         self.table_popup = TablePopup(self)
         self.to_bottom = False
-
-        self.qmenu_goto_location = QMenu(self)
-        self.qmenu_synopsis = QMenu(self)
-        self.qmenu_search_online = QMenu(self)
 
         self.document = d = Document(
             self.qapplication.qabstractlistmodelShortcut, parent=self,
