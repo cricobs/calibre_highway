@@ -115,20 +115,19 @@ class Qobject(QObject):
         if parents:
             qaction.parents = parents
         if shortcuts:
-            # fixme move shorcuts manager to qapplication
-            if shortcuts:
-                try:
-                    sequences = list(map(
-                        lambda s: self.qapplication.qabstractlistmodelShortcut.get_sequences(s)[0],
-                        shortcuts))
-                except:
-                    qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
-                else:
-                    data = qaction.data() or {}
-                    data["shortcuts"] = " | ".join(shortcuts)
+            # fixme this is pure trash
+            try:
+                sequences = list(map(
+                    lambda s: self.qapplication.qabstractlistmodelShortcut.get_sequences(s)[0],
+                    shortcuts))
+            except:
+                qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
+            else:
+                data = qaction.data() or {}
+                data["shortcuts"] = " | ".join(shortcuts)
 
-                    qaction.setData(data)
-                    qaction.setShortcuts(sequences)
+                qaction.setData(data)
+                qaction.setShortcuts(sequences)
         if separator:
             if qmenu:
                 qmenu.addSeparator()

@@ -23,6 +23,7 @@ from calibre.gui2.languages import LanguagesEdit
 from calibre.gui2.shortcuts import ShortcutConfig
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialog import Qdialog
+from calibre.gui2.viewer.qwidget.qwidgetShortcut import QwidgetShortcut
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.icu import sort_key
 from calibre.utils.localization import get_language, calibre_langcode_to_name
@@ -100,7 +101,7 @@ class QdialogConfig(Qdialog):
         self.text_color = None
 
         self.shortcuts = shortcuts
-        self.shortcut_config = ShortcutConfig(shortcuts, parent=self)
+        self.shortcut_config = QwidgetShortcut(shortcuts, parent=self)
 
         path = P('viewer/hyphenate/patterns.zip', allow_user_override=False)
         with zipfile.ZipFile(path, 'r') as zf:
@@ -145,7 +146,7 @@ class QdialogConfig(Qdialog):
         m.triggered.connect(self.delete_theme)
 
         self.opts = config().parse()
-        self.load_options(self.opts)
+        self._load_options(self.opts)
         self.init_load_themes()
         self.init_dictionaries()
 
@@ -189,7 +190,7 @@ class QdialogConfig(Qdialog):
         self.word_lookups = dprefs.defaults['word_lookups']
         self.singleinstance.setChecked(vprefs.defaults['singleinstance'])
 
-    def load_options(self, opts):
+    def _load_options(self, opts):
         methods = {
             QFontComboBox: lambda q, f: q.setCurrentFont(QFont(f)),
             QCheckBox: lambda q, c: q.setChecked(c),

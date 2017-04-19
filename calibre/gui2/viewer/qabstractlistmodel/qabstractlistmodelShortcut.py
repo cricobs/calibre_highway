@@ -15,6 +15,10 @@ _ = _
 I = I
 
 
+# todo
+# connect to self.qapplication.qactionAdded to set shortcuts
+
+
 class QabstractlistmodelShortcut(Qabstractlistmodel):
     TEMPLATE = u'''
     <p><b>{0}</b><br>
@@ -22,8 +26,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
     '''
 
     def __init__(self, shortcuts, config_file_base_name, parent=None):
-        def __init__(self, *args, **kwargs):
-            super(QabstractlistmodelShortcut, self).__init__(*args, **kwargs)
+        super(QabstractlistmodelShortcut, self).__init__(parent)
 
         self.descriptions = {}
         for k, v in shortcuts.items():

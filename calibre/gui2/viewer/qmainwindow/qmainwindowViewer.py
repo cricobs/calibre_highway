@@ -23,6 +23,7 @@ from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
 from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
+from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qlabel.qlabelFullscreen import QlabelFullscreen
@@ -110,12 +111,6 @@ class Worker(Thread):
         except Exception as err:
             self.exception = err
             self.traceback = traceback.format_exc()
-
-
-class RecentAction(QAction):
-    def __init__(self, path, parent):
-        self.path = path
-        QAction.__init__(self, os.path.basename(path), parent)
 
 
 def default_lookup_website(lang):
@@ -333,10 +328,7 @@ class QmainwindowViewer(Qmainwindow):
         self.resize(653, 746)
         self.read_settings()
         self.build_recent_menu()
-
-        # fixme use qsettings
-        self.restore_state()
-
+        self.restore_state()  # fixme use qsettings
         self.settings_changed()
         self.set_bookmarks([])
         self.load_theme_menu()
@@ -360,7 +352,7 @@ class QmainwindowViewer(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        for q in [QToolBar, QDockWidget]:
+        for q in [QToolBar, QDockWidget]:  # fixme use self.qapplication.qactionAdded
             for qwidget in self.findChildren(q):
                 for action in qwidget.actions():
                     # So that the keyboard shortcuts for these actions will
@@ -388,8 +380,6 @@ class QmainwindowViewer(Qmainwindow):
     def on_qwebviewPreview_positionChange(self, position):
         self.view.document.page_position.to_pos(position)
         self.view.setFocus(Qt.OtherFocusReason)
-
-        self.sender().findText("")  # fixme clear selection; do it on sender before signal
 
     def on_action_search_triggered(self, checked):
         self.qwidgetSearch.setVisible(not self.qwidgetSearch.isVisible())
@@ -453,7 +443,7 @@ class QmainwindowViewer(Qmainwindow):
             if count > 11:
                 break
             if os.path.exists(path):
-                m.addAction(RecentAction(path, m))
+                m.addAction(QactionRecent(path, m))
                 count += 1
 
     def continue_reading(self):
@@ -731,11 +721,13 @@ class QmainwindowViewer(Qmainwindow):
 
     def magnification_changed(self, val):
         tt = '%(action)s [%(sc)s]\n' + _('Current magnification: %(mag).1f')
-        sc = _(' or ').join(self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
+        sc = _(' or ').join(
+            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
         self.action_font_size_larger.setToolTip(
             tt % dict(action=unicode(self.action_font_size_larger.text()),
                       mag=val, sc=sc))
-        sc = _(' or ').join(self.self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
+        sc = _(' or ').join(
+            self.self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
         self.action_font_size_smaller.setToolTip(
             tt % dict(action=unicode(self.action_font_size_smaller.text()),
                       mag=val, sc=sc))
@@ -1308,6 +1300,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def windowTitle(self):
         return unicode(super(QmainwindowViewer, self).windowTitle())
+
 
 def config(defaults=None):
     desc = _('Options to control the ebook viewer')

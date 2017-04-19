@@ -76,6 +76,7 @@ class QwebviewPreview(Qwebview):
     @pyqtSlot(str)
     def position_change(self, position):
         self.positionChange.emit(position)
+        self.findText("")  # clear selection
 
     @pyqtProperty(str)
     def position(self):
