@@ -45,11 +45,18 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
     def rowCount(self, parent):
         return len(self.order)
 
-    def get_sequences(self, key):
+    def get_key_sequences(self, key):
         custom = self.custom.get(key, [])
         if custom:
             return [QKeySequence(x) for x in custom]
         return self.sequences.get(key, [])
+
+    def get_keys_sequences(self, keys):
+        return [
+            _k
+            for k in map(self.get_key_sequences, keys)
+            for _k in k
+        ]
 
     def get_match(self, event_or_sequence, ignore=tuple()):
         q = event_or_sequence
@@ -57,7 +64,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             q = QKeySequence(q.key() | (int(q.modifiers()) & ~Qt.KeypadModifier))
         for key in self.order:
             if key not in ignore:
-                for seq in self.get_sequences(key):
+                for seq in self.get_key_sequences(key):
                     if seq.matches(q) == QKeySequence.ExactMatch:
                         return key
         return None
@@ -69,7 +76,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
 
     def get_shortcuts(self, key):
         return [unicode(x.toString(x.NativeText)) for x in
-                self.get_sequences(key)]
+                self.get_key_sequences(key)]
 
     def data(self, index, role):
         row = index.row()

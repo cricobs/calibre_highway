@@ -368,6 +368,8 @@ class QmainwindowViewer(Qmainwindow):
     def on_qapplication_qactionAdded(self, parent, qaction):
         if parent is self:
             return
+
+        # fixme set a global option?
         shortcuts = qaction.shortcuts()
         if shortcuts:
             # So that the keyboard shortcuts for these actions will

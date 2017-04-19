@@ -117,17 +117,19 @@ class Qobject(QObject):
         if shortcuts:
             # fixme this is pure trash
             try:
-                sequences = list(map(
-                    lambda s: self.qapplication.qabstractlistmodelShortcut.get_sequences(s)[0],
-                    shortcuts))
+                names = shortcuts
+                shortcuts = self.qapplication.qabstractlistmodelShortcut.get_keys_sequences(shortcuts)
             except:
                 qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
             else:
+                if name == "Next Page":
+                    print (
+                        self.qapplication.qabstractlistmodelShortcut.get_keys_sequences(shortcuts))
                 data = qaction.data() or {}
-                data["shortcuts"] = " | ".join(shortcuts)
+                data["shortcuts"] = " | ".join(names)
 
                 qaction.setData(data)
-                qaction.setShortcuts(sequences)
+                qaction.setShortcuts(shortcuts)
         if separator:
             if qmenu:
                 qmenu.addSeparator()

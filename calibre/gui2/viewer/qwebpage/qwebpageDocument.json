@@ -95,8 +95,8 @@
     ],
     "Next Page": [
       [
-        "PgDown",
-        "Space"
+        "Space",
+        "PgDown"
       ],
       "Scroll to the next page"
     ],
