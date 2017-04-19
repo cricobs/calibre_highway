@@ -1,8 +1,20 @@
+import json
+import sys
+
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
+from calibre.gui2.viewer.qabstractlistmodel.qabstractlistmodelShortcut import \
+    QabstractlistmodelShortcut
 from calibre.gui2.viewer.qapplication.qapplication import Qapplication
 from calibre.gui2.viewer.qwidget.qwidgetSearchReplace import QwidgetSearchReplace
+from calibre.library.filepath import filepath_relative
+
+with open(filepath_relative(sys.modules[__name__], "json")) as iput:
+    SHORTCUTS = {
+        name: (shortcuts, _(tooltip))
+        for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items()
+        }
 
 
 class QapplicationViewer(Qapplication):
@@ -13,3 +25,4 @@ class QapplicationViewer(Qapplication):
         super(QapplicationViewer, self).__init__(*args, **kwargs)
 
         self.qwidgetSearchReplace = QwidgetSearchReplace()
+        self.qabstractlistmodelShortcut = QabstractlistmodelShortcut(SHORTCUTS, 'shortcuts/viewer')

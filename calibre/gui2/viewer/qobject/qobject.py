@@ -113,10 +113,12 @@ class Qobject(QObject):
         if parents:
             qaction.parents = parents
         if shortcuts:
-            # fixme create proper shorcuts manager
+            # fixme move shorcuts manager to qapplication
             if shortcuts:
                 try:
-                    sequences = list(map(lambda s: self.shortcuts.get_sequences(s)[0], shortcuts))
+                    sequences = list(map(
+                        lambda s: self.qapplication.qabstractlistmodelShortcut.get_sequences(s)[0],
+                        shortcuts))
                 except:
                     qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
                 else:

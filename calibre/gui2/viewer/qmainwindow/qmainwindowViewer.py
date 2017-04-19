@@ -399,7 +399,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def toggle_toc(self, ev):
         try:
-            key = self.view.shortcuts.get_match(ev)
+            key = self.qapplication.qabstractlistmodelShortcut.get_match(ev)
         except AttributeError:
             pass
         else:
@@ -731,11 +731,11 @@ class QmainwindowViewer(Qmainwindow):
 
     def magnification_changed(self, val):
         tt = '%(action)s [%(sc)s]\n' + _('Current magnification: %(mag).1f')
-        sc = _(' or ').join(self.view.shortcuts.get_shortcuts('Font larger'))
+        sc = _(' or ').join(self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
         self.action_font_size_larger.setToolTip(
             tt % dict(action=unicode(self.action_font_size_larger.text()),
                       mag=val, sc=sc))
-        sc = _(' or ').join(self.view.shortcuts.get_shortcuts('Font smaller'))
+        sc = _(' or ').join(self.self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
         self.action_font_size_smaller.setToolTip(
             tt % dict(action=unicode(self.action_font_size_smaller.text()),
                       mag=val, sc=sc))
@@ -1021,7 +1021,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def build_bookmarks_menu(self, bookmarks):
         self.bookmarks_menu.clear()
-        sc = _(' or ').join(self.view.shortcuts.get_shortcuts('Bookmark'))
+        sc = _(' or ').join(self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Bookmark'))
         self.bookmarks_menu.addAction(
             _("Toggle Bookmarks"), self.qdockwidgetBookmark.toggleViewAction().trigger)
         self.bookmarks_menu.addAction(_("Bookmark this location [%s]") % sc, self.bookmark)
@@ -1192,7 +1192,7 @@ class QmainwindowViewer(Qmainwindow):
                 return
 
         try:
-            key = self.view.shortcuts.get_match(event)
+            key = self.qapplication.qabstractlistmodelShortcut.get_match(event)
         except AttributeError:
             return
 
@@ -1285,7 +1285,7 @@ class QmainwindowViewer(Qmainwindow):
                 slot = reduce(getattr, names, self)
                 getattr(qaction, signal).connect(slot)
         if shortcut:
-            shortcuts = self.view.shortcuts.get_shortcuts(shortcut)
+            shortcuts = self.qapplication.qabstractlistmodelShortcut.get_shortcuts(shortcut)
             qaction.setToolTip(unicode(qaction.text()) + (' [%s]' % _(' or ').join(shortcuts)))
         if context:
             self.context_actions.append(qaction)

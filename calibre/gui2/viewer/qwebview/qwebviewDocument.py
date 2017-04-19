@@ -1,8 +1,6 @@
 #!/usr/bin/env  python2
 
-import json
 import math
-import sys
 from functools import partial
 from future_builtins import map
 
@@ -13,7 +11,6 @@ from PyQt5.QtWebKitWidgets import QWebView
 from calibre.constants import iswindows
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
-from calibre.gui2.shortcuts import Shortcuts
 from calibre.gui2.viewer.qdialog.gestures import GestureHandler
 from calibre.gui2.viewer.qdialog.qdialogConfig import config, load_themes
 from calibre.gui2.viewer.qdialog.qdialogImage import ImagePopup
@@ -22,7 +19,6 @@ from calibre.gui2.viewer.qwebpage.qwebpageDocument import Document
 from calibre.gui2.viewer.qwebpage.qwebpageFootnote import Footnotes
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 from calibre.gui2.viewer.qwidget.qwidgetSlideFlip import QwidgetSlideFlip
-from calibre.library.filepath import filepath_relative
 
 __license__ = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal kovid@kovidgoyal.net'
@@ -31,12 +27,6 @@ __docformat__ = 'restructuredtext en'
 _ = _
 I = I
 dynamic_property = dynamic_property
-
-with open(filepath_relative(sys.modules[__name__], "json")) as iput:
-    SHORTCUTS = {
-        name: (shortcuts, _(tooltip))
-        for name, (shortcuts, tooltip) in json.load(iput)["shortcuts"].items()
-        }
 
 
 # todo
@@ -76,7 +66,6 @@ class QwebviewDocument(Qwebview):
         self.is_auto_repeat_event = False
         self.loading_url = None
         self.manager = None
-        self.shortcuts = Shortcuts(SHORTCUTS, 'shortcuts/viewer')
         self.table_popup = TablePopup(self)
         self.to_bottom = False
 
@@ -85,7 +74,8 @@ class QwebviewDocument(Qwebview):
         self.qmenu_search_online = QMenu(self)
 
         self.document = d = Document(
-            self.shortcuts, parent=self, debug_javascript=debug_javascript)
+            self.qapplication.qabstractlistmodelShortcut, parent=self,
+            debug_javascript=debug_javascript)
         d.nam.load_error.connect(self.on_unhandled_load_error)
         d.settings_changed.connect(self.footnotes.clone_settings)
         d.animated_scroll_done_signal.connect(self.animated_scroll_done, type=Qt.QueuedConnection)
@@ -291,9 +281,12 @@ class QwebviewDocument(Qwebview):
                     continue
 
                 text = unicode(action.text())
-                shortcuts = self.shortcuts.get_shortcuts(action.data().get("shortcuts", None))
-                if shortcuts:
-                    text += ' [{0}]'.format(','.join(shortcuts))
+                data = action.data()
+                if data:
+                    shortcuts = self.qapplication.qabstractlistmodelShortcut.get_shortcuts(
+                        data.get("shortcuts", None))
+                    if shortcuts:
+                        text += ' [{0}]'.format(','.join(shortcuts))
 
                 menu_action = menu.addAction(action.icon(), text, action.trigger)
                 menu_action.setMenu(action.menu())
@@ -889,7 +882,7 @@ class QwebviewDocument(Qwebview):
 
     def handle_key_press(self, event):
         handled = True
-        key = self.shortcuts.get_match(event)
+        key = self.qapplication.qabstractlistmodelShortcut.get_match(event)
         func = self.goto_location_actions.get(key, None)
         if func is not None:
             self.is_auto_repeat_event = event.isAutoRepeat()
