@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QSignalMapper
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QAction
@@ -12,7 +13,7 @@ from calibre.gui2.viewer.qtimer.qtimer import Qtimer
 class Qapplication(Application):
     inactivityTimeout = pyqtSignal(QWidget, int)
     activity = pyqtSignal()
-    qactionAdded = pyqtSignal(QAction)
+    qactionAdded = pyqtSignal(QObject, QAction)
 
     def __init__(self, *args, **kwargs):
         super(Qapplication, self).__init__(*args, **kwargs)
@@ -34,7 +35,7 @@ class Qapplication(Application):
                 if qaction not in qs:
                     qs.append(qaction)
 
-            self.qactionAdded.emit(qaction)
+            self.qactionAdded.emit(qaction.parent(), qaction)
 
         elif qevent.type() == qevent.MouseMove:
             self.activity_detected()

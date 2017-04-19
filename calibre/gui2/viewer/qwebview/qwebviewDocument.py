@@ -101,7 +101,6 @@ class QwebviewDocument(Qwebview):
         self.copy_action.setIcon(QIcon(I('edit-copy.png')))
         self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
 
-    # --- actions
     def load_options(self, options):
         pass
 
@@ -112,7 +111,6 @@ class QwebviewDocument(Qwebview):
 
         super(QwebviewDocument, self).addAction(qaction)
 
-    # ---
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())
 

@@ -237,6 +237,9 @@ class QmainwindowViewer(Qmainwindow):
             self, pathtoebook=None, debug_javascript=False, open_at=None,
             start_in_fullscreen=False, continue_reading=False, listener=None, file_events=(),
             parent=None):
+
+        QapplicationViewer.instance().qactionAdded.connect(self.on_qapplication_qactionAdded)
+
         super(QmainwindowViewer, self).__init__(parent)
 
         self.closed = False
@@ -352,23 +355,26 @@ class QmainwindowViewer(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        for q in [QToolBar, QDockWidget]:  # fixme use self.qapplication.qactionAdded
-            for qwidget in self.findChildren(q):
-                for action in qwidget.actions():
-                    # So that the keyboard shortcuts for these actions will
-                    # continue to function even when the toolbars are hidden
-                    self.addAction(action)
-
         for plugin in self.view.document.all_viewer_plugins:
             plugin.customize_ui(self)
 
         file_events.got_file.connect(self.load_ebook)
 
-        self.qapplication = QapplicationViewer.instance()
         self.qapplication.shutdown_signal_received.connect(self.action_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
+
+    def on_qapplication_qactionAdded(self, parent, qaction):
+        if parent is self:
+            return
+        shortcuts = qaction.shortcuts()
+        if shortcuts:
+            # So that the keyboard shortcuts for these actions will
+            # continue to function even when the widgets are hidden
+            self.qapplication.blockSignals(True)
+            self.addAction(qaction)
+            self.qapplication.blockSignals(False)
 
     def on_qapplication_activity(self):
         self.qapplication.restoreOverrideCursor()

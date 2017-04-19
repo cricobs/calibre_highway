@@ -38,11 +38,6 @@ class Qobject(QObject):
             with iput:
                 self.options = json.load(iput)
 
-        # fixme
-        """
-        connect self.qapplication.qactionAdded to self.add_qapplication_action with
-        self.__class__.__name__ argument?
-        """
         qactions = self.qapplication.qactions.get(self.__class__.__name__)
         if qactions:
             self.add_qapplication_actions(qactions)
@@ -86,7 +81,7 @@ class Qobject(QObject):
 
         qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
         qaction.setCheckable(checkable)
-        qaction.setObjectName('qaction_' + name)
+        qaction.setObjectName('qaction_' + name.replace(" ", "_"))
         qaction.setEnabled(enabled)
         qaction.setData(data)
 
