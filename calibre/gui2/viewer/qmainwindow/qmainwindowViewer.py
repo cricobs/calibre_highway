@@ -1017,7 +1017,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def build_bookmarks_menu(self, bookmarks):
         self.qmenu_bookmarks.clear()
-        self.qmenu_bookmarks.addAction(self.qdockwidgetBookmark.toggleViewAction())
         self.qmenu_bookmarks.addAction(self.qaction_bookmark_location)
         self.qmenu_bookmarks.addSeparator()
 

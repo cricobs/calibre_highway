@@ -116,9 +116,9 @@ class Qobject(QObject):
                 slot = reduce(getattr, names, self)
                 getattr(qaction, signal).connect(slot)
         if signals:
-            for signal, names in signals.items():
-                slot = reduce(getattr, names, qaction)
-                getattr(self, signal).connect(slot)
+            for slot, names in signals.items():
+                signal = reduce(getattr, names, self)
+                signal.connect(getattr(qaction, slot))
         if shortcuts:
             data = qaction.data() or {}
             data["shortcuts"] = shortcuts

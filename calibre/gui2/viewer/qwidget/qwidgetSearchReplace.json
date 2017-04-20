@@ -17,8 +17,8 @@
         ]
       },
       "signals": {
-        "visibilityChanged": [
-          "setChecked"
+        "setChecked": [
+          "visibilityChanged"
         ]
       }
     }
