@@ -19,6 +19,10 @@ class Qdockwidget(QDockWidget, Qwidget):
 
         self.toggleViewAction().triggered.connect(self.on_toggleViewAction_triggered)
 
+    @property
+    def qaction_toggle(self):
+        return self.toggleViewAction()
+
     def on_qapplication_inactivityTimeout(self, target, interval):
         if target != self:
             return

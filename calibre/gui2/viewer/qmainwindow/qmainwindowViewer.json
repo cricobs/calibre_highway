@@ -3,6 +3,9 @@
     {
       "text": "Back",
       "name": "back",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "back.png",
       "slots": {
         "triggered": [
@@ -14,6 +17,9 @@
       "text": "Forward",
       "separator": true,
       "name": "forward",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "forward.png",
       "slots": {
         "triggered": [
@@ -24,6 +30,9 @@
     {
       "text": "Previous page",
       "name": "previous_page",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "previous.png",
       "slots": {
         "triggered": [
@@ -37,6 +46,9 @@
       "separator": true,
       "name": "next_page",
       "icon": "next.png",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "slots": {
         "triggered": [
           "view",
@@ -45,11 +57,14 @@
       }
     },
     {
-      "menu": "open_history",
+      "dropdown": "open_history",
       "text": "Open ebook",
       "name": "open_ebook",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "document_open.png",
-      "context": true,
+      "group": "context",
       "slots": {
         "triggered": [
           "open_ebook"
@@ -59,8 +74,11 @@
     {
       "text": "&Reload book",
       "name": "reload",
-      "context": true,
+      "group": "context",
       "icon": "view-refresh.png",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "slots": {
         "triggered": [
           "reload_book"
@@ -68,33 +86,50 @@
       }
     },
     {
-      "menu": "bookmarks",
+      "dropdown": "bookmarks",
       "text": "Bookmark",
-      "popup": "InstantPopup",
       "name": "bookmark",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "bookmarks.png",
-      "context": true,
+      "group": "context",
       "separator": true
     },
     {
       "checkable": true,
-      "widget": "qdockwidgetFootnote",
+      "action": [
+        "qdockwidgetFootnote",
+        "qaction_toggle"
+      ],
       "text": "Footnotes",
       "name": "footnotes",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "column.png",
-      "context": true
+      "group": "context"
     },
     {
       "checkable": true,
-      "widget": "qdockwidgetSynopsis",
+      "action": [
+        "qdockwidgetSynopsis",
+        "qaction_toggle"
+      ],
       "text": "Synopsis",
       "name": "synopsis",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "modified.png",
-      "context": true
+      "group": "context"
     },
     {
       "text": "Show book metadata",
       "name": "metadata",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "checkable": true,
       "icon": "metadata.png",
       "slots": {
@@ -106,12 +141,20 @@
     },
     {
       "checkable": true,
-      "widget": "qdockwidgetContent",
-      "shortcut": "Table of Contents",
+      "action": [
+        "qdockwidgetContent",
+        "qaction_toggle"
+      ],
+      "shortcuts": [
+        "Table of Contents"
+      ],
       "text": "Table of Contents",
       "name": "table_of_contents",
       "icon": "highlight_only_on.png",
-      "context": true,
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "group": "context",
       "slots": {
         "toggled": [
           "set_toc_visible"
@@ -120,17 +163,24 @@
     },
     {
       "checkable": true,
-      "widget": "qtoolbarEdit",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "text": "Edit",
-      "shortcut": "Edit",
+      "shortcuts": [
+        "Edit"
+      ],
       "name": "qtoolbarEdit",
       "icon": "edit_input.png",
-      "context": true
+      "group": "context"
     },
     {
       "text": "Search",
       "name": "search",
-      "context": true,
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "group": "context",
       "icon": "search.png",
       "slots": {
         "triggered": [
@@ -140,10 +190,13 @@
       "separator": true
     },
     {
-      "disabled": true,
+      "enabled": false,
       "text": "Copy to clipboard",
       "name": "copy",
       "icon": "edit-copy.png",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "slots": {
         "triggered": [
           "copy"
@@ -154,7 +207,10 @@
       "text": "Increase font size",
       "name": "font_size_larger",
       "icon": "font_size_larger.png",
-      "context": true,
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "group": "context",
       "slots": {
         "triggered": [
           "font_size_larger"
@@ -165,7 +221,10 @@
       "text": "Decrease font size",
       "name": "font_size_smaller",
       "icon": "font_size_smaller.png",
-      "context": true,
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "group": "context",
       "separator": true,
       "slots": {
         "triggered": [
@@ -175,10 +234,15 @@
     },
     {
       "text": "Toggle full screen",
-      "shortcut": "Fullscreen",
+      "shortcuts": [
+        "Fullscreen"
+      ],
       "name": "full_screen",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "page.png",
-      "context": true,
+      "group": "context",
       "slots": {
         "triggered": [
           "toggle_fullscreen"
@@ -188,6 +252,9 @@
     {
       "text": "Reference mode",
       "name": "reference_mode",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "checkable": true,
       "icon": "lookfeel.png",
       "slots": {
@@ -199,9 +266,11 @@
     },
     {
       "text": "Find previous occurrence",
-      "toolbar": "qwidgetSearch",
       "name": "find_previous",
       "icon": "arrow-up.png",
+      "parents": [
+        "QwidgetSearch"
+      ],
       "slots": {
         "triggered": [
           "find_previous"
@@ -210,7 +279,9 @@
     },
     {
       "text": "Find next occurrence",
-      "toolbar": "qwidgetSearch",
+      "parents": [
+        "QwidgetSearch"
+      ],
       "name": "find_next",
       "icon": "arrow-down.png",
       "slots": {
@@ -221,7 +292,9 @@
     },
     {
       "text": "Toggle paged mode",
-      "toolbar": "qtoolbarEdit",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "name": "toggle_paged_mode",
       "checkable": true,
       "icon": "scroll.png",
@@ -234,14 +307,19 @@
     {
       "name": "load_theme",
       "text": "Load a theme",
-      "popup": "InstantPopup",
-      "menu": "themes",
+      "parents": [
+        "QtoolbarEdit"
+      ],
+      "dropdown": "themes",
       "icon": "wizard.png",
       "separator": true
     },
     {
       "text": "Print to PDF file",
       "name": "print",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "icon": "print.png",
       "slots": {
         "triggered": [
@@ -251,6 +329,9 @@
     },
     {
       "text": "Preferences",
+      "parents": [
+        "QtoolbarEdit"
+      ],
       "name": "preferences",
       "icon": "config.png",
       "slots": {
@@ -262,7 +343,7 @@
     {
       "text": "&Quit",
       "name": "quit",
-      "context": true,
+      "group": "context",
       "slots": {
         "triggered": [
           "quit"
@@ -281,29 +362,29 @@
   ],
   "keyboard_action": {
     "Quit": [
-      "action_quit"
+      "qaction_quit"
     ],
     "Show metadata": [
-      "action_metadata"
+      "qaction_metadata"
     ],
     "Copy": [
       "view",
       "copy_action"
     ],
     "Font larger": [
-      "action_font_size_larger"
+      "qaction_font_size_larger"
     ],
     "Font smaller": [
-      "action_font_size_smaller"
+      "qaction_font_size_smaller"
     ],
     "Fullscreen": [
-      "action_full_screen"
+      "qaction_full_screen"
     ],
     "Find next": [
-      "action_find_next"
+      "qaction_find_next"
     ],
     "Find previous": [
-      "action_find_previous"
+      "qaction_find_previous"
     ],
     "Search online": [
       "view",
@@ -322,29 +403,29 @@
       "toggleViewAction"
     ],
     "Reload": [
-      "action_reload"
+      "qaction_reload"
     ],
     "Table of Contents": [
-      "action_table_of_contents"
+      "qaction_table_of_contents"
     ],
     "Print": [
-      "action_print"
+      "qaction_print"
     ],
     "Edit": [
-      "action_qtoolbarEdit"
+      "qaction_qtoolbarEdit"
     ],
     "Synopsis Save": [
       "qdockwidgetSynopsis",
       "qactionSave"
     ],
     "Synopsis": [
-      "action_synopsis"
+      "qaction_synopsis"
     ],
     "Preferences": [
-      "action_preferences"
+      "qaction_preferences"
     ],
     "Focus Search": [
-      "action_search"
+      "qaction_search"
     ]
   }
 }

@@ -15,20 +15,16 @@ _ = _
 I = I
 
 
-# todo
-# connect to self.qapplication.qactionAdded to set shortcuts
-
-
 class QabstractlistmodelShortcut(Qabstractlistmodel):
     TEMPLATE = u'''
     <p><b>{0}</b><br>
     {2}: <code>{1}</code></p>
     '''
+    qactions = []
 
     def __init__(self, shortcuts, config_file_base_name, parent=None):
         super(QabstractlistmodelShortcut, self).__init__(parent)
 
-        self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
         self.descriptions = {}
         for k, v in shortcuts.items():
             self.descriptions[k] = v[-1]
@@ -43,22 +39,35 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
 
         self.custom = XMLConfig(config_file_base_name)
 
+        self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
+
     def on_qapplication_qactionAdded(self, parent, qaction):
+        if qaction in self.qactions:
+            return  # agtft shortcut will not be updated if modified in settings?
+        else:
+            self.qactions.append(qaction)
+
         data = qaction.data()
         if not data:
             return
-        shortcuts = data.get("shortcuts", None)
+
+        try:
+            shortcuts = data.get("shortcuts", None)
+        except AttributeError:
+            return
+
         if shortcuts:
             try:
-                names = shortcuts
                 shortcuts = self.get_keys_sequences(shortcuts)
             except AttributeError:
                 qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
             else:
+                names = ' or '.join(map(QKeySequence.toString, shortcuts))
                 data["shortcuts"] = " | ".join(names)
 
                 qaction.setData(data)
                 qaction.setShortcuts(shortcuts)
+                qaction.setToolTip(unicode(qaction.text()) + ' [{0}]'.format(names))
 
     def rowCount(self, parent):
         return len(self.order)
@@ -74,7 +83,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             _k
             for k in map(self.get_key_sequences, keys)
             for _k in k
-        ]
+            ]
 
     def get_match(self, event_or_sequence, ignore=tuple()):
         q = event_or_sequence

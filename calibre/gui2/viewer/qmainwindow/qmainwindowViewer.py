@@ -10,11 +10,7 @@ from functools import partial
 from threading import Thread
 
 from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QSize, QTime, QObject,
-                      QPropertyAnimation, QInputDialog, QAction, QModelIndex, pyqtSignal)
-from PyQt5.QtWidgets import QDockWidget
-from PyQt5.QtWidgets import QMenu
-from PyQt5.QtWidgets import QToolBar
-from PyQt5.QtWidgets import QToolButton
+                      QPropertyAnimation, QInputDialog, QModelIndex, pyqtSignal)
 from PyQt5.QtWidgets import QWidget
 
 from calibre import as_unicode, force_unicode, isbytestring, prints
@@ -263,7 +259,7 @@ class QmainwindowViewer(Qmainwindow):
         self.show_toc_on_open = False
         self.was_maximized = False
         self.window_mode_changed = None
-        self.context_actions = []
+        # self.context_qactions = []
         self.interval_hide_cursor = 3333
         self.interval_autosave = 10000
 
@@ -288,7 +284,7 @@ class QmainwindowViewer(Qmainwindow):
 
         self.create_actions(self.options["actions"])
 
-        self.history = History(self.action_back, self.action_forward)
+        self.history = History(self.qaction_back, self.qaction_forward)
 
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
@@ -313,9 +309,9 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.editingFinished.connect(self.goto_page_num)
 
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
-        self.open_history_menu.triggered.connect(self.open_recent)
+        self.qmenu_open_history.triggered.connect(self.open_recent)
         self.reference.goto.connect(self.goto)
-        self.themes_menu.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
+        self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
         self.toc = self.qdockwidgetContent.qtreeviewContent
         self.toc.pressed[QModelIndex].connect(self.toc_clicked)
@@ -337,7 +333,7 @@ class QmainwindowViewer(Qmainwindow):
         self.load_theme_menu()
 
         if start_in_fullscreen or self.view.document.start_in_fullscreen:
-            self.action_full_screen.trigger()
+            self.qaction_full_screen.trigger()
         if listener is not None:
             t = Thread(name='ConnListener', target=listen, args=(self,))
             t.daemon = True
@@ -360,7 +356,7 @@ class QmainwindowViewer(Qmainwindow):
 
         file_events.got_file.connect(self.load_ebook)
 
-        self.qapplication.shutdown_signal_received.connect(self.action_quit.trigger)
+        self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
@@ -403,7 +399,7 @@ class QmainwindowViewer(Qmainwindow):
         else:
             if key == 'Table of Contents':
                 ev.accept()
-                self.action_table_of_contents.trigger()
+                self.qaction_table_of_contents.trigger()
                 return True
 
         return False
@@ -413,10 +409,10 @@ class QmainwindowViewer(Qmainwindow):
             self.load_ebook(self.file_events[-1])
 
     def toggle_paged_mode(self, checked, at_start=False):
-        in_paged_mode = not self.action_toggle_paged_mode.isChecked()
+        in_paged_mode = not self.qaction_toggle_paged_mode.isChecked()
         self.view.document.in_paged_mode = in_paged_mode
-        self.action_toggle_paged_mode.setToolTip(
-            self.FLOW_MODE_TT if self.action_toggle_paged_mode.isChecked() else self.PAGED_MODE_TT)
+        self.qaction_toggle_paged_mode.setToolTip(
+            self.FLOW_MODE_TT if self.qaction_toggle_paged_mode.isChecked() else self.PAGED_MODE_TT)
         if at_start:
             return
         self.reload()
@@ -440,11 +436,11 @@ class QmainwindowViewer(Qmainwindow):
         self.build_recent_menu()
 
     def build_recent_menu(self):
-        m = self.open_history_menu
+        m = self.qmenu_open_history
         m.clear()
         recent = vprefs.get('viewer_open_history', [])
         if recent:
-            m.addAction(self.action_clear_recent_history)
+            m.addAction(self.qaction_clear_recent_history)
             m.addSeparator()
         count = 0
         for path in recent:
@@ -455,13 +451,13 @@ class QmainwindowViewer(Qmainwindow):
                 count += 1
 
     def continue_reading(self):
-        actions = self.open_history_menu.actions()[2:]
+        actions = self.qmenu_open_history.actions()[2:]
         if actions:
             actions[0].trigger()
 
     def shutdown(self):
         if self.isFullScreen() and not self.view.document.start_in_fullscreen:
-            self.action_full_screen.trigger()
+            self.qaction_full_screen.trigger()
             return False
         if self.listener is not None:
             self.listener.close()
@@ -491,7 +487,7 @@ class QmainwindowViewer(Qmainwindow):
             vprefs.set('viewer_toc_isvisible',
                        self.show_toc_on_open or bool(self.qdockwidgetContent.isVisible()))
         vprefs['multiplier'] = self.view.multiplier
-        vprefs['in_paged_mode'] = not self.action_toggle_paged_mode.isChecked()
+        vprefs['in_paged_mode'] = not self.qaction_toggle_paged_mode.isChecked()
 
     def restore_state(self):
         state = vprefs.get('main_window_state', None)
@@ -509,8 +505,8 @@ class QmainwindowViewer(Qmainwindow):
         # This will be opened on book open, if the book has a toc and it
         # was previously opened
         # self.qdockwidgetContent.close()
-        self.action_toggle_paged_mode.setChecked(not vprefs.get('in_paged_mode', True))
-        self.toggle_paged_mode(self.action_toggle_paged_mode.isChecked(), at_start=True)
+        self.qaction_toggle_paged_mode.setChecked(not vprefs.get('in_paged_mode', True))
+        self.toggle_paged_mode(self.qaction_toggle_paged_mode.isChecked(), at_start=True)
 
     def lookup(self, word):
         from urllib import quote
@@ -671,7 +667,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def selection_changed(self, selected_text):
         self.selected_text = selected_text.strip()
-        self.action_copy.setEnabled(bool(self.selected_text))
+        self.qaction_copy.setEnabled(bool(self.selected_text))
 
     def copy(self, x):
         if self.selected_text:
@@ -731,16 +727,16 @@ class QmainwindowViewer(Qmainwindow):
         tt = '%(action)s [%(sc)s]\n' + _('Current magnification: %(mag).1f')
         sc = _(' or ').join(
             self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
-        self.action_font_size_larger.setToolTip(
-            tt % dict(action=unicode(self.action_font_size_larger.text()),
+        self.qaction_font_size_larger.setToolTip(
+            tt % dict(action=unicode(self.qaction_font_size_larger.text()),
                       mag=val, sc=sc))
         sc = _(' or ').join(
             self.self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
-        self.action_font_size_smaller.setToolTip(
-            tt % dict(action=unicode(self.action_font_size_smaller.text()),
+        self.qaction_font_size_smaller.setToolTip(
+            tt % dict(action=unicode(self.qaction_font_size_smaller.text()),
                       mag=val, sc=sc))
-        self.action_font_size_larger.setEnabled(self.view.multiplier < 3)
-        self.action_font_size_smaller.setEnabled(self.view.multiplier > 0.2)
+        self.qaction_font_size_larger.setEnabled(self.view.multiplier < 3)
+        self.qaction_font_size_smaller.setEnabled(self.view.multiplier > 0.2)
 
     def find(self, text, repeat=False, backwards=False):
         if not text:
@@ -975,10 +971,10 @@ class QmainwindowViewer(Qmainwindow):
 
     def load_theme_menu(self):
         from calibre.gui2.viewer.qdialog.qdialogConfig import load_themes
-        self.themes_menu.clear()
+        self.qmenu_themes.clear()
         for key in load_themes():
             title = key[len('theme_'):]
-            self.themes_menu.addAction(title, partial(self.load_theme, key))
+            self.qmenu_themes.addAction(title, partial(self.load_theme, key))
 
     def load_theme(self, theme_id):
         self.view.load_theme(theme_id)
@@ -1020,12 +1016,12 @@ class QmainwindowViewer(Qmainwindow):
         self.iterator.save_bookmarks()
 
     def build_bookmarks_menu(self, bookmarks):
-        self.bookmarks_menu.clear()
+        self.qmenu_bookmarks.clear()
         sc = _(' or ').join(self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Bookmark'))
-        self.bookmarks_menu.addAction(
+        self.qmenu_bookmarks.addAction(
             _("Toggle Bookmarks"), self.qdockwidgetBookmark.toggleViewAction().trigger)
-        self.bookmarks_menu.addAction(_("Bookmark this location [%s]") % sc, self.bookmark)
-        self.bookmarks_menu.addSeparator()
+        self.qmenu_bookmarks.addAction(_("Bookmark this location [%s]") % sc, self.bookmark)
+        self.qmenu_bookmarks.addSeparator()
         current_page = None
         self.existing_bookmarks = []
         for bm in bookmarks:
@@ -1034,7 +1030,7 @@ class QmainwindowViewer(Qmainwindow):
                     current_page = bm
             else:
                 self.existing_bookmarks.append(bm['title'])
-                self.bookmarks_menu.addAction(bm['title'], partial(self.goto_bookmark, bm))
+                self.qmenu_bookmarks.addAction(bm['title'], partial(self.goto_bookmark, bm))
         return current_page
 
     def set_bookmarks(self, bookmarks):
@@ -1103,11 +1099,11 @@ class QmainwindowViewer(Qmainwindow):
                 self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
                 self.toc.setModel(self.toc_model)
                 if self.show_toc_on_open:
-                    self.action_table_of_contents.setChecked(True)
+                    self.qaction_table_of_contents.setChecked(True)
             else:
                 self.toc_model = QstandarditemmodelContent(self.iterator.spine)
                 self.toc.setModel(self.toc_model)
-                self.action_table_of_contents.setChecked(False)
+                self.qaction_table_of_contents.setChecked(False)
             if isbytestring(pathtoebook):
                 pathtoebook = force_unicode(pathtoebook, filesystem_encoding)
             vh = vprefs.get('viewer_open_history', [])
@@ -1120,7 +1116,7 @@ class QmainwindowViewer(Qmainwindow):
             self.build_recent_menu()
             self.view.set_book_data(self.iterator)
 
-            self.action_table_of_contents.setDisabled(not self.iterator.toc)
+            self.qaction_table_of_contents.setDisabled(not self.iterator.toc)
             self.current_book_has_toc = bool(self.iterator.toc)
             self.current_title = title
             self.setWindowTitle(
@@ -1187,7 +1183,7 @@ class QmainwindowViewer(Qmainwindow):
                 event.accept()
                 return
             if self.isFullScreen():
-                self.action_full_screen.trigger()
+                self.qaction_full_screen.trigger()
                 event.accept()
                 return
 
@@ -1238,7 +1234,6 @@ class QmainwindowViewer(Qmainwindow):
         if self.height() > av:
             self.resize(self.width(), av)
 
-    # --- ui
     def show_footnote_view(self):
         self.qdockwidgetFootnote.show()
 
@@ -1255,59 +1250,19 @@ class QmainwindowViewer(Qmainwindow):
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
 
     def themes_menu_shown(self):
-        if len(self.themes_menu.actions()) == 0:
-            self.themes_menu.hide()
+        if len(self.qmenu_themes.actions()) == 0:
+            self.qmenu_themes.hide()
             error_dialog(self, _('No themes'),
                          _('You must first create some themes in the viewer preferences'),
                          show=True)
 
     def load_options(self, options):
-        pass  # fixme use superclass
+        pass
 
-    def create_action(self, name, text=None, icon=None, widget=None, toolbar=None, shortcut=None,
-                      menu=None, slots=None, popup="MenuButtonPopup", separator=False,
-                      disabled=False, checkable=False, context=False, qmenu=None, group=None):
-        # fixme use superclass
-        qaction = getattr(self, widget).toggleViewAction() if widget else QAction(self)
-        qaction.setText(_(text))
-        qaction.setIcon(QIcon(I(icon)))
-        qaction.setObjectName('action_' + name)
-        qaction.setDisabled(disabled)
-        qaction.setCheckable(checkable)
-
-        toolbar = getattr(self, toolbar) if toolbar else self.qtoolbarEdit
-        if icon:
-            toolbar.addAction(qaction)
-        if widget:
-            setattr(self, qaction.objectName(), qaction)
-        if slots:
-            for signal, names in slots.items():
-                slot = reduce(getattr, names, self)
-                getattr(qaction, signal).connect(slot)
-        if shortcut:
-            shortcuts = self.qapplication.qabstractlistmodelShortcut.get_shortcuts(shortcut)
-            qaction.setToolTip(unicode(qaction.text()) + (' [%s]' % _(' or ').join(shortcuts)))
-        if context:
-            self.context_actions.append(qaction)
-        if menu:
-            qmenu = QMenu()
-            setattr(self, menu + '_menu', qmenu)
-            qaction.setMenu(qmenu)
-
-            qwidget = toolbar.widgetForAction(qaction)
-            qwidget.setPopupMode(getattr(QToolButton, popup))
-        if separator:
-            self.qtoolbarEdit.addSeparator()
-            if context:
-                qaction_separator = QAction(self)
-                qaction_separator.setSeparator(True)
-
-                self.context_actions.append(qaction_separator)
+    def addAction(self, qaction):
+        super(QmainwindowViewer, self).addAction(qaction)
 
         setattr(self, qaction.objectName(), qaction)
-
-    def windowTitle(self):
-        return unicode(super(QmainwindowViewer, self).windowTitle())
 
 
 def config(defaults=None):

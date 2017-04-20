@@ -67,11 +67,15 @@ class Qobject(QObject):
 
     def _create_actions(self, actions, qmenu=None, group=None):
         for options in actions:
-            self.create_action(qmenu=qmenu, group=group, **options)
+            if group:  # allow group to be specified within the action
+                self.create_action(qmenu=qmenu, group=group, **options)
+            else:
+                self.create_action(qmenu=qmenu, **options)
 
     def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
                       shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
-                      actions=None, parents=None, signals=None, group=None, *args, **kwargs):
+                      actions=None, parents=None, signals=None, group=None, action=None,
+                      dropdown=None):
 
         if group and not qmenu:
             n = "qmenu_" + group
@@ -82,13 +86,20 @@ class Qobject(QObject):
                 setattr(self, n, qmenu)
 
         text = text or name
-        qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
+        if action:
+            qaction = reduce(getattr, action, self)
+        elif qmenu:
+            qaction = qmenu.addAction(text)
+        else:
+            qaction = Qaction(text, self)
+
         qaction.setCheckable(checkable)
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
         qaction.setEnabled(enabled)
         qaction.setData(data)
         qaction.setIcon(QIcon(I(icon)))
         qaction.parents = parents or []
+        qaction.separator = separator
 
         group_actions = None
         if group:
@@ -121,6 +132,10 @@ class Qobject(QObject):
                 a.setSeparator(True)
 
                 group_actions.append(a)
+        if dropdown:
+            q = QMenu()
+            setattr(self, 'qmenu_' + dropdown, q)
+            qaction.setMenu(q)
         if actions:
             q = QMenu(self)
             qaction.setMenu(q)

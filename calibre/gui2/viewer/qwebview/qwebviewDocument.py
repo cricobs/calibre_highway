@@ -299,18 +299,18 @@ class QwebviewDocument(Qwebview):
 
         if not text and img.isNull():
             menu.addSeparator()
-            if self.manager.action_back.isEnabled():
-                menu.addAction(self.manager.action_back)
-            if self.manager.action_forward.isEnabled():
-                menu.addAction(self.manager.action_forward)
+            if self.manager.qaction_back.isEnabled():
+                menu.addAction(self.manager.qaction_back)
+            if self.manager.qaction_forward.isEnabled():
+                menu.addAction(self.manager.qaction_forward)
 
             menu.addAction(self.qaction_copy_position)
             menu.addAction(self.qaction_goto_location)
             if self.manager is not None:
-                menu.addActions(self.manager.context_actions)
-                menu.addAction(self.manager.action_reload)
-                menu.addAction(self.manager.action_quit)
-                menu.insertAction(self.manager.action_font_size_larger, self.qaction_restore_fonts)
+                menu.addActions(self.manager.context_qactions)
+                menu.addAction(self.manager.qaction_reload)
+                menu.addAction(self.manager.qaction_quit)
+                menu.insertAction(self.manager.qaction_font_size_larger, self.qaction_restore_fonts)
 
                 self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 

@@ -29,13 +29,14 @@ class Qapplication(Application):
     def eventFilter(self, qobject, qevent):
         if qevent.type() == qevent.ActionAdded:
             qaction = qevent.action()
-            parents = getattr(qaction, "parents", [])
-            for parent in parents:
-                qs = self.qactions[parent]
-                if qaction not in qs:
-                    qs.append(qaction)
+            if not qaction.isSeparator():
+                parents = getattr(qaction, "parents", [])
+                for parent in parents:
+                    qs = self.qactions[parent]
+                    if qaction not in qs:
+                        qs.append(qaction)
 
-            self.qactionAdded.emit(qaction.parent(), qaction)
+                self.qactionAdded.emit(qaction.parent(), qaction)
 
         elif qevent.type() == qevent.MouseMove:
             self.activity_detected()
