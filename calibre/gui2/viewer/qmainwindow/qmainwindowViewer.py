@@ -19,6 +19,7 @@ from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
 from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
+from calibre.gui2.viewer.qaction.qaction import Qaction
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
@@ -259,7 +260,6 @@ class QmainwindowViewer(Qmainwindow):
         self.show_toc_on_open = False
         self.was_maximized = False
         self.window_mode_changed = None
-        # self.context_qactions = []
         self.interval_hide_cursor = 3333
         self.interval_autosave = 10000
 
@@ -1017,11 +1017,10 @@ class QmainwindowViewer(Qmainwindow):
 
     def build_bookmarks_menu(self, bookmarks):
         self.qmenu_bookmarks.clear()
-        sc = _(' or ').join(self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Bookmark'))
-        self.qmenu_bookmarks.addAction(
-            _("Toggle Bookmarks"), self.qdockwidgetBookmark.toggleViewAction().trigger)
-        self.qmenu_bookmarks.addAction(_("Bookmark this location [%s]") % sc, self.bookmark)
+        self.qmenu_bookmarks.addAction(self.qdockwidgetBookmark.toggleViewAction())
+        self.qmenu_bookmarks.addAction(self.qaction_bookmark_location)
         self.qmenu_bookmarks.addSeparator()
+
         current_page = None
         self.existing_bookmarks = []
         for bm in bookmarks:
@@ -1031,10 +1030,12 @@ class QmainwindowViewer(Qmainwindow):
             else:
                 self.existing_bookmarks.append(bm['title'])
                 self.qmenu_bookmarks.addAction(bm['title'], partial(self.goto_bookmark, bm))
+
         return current_page
 
     def set_bookmarks(self, bookmarks):
         self.qwidgetBookmark.set_bookmarks(bookmarks)
+
         return self.build_bookmarks_menu(bookmarks)
 
     @property

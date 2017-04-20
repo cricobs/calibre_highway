@@ -15,9 +15,9 @@ class QtoolbarEdit(Qtoolbar):
         if self.__class__.__name__ not in parents:
             return
 
-        self.qapplication.blockSignals(True)
+        # self.qapplication.blockSignals(True)
         self.addAction(qaction)
-        self.qapplication.blockSignals(False)
+        # self.qapplication.blockSignals(False)
 
     def addAction(self, qaction):
         r = super(QtoolbarEdit, self).addAction(qaction)

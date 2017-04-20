@@ -268,21 +268,7 @@ class QwebviewDocument(Qwebview):
         text = self._selectedText()
         if text and img.isNull():
             self.qaction_search_online.setText(text)
-            for action in self.selection_qactions:
-                if action.isSeparator():
-                    menu.addSeparator()
-                    continue
-
-                text = unicode(action.text())
-                data = action.data()
-                if data:
-                    shortcuts = self.qapplication.qabstractlistmodelShortcut.get_shortcuts(
-                        data.get("shortcuts", None))
-                    if shortcuts:
-                        text += ' [{0}]'.format(','.join(shortcuts))
-
-                menu_action = menu.addAction(action.icon(), text, action.trigger)
-                menu_action.setMenu(action.menu())
+            menu.addActions(self.selection_qactions)
 
         if from_touch and self.manager is not None:
             word = unicode(mf.evaluateJavaScript(

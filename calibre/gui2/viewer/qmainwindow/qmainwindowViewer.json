@@ -170,6 +170,10 @@
       "shortcuts": [
         "Edit"
       ],
+      "action": [
+        "qtoolbarEdit",
+        "qaction_toggle"
+      ],
       "name": "qtoolbarEdit",
       "icon": "edit_input.png",
       "group": "context"
@@ -358,6 +362,18 @@
           "clear_recent_history"
         ]
       }
+    },
+    {
+      "text": "Bookmark this location",
+      "name": "bookmark_location",
+      "slots": {
+        "triggered": [
+          "bookmark"
+        ]
+      },
+      "shortcuts": [
+        "Bookmark"
+      ]
     }
   ],
   "keyboard_action": {

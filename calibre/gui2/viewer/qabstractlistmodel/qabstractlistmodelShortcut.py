@@ -20,8 +20,6 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
     <p><b>{0}</b><br>
     {2}: <code>{1}</code></p>
     '''
-    qactions = []
-
     def __init__(self, shortcuts, config_file_base_name, parent=None):
         super(QabstractlistmodelShortcut, self).__init__(parent)
 
@@ -42,11 +40,6 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
         self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
 
     def on_qapplication_qactionAdded(self, parent, qaction):
-        if qaction in self.qactions:
-            return  # agtft shortcut will not be updated if modified in settings?
-        else:
-            self.qactions.append(qaction)
-
         data = qaction.data()
         if not data:
             return
@@ -60,14 +53,12 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             try:
                 shortcuts = self.get_keys_sequences(shortcuts)
             except AttributeError:
-                qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
-            else:
-                names = ' or '.join(map(QKeySequence.toString, shortcuts))
-                data["shortcuts"] = " | ".join(names)
+                shortcuts = list(map(QKeySequence, shortcuts))
+            finally:
+                keys = ' or '.join(map(QKeySequence.toString, shortcuts))
 
-                qaction.setData(data)
                 qaction.setShortcuts(shortcuts)
-                qaction.setToolTip(unicode(qaction.text()) + ' [{0}]'.format(names))
+                qaction.setToolTip(unicode(qaction.text()) + ' [{0}]'.format(keys))
 
     def rowCount(self, parent):
         return len(self.order)
