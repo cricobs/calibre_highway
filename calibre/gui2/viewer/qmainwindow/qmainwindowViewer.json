@@ -109,6 +109,9 @@
             "qaction_toggle",
             "toggled"
           ]
+      },
+      "data" : {
+        "popup": "InstantPopup"
       }
     },
     {
@@ -331,7 +334,10 @@
       ],
       "dropdown": "themes",
       "icon": "wizard.png",
-      "separator": true
+      "separator": true,
+      "data" : {
+        "popup": "InstantPopup"
+      }
     },
     {
       "text": "Print to PDF file",

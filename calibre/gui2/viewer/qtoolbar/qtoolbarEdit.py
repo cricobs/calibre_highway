@@ -17,6 +17,14 @@ class QtoolbarEdit(Qtoolbar):
 
         # self.qapplication.blockSignals(True)
         self.addAction(qaction)
+        if qaction.menu():
+            data = qaction.data()
+            if data:
+                popup = data.get("popup", None)
+                if popup:
+                    qwidget = self.widgetForAction(qaction)
+                    qwidget.setPopupMode(getattr(qwidget, popup))
+
         # self.qapplication.blockSignals(False)
 
     def addAction(self, qaction):
