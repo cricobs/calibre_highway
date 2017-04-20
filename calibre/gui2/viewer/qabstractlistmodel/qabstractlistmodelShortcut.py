@@ -28,6 +28,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
     def __init__(self, shortcuts, config_file_base_name, parent=None):
         super(QabstractlistmodelShortcut, self).__init__(parent)
 
+        self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
         self.descriptions = {}
         for k, v in shortcuts.items():
             self.descriptions[k] = v[-1]
@@ -41,6 +42,23 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             self.sequences[k] = [QKeySequence(x) for x in v]
 
         self.custom = XMLConfig(config_file_base_name)
+
+    def on_qapplication_qactionAdded(self, parent, qaction):
+        data = qaction.data()
+        if not data:
+            return
+        shortcuts = data.get("shortcuts", None)
+        if shortcuts:
+            try:
+                names = shortcuts
+                shortcuts = self.get_keys_sequences(shortcuts)
+            except AttributeError:
+                qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
+            else:
+                data["shortcuts"] = " | ".join(names)
+
+                qaction.setData(data)
+                qaction.setShortcuts(shortcuts)
 
     def rowCount(self, parent):
         return len(self.order)

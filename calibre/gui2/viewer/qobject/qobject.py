@@ -3,7 +3,6 @@ from PyQt5.uic import loadUi
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
-from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMenu
 
@@ -73,7 +72,6 @@ class Qobject(QObject):
     def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
                       shortcuts=None, separator=False, qmenu=None, enabled=True, data=None,
                       actions=None, parents=None, signals=None, group=None, *args, **kwargs):
-        text = text if text else name
 
         if group and not qmenu:
             n = "qmenu_" + group
@@ -83,16 +81,14 @@ class Qobject(QObject):
                 qmenu = QMenu(self)
                 setattr(self, n, qmenu)
 
+        text = text or name
         qaction = qmenu.addAction(text) if qmenu else Qaction(text, self)
         qaction.setCheckable(checkable)
-        qaction.setObjectName('qaction_' + name.replace(" ", "_"))
+        qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
         qaction.setEnabled(enabled)
         qaction.setData(data)
-
-        try:
-            qaction.setIcon(icon)
-        except TypeError:  # fixme if qaction is created from qmenu
-            qaction.setIcon(QIcon(I(icon)))
+        qaction.setIcon(QIcon(I(icon)))
+        qaction.parents = parents or []
 
         group_actions = None
         if group:
@@ -112,24 +108,11 @@ class Qobject(QObject):
             for signal, names in signals.items():
                 slot = reduce(getattr, names, qaction)
                 getattr(self, signal).connect(slot)
-        if parents:
-            qaction.parents = parents
         if shortcuts:
-            # fixme this is pure trash
-            try:
-                names = shortcuts
-                shortcuts = self.qapplication.qabstractlistmodelShortcut.get_keys_sequences(shortcuts)
-            except:
-                qaction.setShortcuts(list(map(QKeySequence, shortcuts)))
-            else:
-                if name == "Next Page":
-                    print (
-                        self.qapplication.qabstractlistmodelShortcut.get_keys_sequences(shortcuts))
-                data = qaction.data() or {}
-                data["shortcuts"] = " | ".join(names)
+            data = qaction.data() or {}
+            data["shortcuts"] = shortcuts
 
-                qaction.setData(data)
-                qaction.setShortcuts(shortcuts)
+            qaction.setData(data)
         if separator:
             if qmenu:
                 qmenu.addSeparator()
@@ -152,4 +135,6 @@ class Qobject(QObject):
             self.add_qapplication_action(qaction)
 
     def add_qapplication_action(self, qaction):
+        self.qapplication.blockSignals(True)
         self.addAction(qaction)
+        self.qapplication.blockSignals(False)
