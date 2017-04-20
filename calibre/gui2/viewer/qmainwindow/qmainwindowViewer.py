@@ -309,7 +309,7 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.editingFinished.connect(self.goto_page_num)
 
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
-        self.qmenu_open_history.triggered.connect(self.open_recent)
+        # self.qmenu_open_history.triggered.connect(self.open_recent)
         self.reference.goto.connect(self.goto)
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
@@ -440,6 +440,7 @@ class QmainwindowViewer(Qmainwindow):
         m.clear()
         recent = vprefs.get('viewer_open_history', [])
         if recent:
+            m.addAction(self.qaction_open_dialog)
             m.addAction(self.qaction_clear_recent_history)
             m.addSeparator()
         count = 0
