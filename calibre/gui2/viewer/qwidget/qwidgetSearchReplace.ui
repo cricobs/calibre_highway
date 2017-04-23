@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>196</width>
+    <width>212</width>
     <height>47</height>
    </rect>
   </property>
@@ -34,7 +34,7 @@
     <widget class="QcomboboxSearchReplace" name="qcomboboxReplace"/>
    </item>
    <item>
-    <widget class="QwidgetUpDown" name="widget" native="true">
+    <widget class="QwidgetUpDown" name="qwidgetUpDown" native="true">
      <property name="styleSheet">
       <string notr="true">background-color: rgba(0,0,0,0)</string>
      </property>

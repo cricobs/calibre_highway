@@ -45,8 +45,8 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             return
 
         try:
-            shortcuts = qaction.data()["shortcuts"]
-        except KeyError:
+            shortcuts = qaction.data().get("shortcuts", None)
+        except AttributeError:
             return
 
         if shortcuts:
@@ -55,7 +55,6 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
 
             if qkeysequences:
                 keys = ' or '.join(map(QKeySequence.toString, qkeysequences))
-
                 qaction.setShortcuts(qkeysequences)
                 qaction.setToolTip(unicode(qaction.text()) + ' [{0}]'.format(keys))
 

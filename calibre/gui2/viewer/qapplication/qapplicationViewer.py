@@ -18,8 +18,8 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
 
 
 class QapplicationViewer(Qapplication):
-    search = pyqtSignal(QWidget, str)
-    replace = pyqtSignal(QWidget, str, str)
+    search = pyqtSignal(QWidget, str, bool)
+    replace = pyqtSignal(QWidget, str, str, bool)
 
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)

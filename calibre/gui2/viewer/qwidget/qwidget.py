@@ -31,26 +31,28 @@ class Qwidget(QWidget, Qobject):
     def replace(self, search, replace, backwards=False):
         pass
 
-    def on_qapplication_search(self, qwidget, search):
+    def on_qapplication_search(self, qwidget, search, backwards):
         """
         called if mode_search ^ self.NONE
         :param qwidget:
         :param search:
+        :param backwards:
         :return:
         """
         if qwidget is self:
-            self.search(search)
+            self.search(search, backwards)
 
-    def on_qapplication_replace(self, qwidget, search, replace):
+    def on_qapplication_replace(self, qwidget, search, replace, backwards):
         """
         called if mode_search ^ self.NONE
         :param qwidget:
         :param search:
         :param replace:
+        :param backwards:
         :return:
         """
         if qwidget is self:
-            self.replace(search, replace)
+            self.replace(search, replace, backwards)
 
     @property
     def mode_save(self):

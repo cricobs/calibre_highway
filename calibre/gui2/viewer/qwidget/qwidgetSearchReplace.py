@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QToolButton
 
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
@@ -21,6 +22,22 @@ class QwidgetSearchReplace(Qwidget):
 
         self.qapplication.focusChanged.connect(self.on_qapplication_focusChanged)
 
+    @pyqtSlot(QToolButton)
+    def on_qwidgetUpDown_clicked(self, qtoolbutton):
+        search = self.qcomboboxSearch.currentText()
+        backwards = qtoolbutton == self.qwidgetUpDown.qtoolbuttonUp
+        if self.mode_search == self.REPLACE:
+            replace = self.qcomboboxReplace.currentText()
+            self.replace(search, replace, backwards)
+        elif self.mode_search == self.SEARCH:
+            self.search(search, backwards)
+        else:
+            raise NotImplementedError
+
+    @property
+    def mode_search(self):
+        return self.SEARCH if self.qcomboboxSearch.isVisible() else self.REPLACE
+
     def showEvent(self, qshowevent):
         super(QwidgetSearchReplace, self).showEvent(qshowevent)
 
@@ -28,7 +45,12 @@ class QwidgetSearchReplace(Qwidget):
 
     @pyqtSlot(str)
     def on_qcomboboxSearch_returnPressed(self, text):
-        self.qapplication.search.emit(self.relative, text)
+        self.search(text)
+
+    def search(self, search, backwards=False):
+        super(QwidgetSearchReplace, self).search(search, backwards)
+
+        self.qapplication.search.emit(self.relative, search, backwards)
         self.hide_and_show()
 
     def hide_and_show(self):  # agtft Qwebview not repainting correctly on scroll
@@ -37,7 +59,12 @@ class QwidgetSearchReplace(Qwidget):
 
     @pyqtSlot(str)
     def on_qcomboboxReplace_returnPressed(self, text):
-        self.qapplication.replace.emit(self.relative, self.qcomboboxSearch.lineEdit().text(), text)
+        self.replace(self.qcomboboxSearch.lineEdit().text(), text)
+
+    def replace(self, search, replace, backwards=False):
+        super(QwidgetSearchReplace, self).replace(search, replace, backwards)
+
+        self.qapplication.replace.emit(self.relative, search, replace, backwards)
         self.hide_and_show()
 
     def on_qapplication_focusChanged(self, old, now):

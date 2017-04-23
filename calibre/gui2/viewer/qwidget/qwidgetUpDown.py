@@ -1,11 +1,11 @@
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QToolButton
 
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
 class QwidgetUpDown(Qwidget):
-    up = pyqtSignal(bool)
-    down = pyqtSignal(bool)
+    clicked = pyqtSignal(QToolButton)
 
     def __init__(self, *args, **kwargs):
         super(QwidgetUpDown, self).__init__(*args, **kwargs)
@@ -23,8 +23,8 @@ class QwidgetUpDown(Qwidget):
 
     @pyqtSlot(bool)
     def on_qtoolbuttonDown_clicked(self, checked):
-        self.down.emit(checked)
+        self.clicked.emit(self.sender())
 
     @pyqtSlot(bool)
     def on_qtoolbuttonUp_clicked(self, checked):
-        self.up.emit(checked)
+        self.clicked.emit(self.sender())
