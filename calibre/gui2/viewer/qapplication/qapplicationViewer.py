@@ -24,5 +24,5 @@ class QapplicationViewer(Qapplication):
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)
 
-        self.qwidgetSearchReplace = QwidgetSearchReplace()
         self.qabstractlistmodelShortcut = QabstractlistmodelShortcut(SHORTCUTS, 'shortcuts/viewer')
+        self.qwidgetSearchReplace = QwidgetSearchReplace()

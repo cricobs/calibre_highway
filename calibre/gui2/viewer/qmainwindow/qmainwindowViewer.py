@@ -309,7 +309,6 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.editingFinished.connect(self.goto_page_num)
 
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
-        # self.qmenu_open_history.triggered.connect(self.open_recent)
         self.reference.goto.connect(self.goto)
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 

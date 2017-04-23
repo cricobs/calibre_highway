@@ -45,19 +45,18 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
             return
 
         try:
-            shortcuts = data.get("shortcuts", None)
-        except AttributeError:
+            shortcuts = qaction.data()["shortcuts"]
+        except KeyError:
             return
 
         if shortcuts:
-            try:
-                shortcuts = self.get_keys_sequences(shortcuts)
-            except AttributeError:
-                shortcuts = list(map(QKeySequence, shortcuts))
-            finally:
-                keys = ' or '.join(map(QKeySequence.toString, shortcuts))
+            qkeysequences = self.get_keys_sequences(shortcuts)
+            qkeysequences = qkeysequences or list(map(QKeySequence, shortcuts))
 
-                qaction.setShortcuts(shortcuts)
+            if qkeysequences:
+                keys = ' or '.join(map(QKeySequence.toString, qkeysequences))
+
+                qaction.setShortcuts(qkeysequences)
                 qaction.setToolTip(unicode(qaction.text()) + ' [{0}]'.format(keys))
 
     def rowCount(self, parent):
