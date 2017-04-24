@@ -219,15 +219,6 @@ class QwebviewDocument(Qwebview):
         if self.manager is not None:
             self.manager.selection_changed(self.selected_text)
 
-    def _selectedText(self):
-        t = unicode(self.selectedText()).strip()
-        if not t:
-            return u''
-        if len(t) > 40:
-            t = t[:40] + u'...'
-        t = t.replace(u'&', u'&&')
-        return _("S&earch online for '%s'") % t
-
     def popup_table(self):
         html = self.document.extract_node()
         self.table_popup(html, self.as_url(self.last_loaded_path),
@@ -244,7 +235,7 @@ class QwebviewDocument(Qwebview):
         table = None
         parent = elem
         while not parent.isNull():
-            if (unicode(parent.tagName()) == u'table' or unicode(parent.localName()) == u'table'):
+            if unicode(parent.tagName()) == u'table' or unicode(parent.localName()) == u'table':
                 table = parent
                 break
             parent = parent.parent()
@@ -252,12 +243,8 @@ class QwebviewDocument(Qwebview):
         self.image_popup.current_img = img
         self.image_popup.current_url = r.imageUrl()
         menu = self.document.createStandardContextMenu()
-        for action in self.unimplemented_actions:
-            menu.removeAction(action)
-
-        for action in menu.actions():
-            if action.isSeparator():
-                menu.removeAction(action)
+        map(menu.removeAction, self.unimplemented_actions)
+        map(lambda m: m.isSeparator() and menu.removeAction(m), menu.actions())
 
         if not img.isNull():
             menu.addAction(self.qaction_view_image)
@@ -265,9 +252,9 @@ class QwebviewDocument(Qwebview):
             self.document.mark_element.emit(table)
             menu.addAction(self.qaction_view_table)
 
-        text = self._selectedText()
+        text = self.selected_text
         if text and img.isNull():
-            self.qaction_search_online.setText(text)
+            self.qaction_search_online.setText("Search online '{0}'".format(text))
             menu.addActions(self.selection_qactions)
 
         if from_touch and self.manager is not None:
@@ -293,10 +280,12 @@ class QwebviewDocument(Qwebview):
             menu.addAction(self.qaction_copy_position)
             menu.addAction(self.qaction_goto_location)
             if self.manager is not None:
+                # todo add from qapplication
                 menu.addActions(self.manager.context_qactions)
                 menu.addAction(self.manager.qaction_reload)
                 menu.addAction(self.manager.qaction_quit)
-                menu.insertAction(self.manager.qaction_font_size_larger, self.qaction_restore_fonts)
+                menu.insertAction(self.manager.qaction_font_size_larger,
+                                  self.qaction_restore_fonts)
 
                 self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 

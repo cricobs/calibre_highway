@@ -37,7 +37,6 @@ class Qapplication(Application):
                         qs.append(qaction)
 
                 self.qactionAdded.emit(qaction.parent(), qaction)
-
         elif qevent.type() == qevent.MouseMove:
             self.activity_detected()
 

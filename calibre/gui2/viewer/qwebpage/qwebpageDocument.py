@@ -8,7 +8,6 @@ from base64 import b64encode
 from PyQt5.QtCore import pyqtSignal, Qt, QUrl, pyqtSlot, pyqtProperty, QSize, QPoint, QEventLoop
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtWebKit import QWebElement, QWebSettings
-from PyQt5.QtWebKitWidgets import QWebPage
 from PyQt5.QtWidgets import QDialog, QApplication
 
 import calibre
@@ -19,6 +18,7 @@ from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialogConfig import QdialogConfig, config
 from calibre.gui2.viewer.qnetworkacessmanager.qnetworkaccessmanagerFakeNet import \
     QnetworkaccessmanagerFakeNet
+from calibre.gui2.viewer.qwebpage.qwebpage import Qwebpage
 from calibre.utils.localization import lang_as_iso639_1
 from calibre.utils.resources import compiled_coffeescript
 
@@ -26,14 +26,14 @@ dynamic_property = dynamic_property
 P = P
 
 
-class Document(QWebPage):
+class Document(Qwebpage):
     page_turn = pyqtSignal(object)
     mark_element = pyqtSignal(QWebElement)
     settings_changed = pyqtSignal()
     animated_scroll_done_signal = pyqtSignal()
 
     def __init__(self, shortcuts, parent=None, debug_javascript=False):
-        QWebPage.__init__(self, parent)
+        Qwebpage.__init__(self, parent)
         self.nam = QnetworkaccessmanagerFakeNet(self)
         self.setNetworkAccessManager(self.nam)
         self.setObjectName("py_bridge")
@@ -124,9 +124,9 @@ class Document(QWebPage):
             hyphenated_q = self.javascript(
                 'hyphenate_text(%s, "%s")' % (json.dumps(q, ensure_ascii=False), self.loaded_lang),
                 typ='string')
-            if hyphenated_q and QWebPage.findText(self, hyphenated_q, flags):
+            if hyphenated_q and Qwebpage.findText(self, hyphenated_q, flags):
                 return True
-        return QWebPage.findText(self, q, flags)
+        return Qwebpage.findText(self, q, flags)
 
     def misc_config(self, opts):
         self.hyphenate = opts.hyphenate
@@ -368,7 +368,7 @@ class Document(QWebPage):
         if DEBUG:
             prints(msg)
         else:
-            return QWebPage.javaScriptAlert(self, frame, msg)
+            return Qwebpage.javaScriptAlert(self, frame, msg)
 
     def scroll_by(self, dx=0, dy=0):
         self.mainFrame().scroll(dx, dy)

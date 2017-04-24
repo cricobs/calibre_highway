@@ -1,5 +1,6 @@
 from PyQt5.QtWebKitWidgets import QWebPage
 
+from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qobject.qobject import Qobject
 
 
@@ -17,3 +18,6 @@ class Qwebpage(QWebPage, Qobject):
 
     def goto_hash(self, hash):
         self.mainFrame().evaluateJavaScript("window.location.hash = '" + hash + "';")
+
+    def createStandardContextMenu(self):
+        return Qmenu(self.view())

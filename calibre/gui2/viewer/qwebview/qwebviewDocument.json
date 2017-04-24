@@ -51,9 +51,6 @@
         "name": "synopsis",
         "text": "S&ynopsis",
         "icon": "modified.png",
-        "data": {
-          "context": true
-        },
         "separator": true
       },
       {
@@ -64,9 +61,6 @@
         },
         "text": "",
         "name": "search_online",
-        "data": {
-          "context": true
-        },
         "icon": "search.png"
       },
       {
@@ -80,9 +74,6 @@
         "shortcuts": [
           "Lookup word"
         ],
-        "data": {
-          "context": true
-        },
         "icon": "dictionary.png"
       },
       {
@@ -96,9 +87,6 @@
         "shortcuts": [
           "Next occurrence"
         ],
-        "data": {
-          "context": true
-        },
         "icon": "dictionary.png"
       }
     ],

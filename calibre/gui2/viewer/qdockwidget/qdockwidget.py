@@ -1,4 +1,3 @@
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QDockWidget
 from PyQt5.QtWidgets import QWidget
 
@@ -14,14 +13,8 @@ class Qdockwidget(QDockWidget, Qwidget):
         self.setTitleBarWidget(self.qwidgettitlebar)
         self.setVisible(self.start_visible)
 
-        self.qapplication = QApplication.instance()
-        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
-
-        self.toggleViewAction().triggered.connect(self.on_toggleViewAction_triggered)
-
-    @property
-    def qaction_toggle(self):
-        return self.toggleViewAction()
+        if self.mode_hide:
+            self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
 
     def on_qapplication_inactivityTimeout(self, target, interval):
         if target != self:
@@ -30,26 +23,23 @@ class Qdockwidget(QDockWidget, Qwidget):
         if self.mode_hide and interval == self.interval_hide:
             self.close()
 
-    def on_toggleViewAction_triggered(self, checked):
-        if checked:
-            self.auto_hide()
+    def showEvent(self, qshowevent):
+        super(Qdockwidget, self).showEvent(qshowevent)
+
+        self.auto_hide()
+        self.raise_()
 
     @property
     def mode_hide(self):
+        """
+        connect on_qapplication_inactivityTimeout
+        :return:
+        """
         return False
 
     def auto_hide(self):
         if self.mode_hide:
             self.qapplication.time_inactivity(self, False, True, self.interval_hide)
-
-    def show(self):
-        super(Qdockwidget, self).show()
-        self.auto_hide()
-
-    def setVisible(self, bool):
-        super(Qdockwidget, self).setVisible(bool)
-        if bool:
-            self.auto_hide()
 
     @property
     def start_visible(self):
@@ -58,9 +48,3 @@ class Qdockwidget(QDockWidget, Qwidget):
     @property
     def qwidgettitlebar(self):
         return QWidget()
-
-    def setVisible(self, visible):
-        super(Qdockwidget, self).setVisible(visible)
-
-        if visible:
-            self.raise_()

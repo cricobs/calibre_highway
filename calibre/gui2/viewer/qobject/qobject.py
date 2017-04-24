@@ -4,7 +4,6 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import QObject
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMenu
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qaction.qaction import Qaction
@@ -12,7 +11,7 @@ from calibre.gui2.viewer.qaction.qaction import Qaction
 I = I
 
 
-class Qobject(QObject):
+class Qobject(QObject, object):
     def __init__(self, *args, **kwargs):
         super(Qobject, self).__init__(*args, **kwargs)
 
@@ -82,24 +81,26 @@ class Qobject(QObject):
             try:
                 qmenu = getattr(self, n)
             except AttributeError:
-                qmenu = QMenu(self)
+                qmenu = self.create_qmenu()
                 setattr(self, n, qmenu)
 
         text = text or name
         if action:
             qaction = reduce(getattr, action, self)
         elif qmenu:
-            qaction = qmenu.addAction(text)
+            qaction = Qaction(text, None)
+            qmenu.addAction(qaction)
         else:
             qaction = Qaction(text, self)
 
         qaction.setCheckable(checkable)
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
         qaction.setEnabled(enabled)
-        qaction.setData(data)
+        qaction.setData(data or {})
         qaction.setIcon(QIcon(I(icon)))
         qaction.parents = parents or []
         qaction.separator = separator
+        qaction.group = group
 
         group_actions = None
         if group:
@@ -120,10 +121,7 @@ class Qobject(QObject):
                 signal = reduce(getattr, names, self)
                 signal.connect(getattr(qaction, slot))
         if shortcuts:
-            data = qaction.data() or {}
-            data["shortcuts"] = shortcuts
-
-            qaction.setData(data)
+            qaction.set_data("shortcuts", shortcuts)
         if separator:
             if qmenu:
                 qmenu.addSeparator()
@@ -133,17 +131,23 @@ class Qobject(QObject):
 
                 group_actions.append(a)
         if dropdown:
-            q = QMenu()
+            q = self.create_qmenu()
             setattr(self, 'qmenu_' + dropdown, q)
             qaction.setMenu(q)
         if actions:
-            q = QMenu(self)
+            q = self.create_qmenu()
             qaction.setMenu(q)
             self.create_actions(actions, q)
 
         self.addAction(qaction)
 
         return qaction
+
+    def create_qmenu(self, parent=None):
+        # lookout if isinstance(self, Qmenu)
+        from calibre.gui2.viewer.qmenu.qmenu import Qmenu
+
+        return Qmenu(parent or self)
 
     def add_qapplication_actions(self, qactions):
         for qaction in qactions:

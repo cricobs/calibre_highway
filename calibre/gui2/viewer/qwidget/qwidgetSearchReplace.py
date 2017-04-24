@@ -22,6 +22,10 @@ class QwidgetSearchReplace(Qwidget):
 
         self.qapplication.focusChanged.connect(self.on_qapplication_focusChanged)
 
+    def focusOutEvent(self, qfocusevent):
+        self.hide()
+        return super(QwidgetSearchReplace, self).focusOutEvent(qfocusevent)
+
     @pyqtSlot(QToolButton)
     def on_qwidgetUpDown_clicked(self, qtoolbutton):
         search = self.qcomboboxSearch.currentText()
