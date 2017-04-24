@@ -32,9 +32,6 @@ dynamic_property = dynamic_property
 # todo
 # - replace synopsis insert actions for QdialogEdit
 
-# fixme
-# - shortcuts
-
 class QwebviewDocument(Qwebview):
     magnification_changed = pyqtSignal(object)
     DISABLED_BRUSH = QBrush(Qt.lightGray, Qt.Dense5Pattern)
@@ -43,6 +40,9 @@ class QwebviewDocument(Qwebview):
 
     def __init__(self, *args, **kwargs):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
+
+        self._qaction_copy = None
+        self._qaction_inspect = None
 
     def set_footnotes_view(self, view):
         self.footnotes.set_footnotes_view(view)
@@ -83,19 +83,20 @@ class QwebviewDocument(Qwebview):
         self.loadFinished.connect(self.load_finished)
         self.setPage(d)
 
-        a = [
-            d.DownloadImageToDisk, d.OpenLinkInNewWindow, d.DownloadLinkToDisk,
-            d.OpenImageInNewWindow, d.OpenLink, d.Reload, d.InspectElement]
-        self.unimplemented_actions = list(map(self.pageAction, a))
-
         self.create_actions(self.options["actions"])
 
         self.qaction_synopsis.setMenu(self.qmenu_synopsis)
         self.qaction_search_online.setMenu(self.qmenu_search_online)
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
-        self.copy_action.setIcon(QIcon(I('edit-copy.png')))
-        self.copy_action.triggered.connect(self.copy, Qt.QueuedConnection)
+    # ---- actions
+    @property
+    def pageAction_copy(self):
+        return self.pageAction(self.document.Copy)
+
+    @property
+    def pageAction_inspect(self):
+        return self.pageAction(self.document.InspectElement)
 
     def load_options(self, options):
         pass
@@ -107,6 +108,7 @@ class QwebviewDocument(Qwebview):
 
         super(QwebviewDocument, self).addAction(qaction)
 
+    # --- synopsis
     def copy_markdown(self, *args, **kwargs):
         self.copy_text(self.selected_markdown_body())
 
@@ -163,11 +165,7 @@ class QwebviewDocument(Qwebview):
     def goto_bookmark(self, bm):
         self.document.goto_bookmark(bm)
 
-    # ----
-    @property
-    def copy_action(self):
-        return self.pageAction(self.document.Copy)
-
+    # ---
     def animated_scroll_done(self):
         if self.manager is not None:
             self.manager.scrolled(self.document.scroll_fraction)
@@ -224,94 +222,42 @@ class QwebviewDocument(Qwebview):
         self.table_popup(html, self.as_url(self.last_loaded_path),
                          self.document.font_magnification_step)
 
-    def contextMenuEvent(self, ev):
-        from_touch = ev.reason() == ev.Other
-        mf = self.document.mainFrame()
-        r = mf.hitTestContent(ev.pos())
-        img = r.pixmap()
-        elem = r.element()
-        if elem.isNull():
-            elem = r.enclosingBlockElement()
+    def contextMenuEvent(self, qevent):
+        r = self.document.mainFrame().hitTestContent(qevent.pos())
+
+        self.image_popup.current_img = img = r.pixmap()
+        self.image_popup.current_url = r.imageUrl()
+
         table = None
-        parent = elem
+        parent = r.element() if not r.element().isNull() else r.enclosingBlockElement()
         while not parent.isNull():
-            if unicode(parent.tagName()) == u'table' or unicode(parent.localName()) == u'table':
+            if u'table' in [unicode(parent.tagName()), unicode(parent.localName())]:
                 table = parent
                 break
             parent = parent.parent()
 
-        self.image_popup.current_img = img
-        self.image_popup.current_url = r.imageUrl()
         menu = self.document.createStandardContextMenu()
-        map(menu.removeAction, self.unimplemented_actions)
-        map(lambda m: m.isSeparator() and menu.removeAction(m), menu.actions())
-
+        menu.addAction(self.qaction_inspect)
         if not img.isNull():
             menu.addAction(self.qaction_view_image)
         if table is not None:
-            self.document.mark_element.emit(table)
             menu.addAction(self.qaction_view_table)
-
-        # todo move to Qmenu
-        text = self.selected_text
-        if text and img.isNull():
-            self.qaction_search_online.setText("Search online '{0}'".format(text))
-            menu.addActions(self.selection_qactions)
-
-        if from_touch and self.manager is not None:
-            word = unicode(mf.evaluateJavaScript(
-                'window.calibre_utils.word_at_point(%f, %f)' % (ev.pos().x(), ev.pos().y())) or '')
-            if word:
-                menu.addAction(
-                    self.qaction_dictionary.icon(),
-                    _('Lookup %s in the dictionary') % word,
-                    partial(self.manager.lookup, word))
-                menu.addAction(
-                    self.qaction_search_online.icon(),
-                    _('Search for %s online') % word,
-                    partial(self.do_search_online, word))
-
-        if not text and img.isNull():
-            menu.addSeparator()
-            if self.manager.qaction_back.isEnabled():
-                menu.addAction(self.manager.qaction_back)
-            if self.manager.qaction_forward.isEnabled():
-                menu.addAction(self.manager.qaction_forward)
-
+            self.document.mark_element.emit(table)
+        if not self.selected_text and img.isNull():
+            # todo use self.qapplication_qactions
+            menu.addAction(self.manager.qaction_back)
+            menu.addAction(self.manager.qaction_forward)
             menu.addAction(self.qaction_copy_position)
             menu.addAction(self.qaction_goto_location)
-            if self.manager is not None:
-                menu.addActions(self.manager.context_qactions)
-                menu.addAction(self.manager.qaction_reload)
-                menu.addAction(self.manager.qaction_quit)
-                menu.insertAction(self.manager.qaction_font_size_larger,
-                                  self.qaction_restore_fonts)
+            menu.addAction(self.qaction_restore_fonts)
+            menu.addActions(self.manager.context_qactions)
 
-                self.qaction_restore_fonts.setChecked(self.multiplier == 1)
-
-        menu.addSeparator()
-        menu.addAction(_('Inspect'), self.inspect)
+            self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 
         for plugin in self.document.all_viewer_plugins:
-            plugin.customize_context_menu(menu, ev, r)
+            plugin.customize_context_menu(menu, qevent, r)
 
-        if from_touch:
-            from calibre.constants import plugins
-            pi = plugins['progress_indicator'][0]
-            for name in (menu, self.qmenu_goto_location):
-                if hasattr(pi, 'set_touch_menu_style'):
-                    pi.set_touch_menu_style(name)
-            helpt = QAction(QIcon(I('help.png')), _('Show supported touch screen gestures'), menu)
-            helpt.triggered.connect(self.gesture_handler.show_help)
-            menu.insertAction(menu.actions()[0], helpt)
-        else:
-            self.qmenu_goto_location.setStyle(self.style())
-
-        self.context_menu = menu
-        menu.exec_(ev.globalPos())
-
-    def inspect(self):
-        self.pageAction(self.document.InspectElement).trigger()
+        menu.exec_(qevent.globalPos())
 
     def lookup(self, *args):
         if self.manager is not None:
@@ -615,8 +561,6 @@ class QwebviewDocument(Qwebview):
         window_height = self.document.window_height
         document_height = self.document.height
         ddelta = document_height - window_height
-        # print '\nWindow height:', window_height
-        # print 'Document height:', self.document.height
 
         delta_y = window_height - 25
         if self.document.at_bottom or ddelta <= 0:
@@ -629,17 +573,14 @@ class QwebviewDocument(Qwebview):
             return
         else:
             oopos = self.document.ypos
-            # print 'Original position:', oopos
             self.document.set_bottom_padding(0)
             opos = self.document.ypos
-            # print 'After set padding=0:', self.document.ypos
             if opos < oopos:
                 if self.manager is not None:
                     if epf:
                         self.flipper.initialize(self.current_page_image())
                     self.manager.next_document()
                 return
-            # oheight = self.document.height
             lower_limit = opos + delta_y  # Max value of top y co-ord after scrolling
             max_y = self.document.height - window_height  # The maximum possible top y co-ord
             if max_y < lower_limit:
@@ -650,28 +591,20 @@ class QwebviewDocument(Qwebview):
                             self.flipper.initialize(self.current_page_image())
                         self.manager.next_document()
                     return
-                # print 'Setting padding to:', lower_limit - max_y
                 self.document.set_bottom_padding(lower_limit - max_y)
             if epf:
                 self.flipper.initialize(self.current_page_image())
-            # print 'Document height:', self.document.height
-            # print 'Height change:', (self.document.height - oheight)
             max_y = self.document.height - window_height
             lower_limit = min(max_y, lower_limit)
-            # print 'Scroll to:', lower_limit
             if lower_limit > opos:
                 self.document.scroll_to(self.document.xpos, lower_limit)
             actually_scrolled = self.document.ypos - opos
-            # print 'After scroll pos:', self.document.ypos
-            # print 'Scrolled by:', self.document.ypos - opos
             self.find_next_blank_line(window_height - actually_scrolled)
-            # print 'After blank line pos:', self.document.ypos
             if epf:
                 self.flipper(self.current_page_image(),
                              duration=self.document.page_flip_duration)
             if self.manager is not None:
                 self.manager.scrolled(self.scroll_fraction)
-                # print 'After all:', self.document.ypos
 
     def page_turn_requested(self, backwards):
         if backwards:

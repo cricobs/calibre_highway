@@ -364,7 +364,7 @@ class QmainwindowViewer(Qmainwindow):
         if parent is self:
             return
 
-        # fixme set a global option?
+        # fixme use self in qaction.parents?
         shortcuts = qaction.shortcuts()
         if shortcuts:
             # So that the keyboard shortcuts for these actions will
@@ -1017,7 +1017,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def build_bookmarks_menu(self, bookmarks):
         self.qmenu_bookmarks.clear()
-        self.qmenu_bookmarks.addAction(self.qdockwidgetBookmark.toggleViewAction())
+        self.qmenu_bookmarks.addAction(self.qdockwidgetBookmark.qaction_toggle)
         self.qmenu_bookmarks.addAction(self.qaction_bookmark_location)
         self.qmenu_bookmarks.addSeparator()
 

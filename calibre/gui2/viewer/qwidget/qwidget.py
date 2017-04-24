@@ -19,12 +19,22 @@ class Qwidget(QWidget, Qobject):
         if self.mode_save:
             self.qapplication.aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
-        q = getattr(self, "toggleViewAction", None)
-        if q:
+        if self.mode_toggle:
             self.qaction_toggle = Qaction(self)
-            self.qaction_toggle.setText(q().text())
             self.qaction_toggle.triggered.connect(self.setVisible)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
+
+            q = getattr(self, "toggleViewAction", None)
+            if q:
+                self.qaction_toggle.setText(q().text())
+
+    @property
+    def mode_toggle(self):
+        return False
+
+    @property
+    def qapplication_qactions(self):
+        return self.qapplication.qactions[self.__class__.__name__]
 
     def on_qaction_toggle_triggered(self, checked):
         """
@@ -111,7 +121,7 @@ class Qwidget(QWidget, Qobject):
         if self.mode_visibility:
             self.visibilityChanged.emit(visibility)
 
-        if getattr(self, "toggleViewAction", None):
+        if self.mode_toggle:
             self.qaction_toggle.setChecked(visibility)
 
     def hideEvent(self, qhideevent):

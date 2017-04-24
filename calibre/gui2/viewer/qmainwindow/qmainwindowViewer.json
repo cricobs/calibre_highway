@@ -107,21 +107,6 @@
       "icon": "bookmarks.png",
       "group": "context",
       "separator": true,
-      "slots": {
-        "triggered": [
-          "qdockwidgetBookmark",
-          "qaction_toggle",
-          "trigger"
-        ]
-      },
-      "checkable": true,
-      "signals": {
-        "setChecked": [
-          "qdockwidgetBookmark",
-          "qaction_toggle",
-          "toggled"
-        ]
-      },
       "data": {
         "popup": "InstantPopup"
       }

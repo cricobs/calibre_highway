@@ -99,7 +99,7 @@ class Qobject(QObject, object):
         qaction.setCheckable(checkable)
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
         qaction.setEnabled(enabled)
-        qaction.setData(data or {})
+        qaction.setData(data)
         qaction.setIcon(QIcon(I(icon)))
         qaction.parents = parents or []
         qaction.separator = separator

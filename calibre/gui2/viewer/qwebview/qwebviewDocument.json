@@ -44,14 +44,37 @@
       {
         "text": "Go to...",
         "name": "goto_location"
+      },
+      {
+        "name": "Inspect",
+        "action": [
+          "pageAction_inspect"
+        ]
+      },
+      {
+        "name": "Copy",
+        "icon": "edit-copy.png",
+        "action": [
+          "pageAction_copy"
+        ],
+        "slots": {
+          "triggered": [
+            "copy"
+          ]
+        }
       }
     ],
     "selection": [
       {
+        "parents": [
+          "Qmenu"
+        ],
         "name": "synopsis",
         "text": "S&ynopsis",
         "icon": "modified.png",
-        "separator": true
+        "data": {
+          "context": "text"
+        }
       },
       {
         "slots": {
@@ -59,9 +82,15 @@
             "search_online"
           ]
         },
-        "text": "",
+        "parents": [
+          "Qmenu"
+        ],
         "name": "search_online",
-        "icon": "search.png"
+        "icon": "search.png",
+        "data": {
+          "context": "text",
+          "text_format": "Search online '{0}'"
+        }
       },
       {
         "slots": {
@@ -69,9 +98,13 @@
             "lookup"
           ]
         },
+        "parents": [
+          "Qmenu"
+        ],
         "name": "dictionary",
         "text": "&Lookup in dictionary",
         "data": {
+          "context": "text",
           "shortcuts": [
             "Lookup word"
           ]
@@ -84,14 +117,17 @@
             "search_next"
           ]
         },
+        "parents": [
+          "Qmenu"
+        ],
         "name": "search",
         "text": "&Search for next occurrence",
         "data": {
+          "context": "text",
           "shortcuts": [
             "Next occurrence"
           ]
-        },
-        "icon": "dictionary.png"
+        }
       }
     ],
     "goto_location": [
