@@ -19,8 +19,10 @@ class Qwidget(QWidget, Qobject):
         if self.mode_save:
             self.qapplication.aboutToQuit.connect(self.on_qapplication_aboutToQuit)
 
-        if getattr(self, "toggleViewAction", None):
+        q = getattr(self, "toggleViewAction", None)
+        if q:
             self.qaction_toggle = Qaction(self)
+            self.qaction_toggle.setText(q().text())
             self.qaction_toggle.triggered.connect(self.setVisible)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
 
@@ -121,4 +123,3 @@ class Qwidget(QWidget, Qobject):
         super(Qwidget, self).showEvent(qshowevent)
 
         self.visibility_changed(True)
-

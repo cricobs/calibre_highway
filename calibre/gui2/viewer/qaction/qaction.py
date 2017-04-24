@@ -13,3 +13,11 @@ class Qaction(QAction):
         data[name] = value
 
         self.setData(data)
+
+    def create_qmenu(self):
+        from calibre.gui2.viewer.qmenu.qmenu import Qmenu
+
+        qmenu = Qmenu()
+        self.setMenu(qmenu)
+
+        return qmenu

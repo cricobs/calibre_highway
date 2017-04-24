@@ -56,7 +56,7 @@
         ]
       }
     },
-        {
+    {
       "dropdown": "open_history",
       "text": "Open ebook",
       "name": "open_ebook",
@@ -70,7 +70,7 @@
           "open_ebook"
         ]
       },
-      "data" : {
+      "data": {
         "popup": "InstantPopup"
       }
     },
@@ -117,12 +117,12 @@
       "checkable": true,
       "signals": {
         "setChecked": [
-            "qdockwidgetBookmark",
-            "qaction_toggle",
-            "toggled"
-          ]
+          "qdockwidgetBookmark",
+          "qaction_toggle",
+          "toggled"
+        ]
       },
-      "data" : {
+      "data": {
         "popup": "InstantPopup"
       }
     },
@@ -175,9 +175,11 @@
         "qdockwidgetContent",
         "qaction_toggle"
       ],
-      "shortcuts": [
-        "Table of Contents"
-      ],
+      "data": {
+        "shortcuts": [
+          "Table of Contents"
+        ]
+      },
       "text": "Table of Contents",
       "name": "table_of_contents",
       "icon": "highlight_only_on.png",
@@ -197,9 +199,11 @@
         "QtoolbarEdit"
       ],
       "text": "Edit",
-      "shortcuts": [
-        "Edit"
-      ],
+      "data": {
+        "shortcuts": [
+          "Edit"
+        ]
+      },
       "action": [
         "qtoolbarEdit",
         "qaction_toggle"
@@ -268,9 +272,11 @@
     },
     {
       "text": "Toggle full screen",
-      "shortcuts": [
-        "Fullscreen"
-      ],
+      "data": {
+        "shortcuts": [
+          "Fullscreen"
+        ]
+      },
       "name": "full_screen",
       "parents": [
         "QtoolbarEdit"
@@ -347,7 +353,7 @@
       "dropdown": "themes",
       "icon": "wizard.png",
       "separator": true,
-      "data" : {
+      "data": {
         "popup": "InstantPopup"
       }
     },
@@ -404,9 +410,11 @@
           "bookmark"
         ]
       },
-      "shortcuts": [
-        "Bookmark"
-      ]
+      "data": {
+        "shortcuts": [
+          "Bookmark"
+        ]
+      }
     }
   ],
   "keyboard_action": {

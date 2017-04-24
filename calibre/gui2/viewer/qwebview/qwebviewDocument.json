@@ -71,9 +71,11 @@
         },
         "name": "dictionary",
         "text": "&Lookup in dictionary",
-        "shortcuts": [
-          "Lookup word"
-        ],
+        "data": {
+          "shortcuts": [
+            "Lookup word"
+          ]
+        },
         "icon": "dictionary.png"
       },
       {
@@ -84,9 +86,11 @@
         },
         "name": "search",
         "text": "&Search for next occurrence",
-        "shortcuts": [
-          "Next occurrence"
-        ],
+        "data": {
+          "shortcuts": [
+            "Next occurrence"
+          ]
+        },
         "icon": "dictionary.png"
       }
     ],
@@ -98,9 +102,11 @@
           ]
         },
         "name": "Next Section",
-        "shortcuts": [
-          "Next Section"
-        ]
+        "data": {
+          "shortcuts": [
+            "Next Section"
+          ]
+        }
       },
       {
         "slots": {
@@ -110,9 +116,11 @@
         },
         "separator": true,
         "name": "Previous Section",
-        "shortcuts": [
-          "Previous Section"
-        ]
+        "data": {
+          "shortcuts": [
+            "Previous Section"
+          ]
+        }
       },
       {
         "slots": {
@@ -121,9 +129,11 @@
           ]
         },
         "name": "Document Start",
-        "shortcuts": [
-          "Document Top"
-        ]
+        "data": {
+          "shortcuts": [
+            "Document Top"
+          ]
+        }
       },
       {
         "slots": {
@@ -133,9 +143,11 @@
         },
         "separator": true,
         "name": "Document End",
-        "shortcuts": [
-          "Document Bottom"
-        ]
+        "data": {
+          "shortcuts": [
+            "Document Bottom"
+          ]
+        }
       },
       {
         "slots": {
@@ -144,9 +156,11 @@
           ]
         },
         "name": "Section Start",
-        "shortcuts": [
-          "Section Top"
-        ]
+        "data": {
+          "shortcuts": [
+            "Section Top"
+          ]
+        }
       },
       {
         "slots": {
@@ -156,9 +170,11 @@
         },
         "separator": true,
         "name": "Section End",
-        "shortcuts": [
-          "Section Bottom"
-        ]
+        "data": {
+          "shortcuts": [
+            "Section Bottom"
+          ]
+        }
       },
       {
         "slots": {
@@ -167,9 +183,11 @@
           ]
         },
         "name": "Next Page",
-        "shortcuts": [
-          "Next Page"
-        ]
+        "data": {
+          "shortcuts": [
+            "Next Page"
+          ]
+        }
       },
       {
         "slots": {
@@ -178,9 +196,11 @@
           ]
         },
         "name": "Previous Page",
-        "shortcuts": [
-          "Previous Page"
-        ]
+        "data": {
+          "shortcuts": [
+            "Previous Page"
+          ]
+        }
       }
     ],
     "synopsis": [
@@ -191,9 +211,11 @@
           ]
         },
         "name": "copy_markdown",
-        "shortcuts": [
-          "Copy Markdown"
-        ],
+        "data": {
+          "shortcuts": [
+            "Copy Markdown"
+          ]
+        },
         "text": "&Copy Markdown"
       },
       {
@@ -204,10 +226,10 @@
         },
         "name": "append_text",
         "text": "Append &Text",
-        "shortcuts": [
-          "Synopsis Append Text"
-        ],
         "data": {
+          "shortcuts": [
+            "Synopsis Append Text"
+          ],
           "section": "body"
         }
       },
@@ -223,10 +245,10 @@
             },
             "name": "header_1",
             "text": "1",
-            "shortcuts": [
-              "Synopsis Append H1"
-            ],
             "data": {
+              "shortcuts": [
+                "Synopsis Append H1"
+              ],
               "section": "header"
             }
           },
@@ -238,10 +260,10 @@
             },
             "name": "header_2",
             "text": "2",
-            "shortcuts": [
-              "Synopsis Append H2"
-            ],
             "data": {
+              "shortcuts": [
+                "Synopsis Append H2"
+              ],
               "section": "header"
             }
           },
@@ -252,13 +274,13 @@
               ]
             },
             "name": "header_3",
-            "shortcuts": [
-              "Synopsis Append H3"
-            ],
-            "text": "3",
             "data": {
+              "shortcuts": [
+                "Synopsis Append H3"
+              ],
               "section": "header"
-            }
+            },
+            "text": "3"
           },
           {
             "slots": {
@@ -267,13 +289,13 @@
               ]
             },
             "name": "header_4",
-            "shortcuts": [
-              "Synopsis Append H4"
-            ],
-            "text": "4",
             "data": {
+              "shortcuts": [
+                "Synopsis Append H4"
+              ],
               "section": "header"
-            }
+            },
+            "text": "4"
           },
           {
             "slots": {
@@ -282,13 +304,13 @@
               ]
             },
             "name": "header_5",
-            "shortcuts": [
-              "Synopsis Append H5"
-            ],
-            "text": "5",
             "data": {
+              "shortcuts": [
+                "Synopsis Append H5"
+              ],
               "section": "header"
-            }
+            },
+            "text": "5"
           },
           {
             "slots": {
@@ -297,13 +319,13 @@
               ]
             },
             "name": "header_6",
-            "shortcuts": [
-              "Synopsis Append H6"
-            ],
-            "text": "6",
             "data": {
+              "shortcuts": [
+                "Synopsis Append H6"
+              ],
               "section": "header"
-            }
+            },
+            "text": "6"
           }
         ]
       }
@@ -327,12 +349,12 @@
           ]
         },
         "data": {
-          "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go"
+          "url": "https://www.wikipedia.org/search-redirect.php?family=wikipedia&language=en&search=%s&go=Go",
+          "shortcuts": [
+            "Search encyclopedia"
+          ]
         },
-        "name": "encyclopedia",
-        "shortcuts": [
-          "Search encyclopedia"
-        ]
+        "name": "encyclopedia"
       },
       {
         "slots": {
@@ -396,12 +418,12 @@
                   ]
                 },
                 "data": {
-                  "url": "http://www.wordreference.com/es/translation.asp?tranword=%s"
+                  "url": "http://www.wordreference.com/es/translation.asp?tranword=%s",
+                  "shortcuts": [
+                    "Search wordreference enes"
+                  ]
                 },
-                "name": "wordreference enes",
-                "shortcuts": [
-                  "Search wordreference enes"
-                ]
+                "name": "wordreference enes"
               },
               {
                 "slots": {

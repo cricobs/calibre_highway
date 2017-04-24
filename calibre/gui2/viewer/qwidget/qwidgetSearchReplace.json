@@ -5,9 +5,11 @@
       "text": "Search",
       "icon": "search.png",
       "checkable": true,
-      "shortcuts": [
-        "Ctrl+Alt+F"
-      ],
+      "data": {
+        "shortcuts": [
+          "Ctrl+Alt+F"
+        ]
+      },
       "parents": [
         "QtoolbarEdit"
       ],

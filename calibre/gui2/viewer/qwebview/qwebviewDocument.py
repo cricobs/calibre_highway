@@ -252,6 +252,7 @@ class QwebviewDocument(Qwebview):
             self.document.mark_element.emit(table)
             menu.addAction(self.qaction_view_table)
 
+        # todo move to Qmenu
         text = self.selected_text
         if text and img.isNull():
             self.qaction_search_online.setText("Search online '{0}'".format(text))
@@ -280,7 +281,6 @@ class QwebviewDocument(Qwebview):
             menu.addAction(self.qaction_copy_position)
             menu.addAction(self.qaction_goto_location)
             if self.manager is not None:
-                # todo add from qapplication
                 menu.addActions(self.manager.context_qactions)
                 menu.addAction(self.manager.qaction_reload)
                 menu.addAction(self.manager.qaction_quit)
