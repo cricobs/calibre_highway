@@ -1,11 +1,9 @@
 #!/usr/bin/env  python2
 
 import math
-from functools import partial
-from future_builtins import map
 
-from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QIcon, QAction,
-                      pyqtSignal, QApplication, QKeySequence, QMimeData)
+from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, pyqtSignal, QApplication,
+                      QKeySequence, QMimeData)
 from PyQt5.QtWebKitWidgets import QWebView
 
 from calibre.constants import iswindows
@@ -43,6 +41,13 @@ class QwebviewDocument(Qwebview):
 
         self._qaction_copy = None
         self._qaction_inspect = None
+        self._context_blank_qactions = set()
+
+    @property
+    def context_blank_qactions(self):
+        if not self.selected_text and self.image_popup.current_img.isNull():
+            return self._context_blank_qactions
+        return []
 
     def set_footnotes_view(self, view):
         self.footnotes.set_footnotes_view(view)
@@ -89,6 +94,10 @@ class QwebviewDocument(Qwebview):
         self.qaction_search_online.setMenu(self.qmenu_search_online)
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
+    @property
+    def mode_qapplication_qaction(self):
+        return True
+
     # ---- actions
     @property
     def pageAction_copy(self):
@@ -102,11 +111,14 @@ class QwebviewDocument(Qwebview):
         pass
 
     def addAction(self, qaction):
+        super(QwebviewDocument, self).addAction(qaction)
         name = qaction.objectName()
         if name:
             setattr(self, name, qaction)
 
-        super(QwebviewDocument, self).addAction(qaction)
+        data = qaction.data()
+        if data and data.get("context", None) == "blank":
+            self.context_blank_qactions.add(qaction)
 
     # --- synopsis
     def copy_markdown(self, *args, **kwargs):
@@ -236,23 +248,16 @@ class QwebviewDocument(Qwebview):
                 break
             parent = parent.parent()
 
-        menu = self.document.createStandardContextMenu()
-        menu.addAction(self.qaction_inspect)
-        if not img.isNull():
-            menu.addAction(self.qaction_view_image)
         if table is not None:
-            menu.addAction(self.qaction_view_table)
             self.document.mark_element.emit(table)
-        if not self.selected_text and img.isNull():
-            # todo use self.qapplication_qactions
-            menu.addAction(self.manager.qaction_back)
-            menu.addAction(self.manager.qaction_forward)
-            menu.addAction(self.qaction_copy_position)
-            menu.addAction(self.qaction_goto_location)
-            menu.addAction(self.qaction_restore_fonts)
-            menu.addActions(self.manager.context_qactions)
 
-            self.qaction_restore_fonts.setChecked(self.multiplier == 1)
+        self.qaction_view_image.setEnabled(not img.isNull())
+        self.qaction_view_table.setEnabled(table is not None)
+        self.qaction_restore_fonts.setChecked(self.multiplier == 1)
+
+        menu = self.document.createStandardContextMenu()
+        menu.addActions(self.context_blank_qactions)
+        menu.addAction(self.qaction_inspect)
 
         for plugin in self.document.all_viewer_plugins:
             plugin.customize_context_menu(menu, qevent, r)

@@ -5,18 +5,12 @@ class QtoolbarEdit(Qtoolbar):
     def __init__(self, parent=None):
         super(QtoolbarEdit, self).__init__(parent)
 
-        self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
+    @property
+    def mode_qapplication_qaction(self):
+        return True
 
-    def on_qapplication_qactionAdded(self, parent, qaction):
-        if qaction in self.actions():
-            return
-
-        parents = getattr(qaction, "parents", [])
-        if self.__class__.__name__ not in parents:
-            return
-
-        # self.qapplication.blockSignals(True)
-        self.addAction(qaction)
+    def add_qapplication_action(self, qaction):
+        super(QtoolbarEdit, self).add_qapplication_action(qaction)
         if qaction.menu():
             data = qaction.data()
             if data:
@@ -24,8 +18,6 @@ class QtoolbarEdit(Qtoolbar):
                 if popup:
                     qwidget = self.widgetForAction(qaction)
                     qwidget.setPopupMode(getattr(qwidget, popup))
-
-        # self.qapplication.blockSignals(False)
 
     def addAction(self, qaction):
         r = super(QtoolbarEdit, self).addAction(qaction)

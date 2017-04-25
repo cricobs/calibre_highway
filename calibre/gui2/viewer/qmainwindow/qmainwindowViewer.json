@@ -4,13 +4,17 @@
       "text": "Back",
       "name": "back",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "back.png",
       "slots": {
         "triggered": [
           "back"
         ]
+      },
+      "data": {
+        "context": "blank"
       }
     },
     {
@@ -18,13 +22,17 @@
       "separator": true,
       "name": "forward",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "forward.png",
       "slots": {
         "triggered": [
           "forward"
         ]
+      },
+      "data": {
+        "context": "blank"
       }
     },
     {
@@ -61,17 +69,18 @@
       "text": "Open ebook",
       "name": "open_ebook",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "document_open.png",
-      "group": "context",
       "slots": {
         "triggered": [
           "open_ebook"
         ]
       },
       "data": {
-        "popup": "InstantPopup"
+        "popup": "InstantPopup",
+        "context": "blank"
       }
     },
     {
@@ -86,15 +95,18 @@
     {
       "text": "&Reload book",
       "name": "reload",
-      "group": "context",
       "icon": "view-refresh.png",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "slots": {
         "triggered": [
           "reload_book"
         ]
+      },
+      "data": {
+        "context": "blank"
       }
     },
     {
@@ -102,13 +114,14 @@
       "text": "Bookmark",
       "name": "bookmark",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "bookmarks.png",
-      "group": "context",
       "separator": true,
       "data": {
-        "popup": "InstantPopup"
+        "popup": "InstantPopup",
+        "context": "blank"
       }
     },
     {
@@ -120,10 +133,13 @@
       "text": "Footnotes",
       "name": "footnotes",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "column.png",
-      "group": "context"
+      "data": {
+        "context": "blank"
+      }
     },
     {
       "checkable": true,
@@ -134,10 +150,13 @@
       "text": "Synopsis",
       "name": "synopsis",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "modified.png",
-      "group": "context"
+      "data": {
+        "context": "blank"
+      }
     },
     {
       "text": "Show book metadata",
@@ -161,6 +180,7 @@
         "qaction_toggle"
       ],
       "data": {
+        "context": "blank",
         "shortcuts": [
           "Table of Contents"
         ]
@@ -169,9 +189,9 @@
       "name": "table_of_contents",
       "icon": "highlight_only_on.png",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
-      "group": "context",
       "slots": {
         "toggled": [
           "set_toc_visible"
@@ -181,10 +201,12 @@
     {
       "checkable": true,
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "text": "Edit",
       "data": {
+        "context": "blank",
         "shortcuts": [
           "Edit"
         ]
@@ -194,21 +216,23 @@
         "qaction_toggle"
       ],
       "name": "qtoolbarEdit",
-      "icon": "edit_input.png",
-      "group": "context"
+      "icon": "edit_input.png"
     },
     {
       "text": "Search",
       "name": "search",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
-      "group": "context",
       "icon": "search.png",
       "slots": {
         "triggered": [
           "on_action_search_triggered"
         ]
+      },
+      "data": {
+        "context": "blank"
       },
       "separator": true
     },
@@ -231,9 +255,12 @@
       "name": "font_size_larger",
       "icon": "font_size_larger.png",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
-      "group": "context",
+      "data": {
+        "context": "blank"
+      },
       "slots": {
         "triggered": [
           "font_size_larger"
@@ -245,9 +272,12 @@
       "name": "font_size_smaller",
       "icon": "font_size_smaller.png",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
-      "group": "context",
+      "data": {
+        "context": "blank"
+      },
       "separator": true,
       "slots": {
         "triggered": [
@@ -258,16 +288,17 @@
     {
       "text": "Toggle full screen",
       "data": {
+        "context": "blank",
         "shortcuts": [
           "Fullscreen"
         ]
       },
       "name": "full_screen",
       "parents": [
-        "QtoolbarEdit"
+        "QtoolbarEdit",
+        "QwebviewDocument"
       ],
       "icon": "page.png",
-      "group": "context",
       "slots": {
         "triggered": [
           "toggle_fullscreen"
@@ -371,7 +402,12 @@
     {
       "text": "&Quit",
       "name": "quit",
-      "group": "context",
+      "data": {
+        "context": "blank"
+      },
+      "parents": [
+        "QwebviewDocument"
+      ],
       "slots": {
         "triggered": [
           "quit"

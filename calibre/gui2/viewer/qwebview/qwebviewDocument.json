@@ -19,6 +19,9 @@
         },
         "text": "View &image...",
         "name": "view_image",
+        "data": {
+          "context": "blank"
+        },
         "icon": "view-image.png"
       },
       {
@@ -39,11 +42,17 @@
         },
         "checkable": true,
         "name": "restore_fonts",
-        "text": "Default font size"
+        "text": "Default font size",
+        "data": {
+          "context": "blank"
+        }
       },
       {
         "text": "Go to...",
-        "name": "goto_location"
+        "name": "goto_location",
+        "data": {
+          "context": "blank"
+        }
       },
       {
         "name": "Inspect",
@@ -61,6 +70,9 @@
           "triggered": [
             "copy"
           ]
+        },
+        "data": {
+          "context": "blank"
         }
       }
     ],
