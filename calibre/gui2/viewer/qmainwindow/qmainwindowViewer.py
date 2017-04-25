@@ -276,10 +276,10 @@ class QmainwindowViewer(Qmainwindow):
         self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
 
         self.view = self.centralWidget().view
-        self.view.initialize_view(debug_javascript)
         self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
         self.view.set_manager(self)
         self.view.magnification_changed.connect(self.magnification_changed)
+        self.view.document.debug_javascript = debug_javascript
         self.view.document.settings_changed.connect(self.settings_changed)
 
         self.create_actions(self.options["actions"])

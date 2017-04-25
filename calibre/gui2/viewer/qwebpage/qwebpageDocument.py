@@ -32,7 +32,7 @@ class Document(Qwebpage):
     settings_changed = pyqtSignal()
     animated_scroll_done_signal = pyqtSignal()
 
-    def __init__(self, shortcuts, parent=None, debug_javascript=False):
+    def __init__(self, parent=None, shortcuts=None, debug_javascript=False):
         Qwebpage.__init__(self, parent)
         self.nam = QnetworkaccessmanagerFakeNet(self)
         self.setNetworkAccessManager(self.nam)
@@ -55,7 +55,7 @@ class Document(Qwebpage):
         self.math_present = False
 
         self.scroll_marks = []
-        self.shortcuts = shortcuts
+        self.shortcuts = shortcuts if shortcuts else self.qapplication.qabstractlistmodelShortcut
         pal = self.palette()
         pal.setBrush(QPalette.Background, QColor(0xee, 0xee, 0xee))
         self.setPalette(pal)

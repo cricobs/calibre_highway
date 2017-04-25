@@ -39,9 +39,42 @@ class QwebviewDocument(Qwebview):
     def __init__(self, *args, **kwargs):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
 
+        self.initial_pos = 0.0
+        self.is_auto_repeat_event = False
+        self.loading_url = None
+        self.manager = None
+        self._ignore_scrollbar_signals = False
+        self._reference_mode = False
+        self._size_hint = QSize(510, 680)
+        self.goto_location_actions = {}
+        self.to_bottom = False
+        self.flipper = QwidgetSlideFlip(self)
+        self.footnotes = Footnotes(self)
+        self.gesture_handler = GestureHandler(self)
+        self.image_popup = ImagePopup(self)
+        self.table_popup = TablePopup(self)
+
+        self.document = d = Document(self)
+        d.nam.load_error.connect(self.on_unhandled_load_error)
+        d.settings_changed.connect(self.footnotes.clone_settings)
+        d.animated_scroll_done_signal.connect(self.animated_scroll_done, type=Qt.QueuedConnection)
+        d.linkClicked.connect(self.link_clicked)
+        d.linkHovered.connect(self.link_hovered)
+        d.page_turn.connect(self.page_turn_requested)
+        d.selectionChanged[()].connect(self.selection_changed)
+
+        self.setPage(d)
+        self.loadFinished.connect(self.load_finished)
+
         self._qaction_copy = None
         self._qaction_inspect = None
         self._context_blank_qactions = set()
+
+        self.create_actions(self.options["actions"])
+
+        self.qaction_synopsis.setMenu(self.qmenu_synopsis)
+        self.qaction_search_online.setMenu(self.qmenu_search_online)
+        self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
     @property
     def context_blank_qactions(self):
@@ -56,43 +89,6 @@ class QwebviewDocument(Qwebview):
     @property
     def mode_search(self):
         return self.SEARCH
-
-    def initialize_view(self, debug_javascript=False):
-        self._ignore_scrollbar_signals = False
-        self._reference_mode = False
-        self._size_hint = QSize(510, 680)
-        self.debug_javascript = debug_javascript
-        self.flipper = QwidgetSlideFlip(self)
-        self.footnotes = Footnotes(self)
-        self.gesture_handler = GestureHandler(self)
-        self.goto_location_actions = {}
-        self.image_popup = ImagePopup(self)
-        self.initial_pos = 0.0
-        self.is_auto_repeat_event = False
-        self.loading_url = None
-        self.manager = None
-        self.table_popup = TablePopup(self)
-        self.to_bottom = False
-
-        self.document = d = Document(
-            self.qapplication.qabstractlistmodelShortcut, parent=self,
-            debug_javascript=debug_javascript)
-        d.nam.load_error.connect(self.on_unhandled_load_error)
-        d.settings_changed.connect(self.footnotes.clone_settings)
-        d.animated_scroll_done_signal.connect(self.animated_scroll_done, type=Qt.QueuedConnection)
-        d.linkClicked.connect(self.link_clicked)
-        d.linkHovered.connect(self.link_hovered)
-        d.page_turn.connect(self.page_turn_requested)
-        d.selectionChanged[()].connect(self.selection_changed)
-
-        self.loadFinished.connect(self.load_finished)
-        self.setPage(d)
-
-        self.create_actions(self.options["actions"])
-
-        self.qaction_synopsis.setMenu(self.qmenu_synopsis)
-        self.qaction_search_online.setMenu(self.qmenu_search_online)
-        self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
     @property
     def mode_qapplication_qaction(self):
