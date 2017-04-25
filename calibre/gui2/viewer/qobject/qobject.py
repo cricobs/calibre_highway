@@ -136,6 +136,6 @@ class Qobject(QObject, object):
             self.add_qapplication_action(qaction)
 
     def add_qapplication_action(self, qaction):
-        # self.qapplication.blockSignals(True)
+        self.qapplication.blockSignals(True)
         self.addAction(qaction)
-        # self.qapplication.blockSignals(False)
+        self.qapplication.blockSignals(False)

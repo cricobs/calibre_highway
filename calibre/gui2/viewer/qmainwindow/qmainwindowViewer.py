@@ -322,6 +322,11 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
+        self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
+        self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
+        self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
+        self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
+
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
         self.read_settings()
@@ -360,18 +365,9 @@ class QmainwindowViewer(Qmainwindow):
         self.qapplication.activity.connect(self.on_qapplication_activity)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
 
-    def on_qapplication_qactionAdded(self, parent, qaction):
-        if parent is self:
-            return
-
-        # fixme use self in qaction.parents?
-        shortcuts = qaction.shortcuts()
-        if shortcuts:
-            # So that the keyboard shortcuts for these actions will
-            # continue to function even when the widgets are hidden
-            self.qapplication.blockSignals(True)
-            self.addAction(qaction)
-            self.qapplication.blockSignals(False)
+    @property
+    def mode_qapplication_qaction(self):
+        return True
 
     def on_qapplication_activity(self):
         self.qapplication.restoreOverrideCursor()
@@ -497,14 +493,12 @@ class QmainwindowViewer(Qmainwindow):
                 self.restoreState(state, self.STATE_VERSION)
             except:
                 pass
-        # self.initialize_dock_state()
+
         mult = vprefs.get('multiplier', None)
         if mult:
             self.view.multiplier = mult
 
-        # This will be opened on book open, if the book has a toc and it
-        # was previously opened
-        # self.qdockwidgetContent.close()
+        # This will be opened on book open, if the book has a toc and it was previously opened
         self.qaction_toggle_paged_mode.setChecked(not vprefs.get('in_paged_mode', True))
         self.toggle_paged_mode(self.qaction_toggle_paged_mode.isChecked(), at_start=True)
 
@@ -1243,12 +1237,6 @@ class QmainwindowViewer(Qmainwindow):
             self.metadata.update_layout()
 
         return super(QmainwindowViewer, self).resizeEvent(ev)
-
-    def initialize_dock_state(self):
-        self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
-        self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
-        self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
-        self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
 
     def themes_menu_shown(self):
         if len(self.qmenu_themes.actions()) == 0:
