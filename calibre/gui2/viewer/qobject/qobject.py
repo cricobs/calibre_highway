@@ -16,7 +16,6 @@ class Qobject(QObject, object):
         super(Qobject, self).__init__(*args, **kwargs)
 
         self._options = None
-
         self.qapplication = QApplication.instance()
 
         ui_path = filepath_relative(self, "ui")
@@ -36,9 +35,33 @@ class Qobject(QObject, object):
             with iput:
                 self.options = json.load(iput)
 
-        qactions = self.qapplication.qactions.get(self.__class__.__name__)
-        if qactions:
-            self.add_qapplication_actions(qactions)
+        if self.mode_qapplication_qaction:
+            self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
+            self.add_qapplication_actions(self.qapplication_qactions)
+
+    @property
+    def qapplication_qactions(self):
+        return self.qapplication.qactions[self.__class__.__name__]
+
+    def on_qapplication_qactionAdded(self, parent, qaction):
+        """
+        called if mode_qapplication_qaction
+        :param parent:
+        :param qaction:
+        :return:
+        """
+        if qaction in self.actions():
+            return
+
+        parents = getattr(qaction, "parents", [])
+        if self.__class__.__name__ not in parents:
+            return
+
+        self.add_qapplication_action(qaction)
+
+    @property
+    def mode_qapplication_qaction(self):
+        return False
 
     @property
     def options(self):

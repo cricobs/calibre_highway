@@ -28,36 +28,9 @@ class Qwidget(QWidget, Qobject):
             if q:
                 self.qaction_toggle.setText(q().text())
 
-        if self.mode_qapplication_qaction:
-            self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
-
-    def on_qapplication_qactionAdded(self, parent, qaction):
-        """
-        called if mode_qapplication_qaction
-        :param parent:
-        :param qaction:
-        :return:
-        """
-        if qaction in self.actions():
-            return
-
-        parents = getattr(qaction, "parents", [])
-        if self.__class__.__name__ not in parents:
-            return
-
-        self.add_qapplication_action(qaction)
-
-    @property
-    def mode_qapplication_qaction(self):
-        return False
-
     @property
     def mode_toggle(self):
         return False
-
-    @property
-    def qapplication_qactions(self):
-        return self.qapplication.qactions[self.__class__.__name__]
 
     def on_qaction_toggle_triggered(self, checked):
         """
