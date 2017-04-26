@@ -3,6 +3,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
+from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextedit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
@@ -26,6 +27,16 @@ class QplaintexteditEdit(Qplaintextedit):
         self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
         # self.qsyntaxhiglighter.setDict(self.dict)
         self.installEventFilter(self)
+
+    @property
+    def selected_text(self):
+        return self.textCursor().selectedText()
+
+    def contextMenuEvent(self, qevent):
+        menu = Qmenu(self)
+        menu.setObjectName("mama")
+        menu.addAction("test")
+        menu.exec_(qevent.globalPos())
 
     def replace(self, search, replace, backwards=False):
         self.search(search)

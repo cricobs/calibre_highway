@@ -23,7 +23,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="contextMenuPolicy">
-   <enum>Qt::CustomContextMenu</enum>
+   <enum>Qt::DefaultContextMenu</enum>
   </property>
   <property name="windowTitle">
    <string>Form</string>

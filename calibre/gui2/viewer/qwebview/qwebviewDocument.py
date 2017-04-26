@@ -273,7 +273,7 @@ class QwebviewDocument(Qwebview):
                 self.manager.search.set_search_string(t)
 
     def search_online(self):
-        t = unicode(self.selectedText()).strip()
+        t = unicode(self.qaction_search_online.qmenu.selected_text).strip()
         if t:
             self.do_search_online(t, self.sender())
 

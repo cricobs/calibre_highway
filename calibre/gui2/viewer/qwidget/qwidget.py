@@ -28,6 +28,15 @@ class Qwidget(QWidget, Qobject):
             if q:
                 self.qaction_toggle.setText(q().text())
 
+    def setWindowTitle(self, p_str):
+        super(Qwidget, self).setWindowTitle(p_str)
+
+        if self.mode_toggle:
+            try:
+                self.qaction_toggle.setText(p_str)
+            except AttributeError:
+                pass
+
     @property
     def mode_toggle(self):
         return False

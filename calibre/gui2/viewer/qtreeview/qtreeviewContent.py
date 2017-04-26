@@ -37,7 +37,19 @@ class QtreeviewContent(Qtreeview):
         self.delegate = Delegate(self)
         self.setItemDelegate(self.delegate)
 
-        self.customContextMenuRequested.connect(self.context_menu)
+    def contextMenuEvent(self, qevent):
+        pos = qevent.pos()
+        index = self.indexAt(pos)
+        m = QMenu(self)
+        if index.isValid():
+            m.addAction(_('Expand all items under %s') % index.data(),
+                        partial(self.expand_tree, index))
+        m.addSeparator()
+        m.addAction(_('Expand all items'), self.expandAll)
+        m.addAction(_('Collapse all items'), self.collapseAll)
+        m.addSeparator()
+        m.addAction(_('Copy table of contents to clipboard'), self.copy_to_clipboard)
+        m.exec_(self.mapToGlobal(pos))
 
     @property
     def mode_search(self):
@@ -60,18 +72,6 @@ class QtreeviewContent(Qtreeview):
             if not child.isValid():
                 break
             self.expand_tree(child)
-
-    def context_menu(self, pos):
-        index = self.indexAt(pos)
-        m = QMenu(self)
-        if index.isValid():
-            m.addAction(_('Expand all items under %s') % index.data(), partial(self.expand_tree, index))
-        m.addSeparator()
-        m.addAction(_('Expand all items'), self.expandAll)
-        m.addAction(_('Collapse all items'), self.collapseAll)
-        m.addSeparator()
-        m.addAction(_('Copy table of contents to clipboard'), self.copy_to_clipboard)
-        m.exec_(self.mapToGlobal(pos))
 
     def keyPressEvent(self, event):
         try:

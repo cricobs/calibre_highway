@@ -28,8 +28,8 @@ class Qmenu(QMenu, Qwidget):
         pass
 
     def exec_(self, *args):
-        actions = self.actions()
-        if self.selected_text:
+        actions = self.actions()  # fixme too slow
+        if self.selected_text:  # note get selected_text via __getattribute__
             actions += filter(
                 lambda q: q.data().get("context", None) == "text", self.qapplication_qactions)
 
@@ -52,7 +52,7 @@ class Qmenu(QMenu, Qwidget):
         if not action.isEnabled():
             return
         try:
-            action.update()
+            action.update(qmenu=self, text_format=self.selected_text)
         except AttributeError:
             pass
 
@@ -61,5 +61,5 @@ class Qmenu(QMenu, Qwidget):
     def addAction(self, *args, **kwargs):
         try:
             self._addAction(*args, **kwargs)
-        except TypeError:
+        except (TypeError, AttributeError):
             super(Qmenu, self).addAction(*args, **kwargs)
