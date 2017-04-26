@@ -3,6 +3,15 @@ from PyQt5.QtWidgets import QMenu
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
+def actions_sorter(action):
+    try:
+        position = action.data().get("position", None)
+    except AttributeError:
+        position = None
+
+    return position is None, position
+
+
 class Qmenu(QMenu, Qwidget):
     def __init__(self, *args, **kwargs):
         super(Qmenu, self).__init__(*args, **kwargs)
@@ -19,35 +28,38 @@ class Qmenu(QMenu, Qwidget):
         pass
 
     def exec_(self, *args):
+        actions = self.actions()
         if self.selected_text:
-            qactions = filter(
-                lambda qaction: qaction.data().get("context", None) == "text",
-                self.qapplication_qactions
-            )
-            map(self.add_qaction, qactions)
+            actions += filter(
+                lambda q: q.data().get("context", None) == "text", self.qapplication_qactions)
+
+        for action in sorted(actions, key=actions_sorter):
+            self._addAction(action)
+            if getattr(action, "separator", None):
+                self.addSeparator()
 
         return super(Qmenu, self).exec_(*args)
 
     def addActions(self, qactions):
-        return list(map(self.add_qaction, qactions))
+        map(self._addAction, qactions)
 
-    def add_qaction(self, qaction):
-        # todo use position
-        if not qaction.isEnabled():
+    def _addAction(self, action):
+        """
+        reimplementation of addAction(action)
+        :param action:
+        :return:
+        """
+        if not action.isEnabled():
             return
         try:
-            qaction.update()
+            action.update()
         except AttributeError:
             pass
 
-        o = super(Qmenu, self).addAction(qaction)
-        if getattr(qaction, "separator", None):
-            self.addSeparator()
-
-        return o
+        super(Qmenu, self).addAction(action)
 
     def addAction(self, *args, **kwargs):
         try:
-            return self.add_qaction(*args, **kwargs)
+            self._addAction(*args, **kwargs)
         except TypeError:
-            return super(Qmenu, self).addAction(*args, **kwargs)
+            super(Qmenu, self).addAction(*args, **kwargs)

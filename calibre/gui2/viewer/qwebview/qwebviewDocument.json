@@ -44,14 +44,17 @@
         "name": "restore_fonts",
         "text": "Default font size",
         "data": {
-          "context": "blank"
+          "context": "blank",
+          "position": 9
         }
       },
       {
+        "separator": true,
         "text": "Go to...",
         "name": "goto_location",
         "data": {
-          "context": "blank"
+          "context": "blank",
+          "position": -1.1
         }
       },
       {
@@ -85,7 +88,8 @@
         "text": "S&ynopsis",
         "icon": "modified.png",
         "data": {
-          "context": "text"
+          "context": "text",
+          "position": 0
         }
       },
       {
@@ -101,7 +105,8 @@
         "icon": "search.png",
         "data": {
           "context": "text",
-          "text_format": "Search online '{0}'"
+          "text_format": "Search online '{0}'",
+          "position": 1
         }
       },
       {
@@ -119,7 +124,8 @@
           "context": "text",
           "shortcuts": [
             "Lookup word"
-          ]
+          ],
+          "position": 2
         },
         "icon": "dictionary.png"
       },
@@ -134,11 +140,13 @@
         ],
         "name": "search",
         "text": "&Search for next occurrence",
+        "separator": true,
         "data": {
           "context": "text",
           "shortcuts": [
             "Next occurrence"
-          ]
+          ],
+          "position": 3
         }
       }
     ],

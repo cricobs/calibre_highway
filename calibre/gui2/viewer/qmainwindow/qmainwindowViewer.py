@@ -724,7 +724,7 @@ class QmainwindowViewer(Qmainwindow):
             tt % dict(action=unicode(self.qaction_font_size_larger.text()),
                       mag=val, sc=sc))
         sc = _(' or ').join(
-            self.self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
+            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
         self.qaction_font_size_smaller.setToolTip(
             tt % dict(action=unicode(self.qaction_font_size_smaller.text()),
                       mag=val, sc=sc))

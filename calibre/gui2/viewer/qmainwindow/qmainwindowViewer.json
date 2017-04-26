@@ -14,12 +14,12 @@
         ]
       },
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": -1.2
       }
     },
     {
       "text": "Forward",
-      "separator": true,
       "name": "forward",
       "parents": [
         "QtoolbarEdit",
@@ -32,7 +32,8 @@
         ]
       },
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": -1.3
       }
     },
     {
@@ -80,7 +81,8 @@
       },
       "data": {
         "popup": "InstantPopup",
-        "context": "blank"
+        "context": "blank",
+        "position": 0
       }
     },
     {
@@ -106,6 +108,7 @@
         ]
       },
       "data": {
+        "position": 1,
         "context": "blank"
       }
     },
@@ -121,7 +124,8 @@
       "separator": true,
       "data": {
         "popup": "InstantPopup",
-        "context": "blank"
+        "context": "blank",
+        "position": 2
       }
     },
     {
@@ -138,7 +142,8 @@
       ],
       "icon": "column.png",
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": 3
       }
     },
     {
@@ -155,7 +160,8 @@
       ],
       "icon": "modified.png",
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": 4
       }
     },
     {
@@ -181,6 +187,7 @@
       ],
       "data": {
         "context": "blank",
+        "position": 5,
         "shortcuts": [
           "Table of Contents"
         ]
@@ -209,7 +216,8 @@
         "context": "blank",
         "shortcuts": [
           "Edit"
-        ]
+        ],
+        "position": 6
       },
       "action": [
         "qtoolbarEdit",
@@ -232,7 +240,8 @@
         ]
       },
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": 7
       },
       "separator": true
     },
@@ -259,7 +268,8 @@
         "QwebviewDocument"
       ],
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": 8
       },
       "slots": {
         "triggered": [
@@ -276,7 +286,8 @@
         "QwebviewDocument"
       ],
       "data": {
-        "context": "blank"
+        "context": "blank",
+        "position": 10
       },
       "separator": true,
       "slots": {
@@ -291,7 +302,8 @@
         "context": "blank",
         "shortcuts": [
           "Fullscreen"
-        ]
+        ],
+        "position": 11
       },
       "name": "full_screen",
       "parents": [
@@ -405,6 +417,7 @@
       "data": {
         "context": "blank"
       },
+      "separator": true,
       "parents": [
         "QwebviewDocument"
       ],
