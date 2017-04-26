@@ -26,7 +26,7 @@ dynamic_property = dynamic_property
 P = P
 
 
-class Document(Qwebpage):
+class QwebpageDocument(Qwebpage):
     page_turn = pyqtSignal(object)
     mark_element = pyqtSignal(QWebElement)
     settings_changed = pyqtSignal()

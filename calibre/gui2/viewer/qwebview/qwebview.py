@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWebKitWidgets import QWebView, QWebPage
 
+from calibre.gui2.viewer.qwebpage.qwebpagePreview import QwebpagePreview
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
@@ -9,6 +10,11 @@ class Qwebview(QWebView, Qwidget):
 
     def __init__(self, *args, **kwargs):
         super(Qwebview, self).__init__(*args, **kwargs)
+
+        self.setPage(self.create_page())
+
+    def create_page(self):
+        return QwebpagePreview(self)
 
     def search(self, search, backwards=False):
         self.findText(search)

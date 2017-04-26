@@ -3,7 +3,6 @@ from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtCore import pyqtSignal
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
-from calibre.gui2.viewer.qwebpage.qwebpageContent import QwebpageContent
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 
 
@@ -14,8 +13,6 @@ class QwebviewContent(Qwebview):
         super(QwebviewContent, self).__init__(*args, **kwargs)
 
         self._body = None
-
-        self.setPage(QwebpageContent(self))
 
     @property
     def mode_search(self):

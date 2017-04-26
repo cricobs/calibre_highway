@@ -6,7 +6,6 @@ from PyQt5.QtCore import pyqtSignal
 from calibre.ebooks import markdown
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
-from calibre.gui2.viewer.qwebpage.qwebpagePreview import QwebpagePreview
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 
 
@@ -24,8 +23,6 @@ class QwebviewPreview(Qwebview):
         self._content = None
 
         QobjectScrollPosition(self)
-
-        self.setPage(QwebpagePreview(self))
 
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared)

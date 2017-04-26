@@ -15,12 +15,13 @@ from PyQt5.QtWebKitWidgets import QWebPage
 from calibre import prints
 from calibre.constants import DEBUG, FAKE_PROTOCOL, FAKE_HOST
 from calibre.ebooks.oeb.display.webview import load_html
+from calibre.gui2.viewer.qwebpage.qwebpage import Qwebpage
 
 __license__ = 'GPL v3'
 __copyright__ = '2014, Kovid Goyal <kovid at kovidgoyal.net>'
 
 
-class QwebpageFootnote(QWebPage):
+class QwebpageFootnote(Qwebpage):
     def __init__(self, parent):
         QWebPage.__init__(self, parent)
         self.js_loader = None
@@ -76,10 +77,10 @@ class Footnotes(object):
         self.footnotes_view = fv
         self.clone_settings()
         fv.page().linkClicked.connect(self.view.link_clicked)
-        fv.page().js_loader = self.view.document.js_loader
+        fv.page().js_loader = self.view.page().js_loader
 
     def clone_settings(self):
-        source = self.view.document.settings()
+        source = self.view.page().settings()
         settings = self.footnotes_view.page().settings()
         for x in filter(lambda y: y.endswith(("FontSize", "Font")), QWebSettings.__dict__.keys()):
             name = 'setFontSize' if x.endswith('FontSize') else 'setFontFamily'
@@ -134,7 +135,7 @@ body {
             else:
                 linked_to_anchors = {anchor: 0 for path, anchor in dest_path.verified_links if
                                      path == current_path}
-            self.view.document.bridge_value = linked_to_anchors
+            self.view.page().bridge_value = linked_to_anchors
             if a.evaluateJavaScript('calibre_extract.is_footnote_link(this, "%s://%s")' % (
                     FAKE_PROTOCOL, FAKE_HOST)):
                 if dest_path not in self.known_footnote_targets:
