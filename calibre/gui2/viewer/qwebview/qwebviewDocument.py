@@ -251,7 +251,7 @@ class QwebviewDocument(Qwebview):
         self.qaction_view_table.setEnabled(table is not None)
         self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 
-        menu = self.document.createStandardContextMenu()
+        menu = self.page().createStandardContextMenu()
         menu.addActions(self.context_blank_qactions)
         menu.addAction(self.qaction_inspect)
 
@@ -275,10 +275,9 @@ class QwebviewDocument(Qwebview):
     def search_online(self):
         t = unicode(self.qaction_search_online.qmenu.selected_text).strip()
         if t:
-            self.do_search_online(t, self.sender())
+            self.open_url(t, self.sender().data().get("url", None))
 
-    def do_search_online(self, text, action):
-        url = action.data().get("url", None)
+    def open_url(self, text, url):
         if url:
             url = url.replace('%s', QUrl().toPercentEncoding(text))
         if not isinstance(url, bytes):

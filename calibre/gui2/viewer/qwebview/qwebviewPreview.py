@@ -31,6 +31,15 @@ class QwebviewPreview(Qwebview):
             self.on_mainFrame_javaScriptWindowObjectCleared)
 
     @property
+    def selected_text(self):
+        return self.selectedText()
+
+    def contextMenuEvent(self, qevent):
+        menu = self.page().createStandardContextMenu()
+        if not menu.exec_(qevent.globalPos()):
+            super(QwebviewPreview, self).contextMenuEvent(qevent)
+
+    @property
     def mode_search(self):
         return self.SEARCH
 

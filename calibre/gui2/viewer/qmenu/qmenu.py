@@ -38,7 +38,8 @@ class Qmenu(QMenu, Qwidget):
             if getattr(action, "separator", None):
                 self.addSeparator()
 
-        return super(Qmenu, self).exec_(*args)
+        if actions:
+            return super(Qmenu, self).exec_(*args)
 
     def addActions(self, qactions):
         map(self._addAction, qactions)

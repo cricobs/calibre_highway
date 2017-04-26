@@ -34,9 +34,8 @@ class QplaintexteditEdit(Qplaintextedit):
 
     def contextMenuEvent(self, qevent):
         menu = Qmenu(self)
-        menu.setObjectName("mama")
-        menu.addAction("test")
-        menu.exec_(qevent.globalPos())
+        if not menu.exec_(qevent.globalPos()):
+            super(QplaintexteditEdit, self).contextMenuEvent(qevent)
 
     def replace(self, search, replace, backwards=False):
         self.search(search)
