@@ -200,10 +200,6 @@ class QwebviewDocument(Qwebview):
     def bookmark(self):
         return self.document.bookmark()
 
-    @property
-    def selected_text(self):
-        return self.document.selectedText().replace(u'\u00ad', u'').strip()
-
     def copy_position(self):
         self.copy_text(self.document.page_position.current_pos)
 

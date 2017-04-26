@@ -30,10 +30,6 @@ class QwebviewPreview(Qwebview):
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(
             self.on_mainFrame_javaScriptWindowObjectCleared)
 
-    @property
-    def selected_text(self):
-        return self.selectedText()
-
     def contextMenuEvent(self, qevent):
         menu = self.page().createStandardContextMenu()
         if not menu.exec_(qevent.globalPos()):

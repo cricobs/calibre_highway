@@ -16,3 +16,7 @@ class Qwebview(QWebView, Qwidget):
     def setPage(self, qwebpage):
         super(Qwebview, self).setPage(qwebpage)
         self.pageChange.emit(qwebpage)
+
+    @property
+    def selected_text(self):
+        return self.selectedText().replace(u'\u00ad', u'').strip()
