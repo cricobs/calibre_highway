@@ -230,12 +230,7 @@ class QwebviewDocument(Qwebview):
         self.table_popup(html, self.as_url(self.last_loaded_path),
                          self.document.font_magnification_step)
 
-    def contextMenuEvent(self, qevent):
-        r = self.document.mainFrame().hitTestContent(qevent.pos())
-
-        self.image_popup.current_img = img = r.pixmap()
-        self.image_popup.current_url = r.imageUrl()
-
+    def mark_table(self, r):
         table = None
         parent = r.element() if not r.element().isNull() else r.enclosingBlockElement()
         while not parent.isNull():
@@ -247,8 +242,16 @@ class QwebviewDocument(Qwebview):
         if table is not None:
             self.document.mark_element.emit(table)
 
+        return table
+
+    def contextMenuEvent(self, qevent):
+        r = self.document.mainFrame().hitTestContent(qevent.pos())
+
+        self.image_popup.current_img = img = r.pixmap()
+        self.image_popup.current_url = r.imageUrl()
+
         self.qaction_view_image.setEnabled(not img.isNull())
-        self.qaction_view_table.setEnabled(table is not None)
+        self.qaction_view_table.setEnabled(self.mark_table(r) is not None)
         self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 
         menu = self.page().createStandardContextMenu()
@@ -258,7 +261,8 @@ class QwebviewDocument(Qwebview):
         for plugin in self.document.all_viewer_plugins:
             plugin.customize_context_menu(menu, qevent, r)
 
-        menu.exec_(qevent.globalPos())
+        if not menu.exec_(qevent.globalPos()):
+            super(QwebviewDocument, self).contextMenuEvent(qevent)
 
     def lookup(self, *args):
         if self.manager is not None:
