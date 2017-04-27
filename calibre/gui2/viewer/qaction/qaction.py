@@ -34,7 +34,7 @@ class Qaction(QAction):
         """
         self.qmenu = qmenu
 
-        if self.objectName() == "qaction_search_online":
+        if self.objectName() in ["qaction_search_online"]:
             self.set_text_format(text_format[:22] + (text_format[22:] and '...'))
 
     def set_text_format(self, *args, **kwargs):

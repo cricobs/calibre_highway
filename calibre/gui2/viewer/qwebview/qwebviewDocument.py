@@ -28,7 +28,8 @@ dynamic_property = dynamic_property
 
 
 # todo
-# - replace synopsis insert actions for QdialogEdit
+# - add synopsis insert through QdialogEdit
+# - create QwidgetLookup for text lookup
 
 class QwebviewDocument(Qwebview):
     magnification_changed = pyqtSignal(object)
@@ -41,8 +42,6 @@ class QwebviewDocument(Qwebview):
 
         self._context_blank_qactions = set()
         self._ignore_scrollbar_signals = False
-        self._qaction_copy = None
-        self._qaction_inspect = None
         self._reference_mode = False
         self._size_hint = QSize(510, 680)
         self.goto_location_actions = {}

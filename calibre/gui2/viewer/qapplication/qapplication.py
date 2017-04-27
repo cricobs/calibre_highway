@@ -14,6 +14,7 @@ class Qapplication(Application):
     inactivityTimeout = pyqtSignal(QWidget, int)
     activity = pyqtSignal()
     qactionAdded = pyqtSignal(QObject, QAction)
+    childAdded = pyqtSignal(QObject)
 
     def __init__(self, *args, **kwargs):
         super(Qapplication, self).__init__(*args, **kwargs)
@@ -37,6 +38,8 @@ class Qapplication(Application):
                         qs.append(qaction)
 
                 self.qactionAdded.emit(qaction.parent(), qaction)
+        elif qevent.type() == qevent.ChildAdded:
+            self.childAdded.emit(qevent.child())
         elif qevent.type() == qevent.MouseMove:
             self.activity_detected()
 
