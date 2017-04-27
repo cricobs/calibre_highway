@@ -51,10 +51,6 @@ class QtreeviewContent(Qtreeview):
         m.addAction(_('Copy table of contents to clipboard'), self.copy_to_clipboard)
         m.exec_(self.mapToGlobal(pos))
 
-    @property
-    def mode_search(self):
-        return self.SEARCH
-
     def mouseMoveEvent(self, ev):
         if self.indexAt(ev.pos()).isValid():
             self.setCursor(Qt.PointingHandCursor)

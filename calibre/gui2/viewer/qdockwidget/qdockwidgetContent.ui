@@ -10,6 +10,9 @@
     <height>233</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="contextMenuPolicy">
    <enum>Qt::CustomContextMenu</enum>
   </property>
@@ -31,9 +34,6 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QwidgetContentSearch" name="qwidgetSearch" native="true"/>
-    </item>
-    <item>
      <widget class="QtreeviewContent" name="qtreeviewContent"/>
     </item>
    </layout>
@@ -44,12 +44,6 @@
    <class>QtreeviewContent</class>
    <extends>QTreeView</extends>
    <header>calibre.gui2.viewer.qtreeview.qtreeviewContent</header>
-  </customwidget>
-  <customwidget>
-   <class>QwidgetContentSearch</class>
-   <extends>QWidget</extends>
-   <header>calibre.gui2.viewer.qwidget.qwidgetContentSearch</header>
-   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

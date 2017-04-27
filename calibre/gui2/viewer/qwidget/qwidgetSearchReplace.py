@@ -1,11 +1,12 @@
 from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QToolButton
 
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
-# todo
+# fixme
 #  - store relative search/replace history in qsettings
 
 class QwidgetSearchReplace(Qwidget):
@@ -58,8 +59,9 @@ class QwidgetSearchReplace(Qwidget):
         self.hide_and_show()
 
     def hide_and_show(self):  # agtft Qwebview not repainting correctly on scroll
-        self.hide()
-        QTimer.singleShot(0, self.show)
+        if isinstance(self.relative, QWebView):
+            self.hide()
+            QTimer.singleShot(0, self.show)
 
     @pyqtSlot(str)
     def on_qcomboboxReplace_returnPressed(self, text):
