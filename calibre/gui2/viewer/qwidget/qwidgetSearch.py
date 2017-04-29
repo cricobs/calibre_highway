@@ -9,6 +9,8 @@ class QwidgetSearch(Qwidget):
         super(QwidgetSearch, self).__init__(*args, **kwargs)
 
         self.search.initialize('viewer_search_history', help_text=_('Search Ebook'))
+        self.pos.setMinimumWidth(150)
+
         self.hide()
 
     def keyPressEvent(self, qkeyevent):

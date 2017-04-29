@@ -2,7 +2,6 @@
 
 from __future__ import unicode_literals, division, absolute_import, print_function
 
-import functools
 import os
 import sys
 import traceback
@@ -261,26 +260,12 @@ class QmainwindowViewer(Qmainwindow):
         self.interval_hide_cursor = 3333
         self.interval_autosave = 10000
 
+        # --- info
         self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
         self.pi = ProgressIndicator(self)
 
-        self.reference = self.centralWidget().qwidgetSearch.reference
-        self.qwidgetSearch = self.centralWidget().qwidgetSearch
-        self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
-        self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
-
-        self.view = self.centralWidget().view
-        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
-        self.view.set_manager(self)
-        self.view.magnification_changed.connect(self.magnification_changed)
-        self.view.qwebpage.debug_javascript = debug_javascript
-        self.view.qwebpage.settings_changed.connect(self.settings_changed)
-
-        self.create_actions(self.options["actions"])
-
-        self.history = History(self.qaction_back, self.qaction_forward)
-
+        # --- timer
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
         self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
@@ -293,38 +278,66 @@ class QmainwindowViewer(Qmainwindow):
         self.autosave_timer.setSingleShot(True)
         self.autosave_timer.timeout.connect(self.autosave)
 
-        self.search = self.qwidgetSearch.search
+        # --- scroll
+        self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
+        self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
+
+        self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
+
+        # --- view
+        self.view = self.centralWidget().view
+        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
+        self.view.set_manager(self)
+        self.view.magnification_changed.connect(self.magnification_changed)
+        self.view.qwebpage.debug_javascript = debug_javascript
+        self.view.qwebpage.settings_changed.connect(self.settings_changed)
+
+        # --- action
+        self.create_actions(self.options["actions"])
+
+        self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
+
+        self.history = History(self.qaction_back, self.qaction_forward)
+
+        # --- search
+        self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
+
+        self.reference = s.reference
+        self.reference.goto.connect(self.goto)
+
+        self.search = s.search
         self.search.search.connect(self.find)
         self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
 
-        self.pos = self.qwidgetSearch.pos
+        self.pos = s.pos
         self.pos.value_changed.connect(self.update_pos_label)
         self.pos.value_changed.connect(self.autosave_timer.start)
-        self.pos.setMinimumWidth(150)
         self.pos.editingFinished.connect(self.goto_page_num)
 
-        self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
-        self.reference.goto.connect(self.goto)
-        self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
-
-        self.toc = self.qdockwidgetContent.qtreeviewContent
-        self.toc.pressed[QModelIndex].connect(self.toc_clicked)
-        self.toc.searched.connect(partial(self.toc_clicked, force=True))
-        self.toc.handle_shortcuts = self.toggle_toc
+        # ---
+        self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
+        self.qtreeviewContent.pressed[QModelIndex].connect(self.toc_clicked)
+        self.qtreeviewContent.searched.connect(partial(self.toc_clicked, force=True))
+        self.qtreeviewContent.handle_shortcuts = self.toggle_toc
 
         self.qwidgetBookmark = self.qdockwidgetBookmark.qwidgetBookmark
         self.qwidgetBookmark.edited.connect(self.bookmarks_edited)
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
+        self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
+        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
+        self.qapplication.activity.connect(self.on_qapplication_activity)
+        self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
+
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
         self.read_settings()
         self.build_recent_menu()
+        self.load_theme_menu()
+        self.set_bookmarks([])
         self.restore_state()  # fixme use qsettings
         self.settings_changed()
-        self.set_bookmarks([])
-        self.load_theme_menu()
 
         if start_in_fullscreen or self.view.qwebpage.start_in_fullscreen:
             self.qaction_full_screen.trigger()
@@ -335,11 +348,12 @@ class QmainwindowViewer(Qmainwindow):
             self.msg_from_anotherinstance.connect(
                 self.another_instance_wants_to_talk, type=Qt.QueuedConnection)
         if pathtoebook is None:
-            recents = vprefs.get('viewer_open_history', [])
-            pathtoebook = recents[0] if recents else None
+            try:
+                pathtoebook = vprefs.get('viewer_open_history', [])[0]
+            except IndexError:
+                pass
         if pathtoebook is not None:
-            f = functools.partial(self.load_ebook, pathtoebook, open_at=open_at)
-            QTimer.singleShot(50, f)
+            QTimer.singleShot(50, lambda: self.load_ebook(pathtoebook, open_at=open_at))
         elif continue_reading:
             QTimer.singleShot(50, self.continue_reading)
         else:
@@ -349,11 +363,6 @@ class QmainwindowViewer(Qmainwindow):
             plugin.customize_ui(self)
 
         file_events.got_file.connect(self.load_ebook)
-
-        self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
-        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
-        self.qapplication.activity.connect(self.on_qapplication_activity)
-        self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
 
     @property
     def mode_qapplication_qaction(self):
@@ -836,7 +845,7 @@ class QmainwindowViewer(Qmainwindow):
                 self.current_index, self.view.viewport_rect, anchor_positions,
                 self.view.qwebpage.in_paged_mode)
             if items:
-                self.toc.scrollTo(items[-1].index())
+                self.qtreeviewContent.scrollTo(items[-1].index())
             if pgns is not None:
                 self.pending_goto_next_section = None
                 # Check that we actually progressed
@@ -1068,12 +1077,12 @@ class QmainwindowViewer(Qmainwindow):
                 title = os.path.splitext(os.path.basename(pathtoebook))[0]
             if self.iterator.toc:
                 self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
-                self.toc.setModel(self.toc_model)
+                self.qtreeviewContent.setModel(self.toc_model)
                 if self.show_toc_on_open:
                     self.qaction_table_of_contents.setChecked(True)
             else:
                 self.toc_model = QstandarditemmodelContent(self.iterator.spine)
-                self.toc.setModel(self.toc_model)
+                self.qtreeviewContent.setModel(self.toc_model)
                 self.qaction_table_of_contents.setChecked(False)
             if isbytestring(pathtoebook):
                 pathtoebook = force_unicode(pathtoebook, filesystem_encoding)

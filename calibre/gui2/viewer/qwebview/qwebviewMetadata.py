@@ -25,10 +25,6 @@ class QwebviewMetadata(Qwebview):
         self.setVisible(False)
 
         self.window().installEventFilter(self)
-        self.window().ebookLoaded.connect(self.on_window_ebookLoaded)
-
-    def on_window_ebookLoaded(self, iterator):
-        self.show_metadata(iterator.mi, iterator.book_format)
 
     def eventFilter(self, qobject, qevent):
         if qevent.type() == qevent.KeyPress:
