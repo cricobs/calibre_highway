@@ -210,7 +210,9 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.save()
 
     def on_qapplication_aboutToQuit(self):
-        self.save()
+        if self.path_source:
+            self.save()
+
         self.state_save()
 
     @property

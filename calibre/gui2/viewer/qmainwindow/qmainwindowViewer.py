@@ -229,10 +229,11 @@ class QmainwindowViewer(Qmainwindow):
 
     def __init__(
             self, pathtoebook=None, debug_javascript=False, open_at=None,
-            start_in_fullscreen=False, continue_reading=False, listener=None, file_events=(),
+            start_in_fullscreen=False, continue_reading=True, listener=None, file_events=(),
             parent=None):
         super(QmainwindowViewer, self).__init__(parent)
 
+        self._listener = None
         self.closed = False
         self.current_book_has_toc = False
         self.current_page = None
@@ -332,18 +333,7 @@ class QmainwindowViewer(Qmainwindow):
         file_events.got_file.connect(self.load_ebook)
 
         if start_in_fullscreen or self.view.qwebpage.start_in_fullscreen:
-            self.qaction_full_screen.trigger()
-        if listener is not None:
-            t = Thread(name='ConnListener', target=listen, args=(self,))
-            t.daemon = True
-            t.start()
-            self.msg_from_anotherinstance.connect(
-                self.another_instance_wants_to_talk, type=Qt.QueuedConnection)
-        if pathtoebook is None:
-            try:
-                pathtoebook = vprefs.get('viewer_open_history', [])[0]
-            except IndexError:
-                pass
+            self.showFullScreen()
         if pathtoebook is not None:
             QTimer.singleShot(50, lambda: self.load_ebook(pathtoebook, open_at=open_at))
         elif continue_reading:
@@ -352,6 +342,22 @@ class QmainwindowViewer(Qmainwindow):
             QTimer.singleShot(50, file_events.flush)
 
         map(lambda p: p.customize_ui(self), self.view.qwebpage.all_viewer_plugins)
+
+    @property
+    def listener(self):
+        return self._listener
+
+    @listener.setter
+    def listener(self, listener):
+        if listener is not None:
+            self._listener = listener
+
+            self.msg_from_anotherinstance.connect(
+                self.another_instance_wants_to_talk, type=Qt.QueuedConnection)
+
+            t = Thread(name='ConnListener', target=listen, args=(self,))
+            t.daemon = True
+            t.start()
 
     @property
     def mode_qapplication_qaction(self):
@@ -440,9 +446,12 @@ class QmainwindowViewer(Qmainwindow):
                 count += 1
 
     def continue_reading(self):
-        actions = self.qmenu_open_history.actions()[2:]
-        if actions:
-            actions[0].trigger()
+        try:
+            pathtoebook = vprefs.get('viewer_open_history', [])[0]
+        except IndexError:
+            pass
+        else:
+            self.load_ebook(pathtoebook)
 
     def shutdown(self):
         if self.isFullScreen() and not self.view.qwebpage.start_in_fullscreen:
@@ -1240,7 +1249,7 @@ def config(defaults=None):
     c.add_opt('open_at', ['--open-at'], default=None, help=_(
         'The position at which to open the specified book.'
         ' The position is a location as displayed in the top left corner of the viewer.'))
-    c.add_opt('continue_reading', ['--continue'], default=False,
+    c.add_opt('continue_reading', ['--continue'], default=True,
               help=_('Continue reading at the previously opened book'))
 
     return c
