@@ -220,11 +220,8 @@ def test_history():
 
 class QmainwindowViewer(Qmainwindow):
     STATE_VERSION = 2
-    FLOW_MODE_TT = _(
-        'Switch to paged mode - where the text is broken up into pages like a paper book')
-    PAGED_MODE_TT = _('Switch to flow mode - where the text is not broken up into pages')
 
-    msg_from_anotherinstance = pyqtSignal(object)
+    msgFromAnotherInstance = pyqtSignal(object)
     ebookLoaded = pyqtSignal(EbookIterator)
 
     def __init__(
@@ -257,11 +254,6 @@ class QmainwindowViewer(Qmainwindow):
         self.window_mode_changed = None
         self.interval_hide_cursor = 3333
 
-        # --- info
-        self.clock_label = QlabelClock(self.centralWidget())
-        self.pos_label = QlabelPos(self.centralWidget())
-        self.pi = ProgressIndicator(self)
-
         # --- timer
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
@@ -270,11 +262,31 @@ class QmainwindowViewer(Qmainwindow):
         self.clock_timer = QTimer(self)
         self.clock_timer.timeout.connect(self.update_clock)
 
+        self.pi = ProgressIndicator(self.centralWidget())
+
+        # --- label
+        self.clock_label = QlabelClock(self.centralWidget())
+        self.pos_label = QlabelPos(self.centralWidget())
+
         # --- scroll
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
 
         self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
+
+        # --- search
+        self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
+
+        self.reference = s.reference
+        self.reference.goto.connect(self.goto)
+
+        self.search = s.search
+        self.search.search.connect(self.find)
+        self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
+
+        self.pos = s.pos
+        self.pos.value_changed.connect(self.update_pos_label)
+        self.pos.editingFinished.connect(self.goto_page_num)
 
         # --- view
         self.view = self.centralWidget().view
@@ -290,20 +302,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
         self.history = History(self.qaction_back, self.qaction_forward)
-
-        # --- search
-        self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
-
-        self.reference = s.reference
-        self.reference.goto.connect(self.goto)
-
-        self.search = s.search
-        self.search.search.connect(self.find)
-        self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
-
-        self.pos = s.pos
-        self.pos.value_changed.connect(self.update_pos_label)
-        self.pos.editingFinished.connect(self.goto_page_num)
 
         # ---
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
@@ -352,7 +350,7 @@ class QmainwindowViewer(Qmainwindow):
         if listener is not None:
             self._listener = listener
 
-            self.msg_from_anotherinstance.connect(
+            self.msgFromAnotherInstance.connect(
                 self.another_instance_wants_to_talk, type=Qt.QueuedConnection)
 
             t = Thread(name='ConnListener', target=listen, args=(self,))
@@ -373,7 +371,7 @@ class QmainwindowViewer(Qmainwindow):
         if interval == self.interval_hide_cursor:
             self.qapplication.setOverrideCursor(Qt.BlankCursor)
         elif interval == self.interval_autosave:
-            print ("on_qapplication_inactivityTimeout autosave")
+            print("on_qapplication_inactivityTimeout autosave")
 
     def on_qwebviewPreview_positionChange(self, position):
         self.view.qwebpage.page_position.to_pos(position)
@@ -403,10 +401,15 @@ class QmainwindowViewer(Qmainwindow):
             self.load_ebook(self.file_events[-1])
 
     def toggle_paged_mode(self, checked, at_start=False):
-        in_paged_mode = not self.qaction_toggle_paged_mode.isChecked()
-        self.view.qwebpage.in_paged_mode = in_paged_mode
-        self.qaction_toggle_paged_mode.setToolTip(
-            self.FLOW_MODE_TT if self.qaction_toggle_paged_mode.isChecked() else self.PAGED_MODE_TT)
+        self.view.qwebpage.in_paged_mode = p = not self.qaction_toggle_paged_mode.isChecked()
+        texts = {
+            "flow": 'Switch to paged mode -'
+                    ' where the text is broken up into pages like a paper book',
+            "paged": 'Switch to flow mode -'
+                     ' where the text is not broken up into pages'
+        }
+
+        self.qaction_toggle_paged_mode.setToolTip(texts["paged"] if p else texts["flow"])
         if at_start:
             return
         self.reload()
