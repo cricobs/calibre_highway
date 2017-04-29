@@ -9,8 +9,8 @@ import traceback
 from functools import partial
 from threading import Thread
 
-from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QSize, QTime, QObject,
-                      QPropertyAnimation, QInputDialog, QModelIndex, pyqtSignal)
+from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QTime, QObject,
+                      QInputDialog, QModelIndex, pyqtSignal)
 from PyQt5.QtWidgets import QWidget
 
 from calibre import as_unicode, force_unicode, isbytestring, prints
@@ -22,7 +22,6 @@ from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
-from calibre.gui2.viewer.qlabel.qlabelFullscreen import QlabelFullscreen
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
 from calibre.gui2.viewer.qstandarditemmodel.qstandarditemmodelContent import \
@@ -262,7 +261,6 @@ class QmainwindowViewer(Qmainwindow):
         self.interval_hide_cursor = 3333
         self.interval_autosave = 10000
 
-        self.full_screen_label = QlabelFullscreen(self.centralWidget())
         self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
         self.pi = ProgressIndicator(self)
