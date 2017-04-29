@@ -12,14 +12,34 @@ from calibre.utils.localization import is_rtl
 class QwebviewMetadata(Qwebview):
     def __init__(self, *args, **kwargs):
         super(QwebviewMetadata, self).__init__(*args, **kwargs)
+
         s = self.settings()
         s.setAttribute(s.JavascriptEnabled, False)
-        self.page().setLinkDelegationPolicy(self.page().DelegateAllLinks)
-        self.setAttribute(Qt.WA_OpaquePaintEvent, False)
+
         palette = self.palette()
         palette.setBrush(QPalette.Base, Qt.transparent)
         self.page().setPalette(palette)
+        self.page().setLinkDelegationPolicy(self.page().DelegateAllLinks)
+
+        self.setAttribute(Qt.WA_OpaquePaintEvent, False)
         self.setVisible(False)
+
+        self.window().installEventFilter(self)
+        self.window().ebookLoaded.connect(self.on_window_ebookLoaded)
+
+    def on_window_ebookLoaded(self, iterator):
+        self.show_metadata(iterator.mi, iterator.book_format)
+
+    def eventFilter(self, qobject, qevent):
+        if qevent.type() == qevent.KeyPress:
+            if qevent.key() == Qt.Key_Escape:
+                if self.isVisible():
+                    self.setVisible(False)
+        elif qevent.type() == qevent.Resize:
+            if self.isVisible():
+                self.update_layout()
+
+        return super(QwebviewMetadata, self).eventFilter(qobject, qevent)
 
     def update_layout(self):
         self.setGeometry(0, 0, self.parent().width(), self.parent().height())
@@ -29,7 +49,8 @@ class QwebviewMetadata(Qwebview):
         from calibre.ebooks.metadata.book.render import mi_to_html
 
         def render_data(mi, use_roman_numbers=True, all_fields=False):
-            return mi_to_html(mi, use_roman_numbers=use_roman_numbers, rating_font=rating_font(), rtl=is_rtl())
+            return mi_to_html(mi, use_roman_numbers=use_roman_numbers, rating_font=rating_font(),
+                              rtl=is_rtl())
 
         html = render_html(mi, css(), True, self, render_data_func=render_data)
         self.setHtml(html)

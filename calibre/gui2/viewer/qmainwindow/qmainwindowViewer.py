@@ -5,7 +5,6 @@ from __future__ import unicode_literals, division, absolute_import, print_functi
 import functools
 import os
 import sys
-
 import traceback
 from functools import partial
 from threading import Thread
@@ -28,7 +27,6 @@ from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
 from calibre.gui2.viewer.qstandarditemmodel.qstandarditemmodelContent import \
     QstandarditemmodelContent
-from calibre.gui2.viewer.qwebview.qwebviewMetadata import QwebviewMetadata
 from calibre.gui2.widgets import ProgressIndicator
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
@@ -229,6 +227,7 @@ class QmainwindowViewer(Qmainwindow):
     PAGED_MODE_TT = _('Switch to flow mode - where the text is not broken up into pages')
 
     msg_from_anotherinstance = pyqtSignal(object)
+    ebookLoaded = pyqtSignal(EbookIterator)
 
     def __init__(
             self, pathtoebook=None, debug_javascript=False, open_at=None,
@@ -268,7 +267,6 @@ class QmainwindowViewer(Qmainwindow):
         self.pos_label = QlabelPos(self.centralWidget())
         self.full_screen_label_anim = QPropertyAnimation(self.full_screen_label, b'size')
         self.pi = ProgressIndicator(self)
-        self.metadata = QwebviewMetadata(self.centralWidget())
 
         self.reference = self.centralWidget().qwidgetSearch.reference
         self.qwidgetSearch = self.centralWidget().qwidgetSearch
@@ -321,11 +319,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.edited.connect(self.bookmarks_edited)
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
-
-        self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
-        self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
-        self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
-        self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
@@ -1085,7 +1078,8 @@ class QmainwindowViewer(Qmainwindow):
                              det_msg=tb, show=True)
             self.close_progress_indicator()
         else:
-            self.metadata.show_metadata(self.iterator.mi, self.iterator.book_format)
+            self.ebookLoaded.emit(self.iterator)
+
             self.view.current_language = self.iterator.language
             title = self.iterator.mi.title
             if not title:
@@ -1173,10 +1167,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Escape:
-            if self.metadata.isVisible():
-                self.metadata.setVisible(False)
-                event.accept()
-                return
             if self.isFullScreen():
                 self.qaction_full_screen.trigger()
                 event.accept()
@@ -1231,12 +1221,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def show_footnote_view(self):
         self.qdockwidgetFootnote.show()
-
-    def resizeEvent(self, ev):
-        if self.metadata.isVisible():
-            self.metadata.update_layout()
-
-        return super(QmainwindowViewer, self).resizeEvent(ev)
 
     def themes_menu_shown(self):
         if len(self.qmenu_themes.actions()) == 0:

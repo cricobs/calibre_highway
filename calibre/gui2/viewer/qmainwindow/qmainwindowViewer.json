@@ -165,21 +165,6 @@
       }
     },
     {
-      "text": "Show book metadata",
-      "name": "metadata",
-      "parents": [
-        "QtoolbarEdit"
-      ],
-      "checkable": true,
-      "icon": "metadata.png",
-      "slots": {
-        "triggered": [
-          "metadata",
-          "setVisible"
-        ]
-      }
-    },
-    {
       "checkable": true,
       "action": [
         "qdockwidgetContent",
