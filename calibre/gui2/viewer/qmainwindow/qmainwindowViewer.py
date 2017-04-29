@@ -265,7 +265,6 @@ class QmainwindowViewer(Qmainwindow):
         self.full_screen_label = QlabelFullscreen(self.centralWidget())
         self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
-        self.full_screen_label_anim = QPropertyAnimation(self.full_screen_label, b'size')
         self.pi = ProgressIndicator(self)
 
         self.reference = self.centralWidget().qwidgetSearch.reference
@@ -535,18 +534,6 @@ class QmainwindowViewer(Qmainwindow):
         super(QmainwindowViewer, self).showFullScreen()
 
     def show_full_screen_label(self):
-        f = self.full_screen_label
-        height = f.final_height
-        width = int(0.7 * self.view.width())
-        f.resize(width, height)
-        if self.view.qwebpage.show_fullscreen_help:
-            f.setVisible(True)
-            a = self.full_screen_label_anim
-            a.setDuration(500)
-            a.setStartValue(QSize(width, 0))
-            a.setEndValue(QSize(width, height))
-            a.start()
-            QTimer.singleShot(3500, self.full_screen_label.hide)
         if self.view.qwebpage.fullscreen_clock:
             self.show_clock()
         if self.view.qwebpage.fullscreen_pos:
@@ -574,8 +561,6 @@ class QmainwindowViewer(Qmainwindow):
         c = self.clock_label
         c.move(c.parent().width() - vswidth - 15 - c.width(),
                c.parent().height() - c.height() - 10)
-        f = self.full_screen_label
-        f.move((f.parent().width() - f.width()) // 2, (f.parent().height() - f.final_height) // 2)
 
     def update_clock(self):
         self.clock_label.setText(QTime.currentTime().toString(Qt.SystemLocaleShortDate))
@@ -603,7 +588,6 @@ class QmainwindowViewer(Qmainwindow):
         self.vertical_scrollbar.setVisible(True)
         self.window_mode_changed = 'normal'
         self.settings_changed()
-        self.full_screen_label.setVisible(False)
         if self.was_maximized:
             super(QmainwindowViewer, self).showMaximized()
         else:
