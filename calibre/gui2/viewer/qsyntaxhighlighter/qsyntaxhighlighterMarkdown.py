@@ -8,7 +8,7 @@ from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighter import Qsyntaxhig
 class QsyntaxhighlighterMarkdown(Qsyntaxhighlighter):
     formats = []
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, *args, **kwargs):
         super(QsyntaxhighlighterMarkdown, self).__init__(parent)
 
     def load_options(self, options):

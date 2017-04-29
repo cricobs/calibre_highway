@@ -5,5 +5,10 @@ from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterMarkdown import \
 
 
 class QsyntaxhighlighterSynopsis(QsyntaxhighlighterMarkdown, QsyntaxhighlighterSpellcheck):
-    def __init__(self, *args, **kwargs):
-        super(QsyntaxhighlighterSynopsis, self).__init__(*args, **kwargs)
+    def __init__(self, parent=None, checker=None):
+        super(QsyntaxhighlighterSynopsis, self).__init__(parent, checker=checker)
+
+    def highlightBlock(self, text):
+        QsyntaxhighlighterMarkdown.highlightBlock(self, text)
+        QsyntaxhighlighterSpellcheck.highlightBlock(self, text)
+

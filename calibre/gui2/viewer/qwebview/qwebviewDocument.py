@@ -58,7 +58,7 @@ class QwebviewDocument(Qwebview):
         self.table_popup = TablePopup(self)
 
         self.loadFinished.connect(self.load_finished)
-        self._page.settings_changed.connect(self.footnotes.clone_settings)
+        self.qwebpage.settings_changed.connect(self.footnotes.clone_settings)
         self.create_actions(self.options["actions"])
 
         self.qaction_synopsis.setMenu(self.qmenu_synopsis)
@@ -66,7 +66,7 @@ class QwebviewDocument(Qwebview):
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
     def create_page(self):
-        self._page = d = QwebpageDocument(self)
+        self.qwebpage = d = QwebpageDocument(self)
         d.nam.load_error.connect(self.on_unhandled_load_error)
         d.animated_scroll_done_signal.connect(self.animated_scroll_done, type=Qt.QueuedConnection)
         d.linkClicked.connect(self.link_clicked)
@@ -97,11 +97,11 @@ class QwebviewDocument(Qwebview):
     # ---- actions
     @property
     def pageAction_copy(self):
-        return self.pageAction(self._page.Copy)
+        return self.pageAction(self.qwebpage.Copy)
 
     @property
     def pageAction_inspect(self):
-        return self.pageAction(self._page.InspectElement)
+        return self.pageAction(self.qwebpage.InspectElement)
 
     def load_options(self, options):
         pass
@@ -122,7 +122,7 @@ class QwebviewDocument(Qwebview):
 
     def synopsis_append(self, *args, **kwargs):
         section = self.sender().data().get("section")
-        position = self._page.page_position.current_pos
+        position = self.qwebpage.page_position.current_pos
         if section == "body":
             text = self.selected_markdown_body(position)
         elif section == "header":
@@ -135,13 +135,13 @@ class QwebviewDocument(Qwebview):
 
     def selected_markdown_header(self, level, position=None):
         if self.selected_text:
-            position = position if position else self._page.page_position.current_pos
+            position = position if position else self.qwebpage.page_position.current_pos
             return "\n{0} <a class='header' position='{1}'>{2}</a>".format(
                 "#" * level, position, self.selected_text)
 
     def selected_markdown_body(self, position=None):
         if self.selected_text:
-            position = position if position else self._page.page_position.current_pos
+            position = position if position else self.qwebpage.page_position.current_pos
             return "\n{0}\n{{: position={1}}}".format(self.selected_text, position)
 
     # --- goto
@@ -168,46 +168,46 @@ class QwebviewDocument(Qwebview):
         self.scroll_to(1)
 
     def goto(self, ref):
-        self._page.goto(ref)
+        self.qwebpage.goto(ref)
 
     def goto_bookmark(self, bm):
-        self._page.goto_bookmark(bm)
+        self.qwebpage.goto_bookmark(bm)
 
     # ---
     def animated_scroll_done(self):
         if self.manager is not None:
-            self.manager.scrolled(self._page.scroll_fraction)
+            self.manager.scrolled(self.qwebpage.scroll_fraction)
 
     def reference_mode(self, enable):
         self._reference_mode = enable
-        self._page.reference_mode(enable)
+        self.qwebpage.reference_mode(enable)
 
     def config(self, parent=None):
-        self._page.do_config(parent)
-        if self._page.in_fullscreen_mode:
-            self._page.switch_to_fullscreen_mode()
+        self.qwebpage.do_config(parent)
+        if self.qwebpage.in_fullscreen_mode:
+            self.qwebpage.switch_to_fullscreen_mode()
         self.setFocus(Qt.OtherFocusReason)
 
     def load_theme(self, theme_id):
         themes = load_themes()
         theme = themes[theme_id]
         opts = config(theme).parse()
-        self._page.apply_settings(opts)
-        if self._page.in_fullscreen_mode:
-            self._page.switch_to_fullscreen_mode()
+        self.qwebpage.apply_settings(opts)
+        if self.qwebpage.in_fullscreen_mode:
+            self.qwebpage.switch_to_fullscreen_mode()
         self.setFocus(Qt.OtherFocusReason)
 
     def bookmark(self):
-        return self._page.bookmark()
+        return self.qwebpage.bookmark()
 
     def copy_position(self):
-        self.copy_text(self._page.page_position.current_pos)
+        self.copy_text(self.qwebpage.page_position.current_pos)
 
     def copy_text(self, text):
         QApplication.clipboard().setText(text)
 
     def copy(self):
-        self._page.triggerAction(self._page.Copy)
+        self.qwebpage.triggerAction(self.qwebpage.Copy)
         c = QApplication.clipboard()
         md = c.mimeData()
         if iswindows:
@@ -222,9 +222,9 @@ class QwebviewDocument(Qwebview):
             self.manager.selection_changed(self.selected_text)
 
     def popup_table(self):
-        html = self._page.extract_node()
+        html = self.qwebpage.extract_node()
         self.table_popup(html, self.as_url(self.last_loaded_path),
-                         self._page.font_magnification_step)
+                         self.qwebpage.font_magnification_step)
 
     def mark_table(self, r):
         table = None
@@ -236,12 +236,12 @@ class QwebviewDocument(Qwebview):
             parent = parent.parent()
 
         if table is not None:
-            self._page.mark_element.emit(table)
+            self.qwebpage.mark_element.emit(table)
 
         return table
 
     def contextMenuEvent(self, qevent):
-        r = self._page.mainFrame().hitTestContent(qevent.pos())
+        r = self.qwebpage.mainFrame().hitTestContent(qevent.pos())
 
         self.image_popup.current_img = img = r.pixmap()
         self.image_popup.current_url = r.imageUrl()
@@ -254,7 +254,7 @@ class QwebviewDocument(Qwebview):
         menu.addActions(self.context_blank_qactions)
         menu.addAction(self.qaction_inspect)
 
-        for plugin in self._page.all_viewer_plugins:
+        for plugin in self.qwebpage.all_viewer_plugins:
             plugin.customize_context_menu(menu, qevent, r)
 
         if not menu.exec_(qevent.globalPos()):
@@ -291,19 +291,19 @@ class QwebviewDocument(Qwebview):
         self.scrollbar.valueChanged[(int)].connect(self.scroll_horizontally)
 
     def scroll_horizontally(self, amount):
-        self._page.scroll_to(y=self._page.ypos, x=amount)
+        self.qwebpage.scroll_to(y=self.qwebpage.ypos, x=amount)
 
     @property
     def scroll_pos(self):
-        return (self._page.ypos, self._page.ypos +
-                self._page.window_height)
+        return (self.qwebpage.ypos, self.qwebpage.ypos +
+                self.qwebpage.window_height)
 
     @property
     def viewport_rect(self):
         # (left, top, right, bottom) of the viewport in document co-ordinates
         # When in paged mode, left and right are the numbers of the columns
         # at the left edge and *after* the right edge of the viewport
-        d = self._page
+        d = self.qwebpage
         if d.in_paged_mode:
             try:
                 l, r = d.column_boundaries
@@ -330,51 +330,51 @@ class QwebviewDocument(Qwebview):
     @dynamic_property
     def scroll_fraction(self):
         def fget(self):
-            return self._page.scroll_fraction
+            return self.qwebpage.scroll_fraction
 
         def fset(self, val):
-            self._page.scroll_fraction = float(val)
+            self.qwebpage.scroll_fraction = float(val)
 
         return property(fget=fget, fset=fset)
 
     @property
     def hscroll_fraction(self):
-        return self._page.hscroll_fraction
+        return self.qwebpage.hscroll_fraction
 
     @property
     def content_size(self):
-        return self._page.width, self._page.height
+        return self.qwebpage.width, self.qwebpage.height
 
     @dynamic_property
     def current_language(self):
         def fget(self):
-            return self._page.current_language
+            return self.qwebpage.current_language
 
         def fset(self, val):
-            self._page.current_language = val
+            self.qwebpage.current_language = val
 
         return property(fget=fget, fset=fset)
 
     def search(self, text, backwards=False):
-        flags = self._page.FindBackward if backwards else self._page.FindFlags(0)
-        found = self._page.findText(text, flags)
-        if found and self._page.in_paged_mode:
-            self._page.javascript('paged_display.snap_to_selection()')
+        flags = self.qwebpage.FindBackward if backwards else self.qwebpage.FindFlags(0)
+        found = self.qwebpage.findText(text, flags)
+        if found and self.qwebpage.in_paged_mode:
+            self.qwebpage.javascript('paged_display.snap_to_selection()')
         return found
 
     def path(self, url=None):
         url = url or self.url()
-        return self._page.nam.as_abspath(url)
+        return self.qwebpage.nam.as_abspath(url)
 
     def as_url(self, path):
-        return self._page.nam.as_url(path)
+        return self.qwebpage.nam.as_url(path)
 
     def load_path(self, path, pos=0.0):
         self.initial_pos = pos
         self.last_loaded_path = path
         # This is needed otherwise percentage margins on body are not correctly
         # evaluated in read_document_margins() in paged mode.
-        self._page.setPreferredContentsSize(QSize())
+        self.qwebpage.setPreferredContentsSize(QSize())
 
         url = self.as_url(path)
         entries = set()
@@ -383,7 +383,7 @@ class QwebviewDocument(Qwebview):
                 entries.add(ie.start_anchor)
             if ie.end_anchor:
                 entries.add(ie.end_anchor)
-        self._page.index_anchors = entries
+        self.qwebpage.index_anchors = entries
 
         def callback(lu):
             self.loading_url = lu
@@ -403,10 +403,10 @@ class QwebviewDocument(Qwebview):
 
     def initialize_scrollbar(self):
         if getattr(self, 'scrollbar', None) is not None:
-            if self._page.in_paged_mode:
+            if self.qwebpage.in_paged_mode:
                 self.scrollbar.setVisible(False)
                 return
-            delta = self._page.width - self.size().width()
+            delta = self.qwebpage.width - self.size().width()
             if delta > 0:
                 self._ignore_scrollbar_signals = True
                 self.scrollbar.blockSignals(True)
@@ -423,9 +423,9 @@ class QwebviewDocument(Qwebview):
             # An <iframe> finished loading
             return
         self.loading_url = None
-        self._page.load_javascript_libraries()
-        self._page.after_load(self.last_loaded_path)
-        self._size_hint = self._page.mainFrame().contentsSize()
+        self.qwebpage.load_javascript_libraries()
+        self.qwebpage.after_load(self.last_loaded_path)
+        self._size_hint = self.qwebpage.mainFrame().contentsSize()
         scrolled = False
         if self.to_bottom:
             self.to_bottom = False
@@ -436,13 +436,13 @@ class QwebviewDocument(Qwebview):
         self.initial_pos = 0.0
         self.update()
         self.initialize_scrollbar()
-        self._page.reference_mode(self._reference_mode)
+        self.qwebpage.reference_mode(self._reference_mode)
         if self.manager is not None:
             spine_index = self.manager.load_finished(bool(ok))
             if spine_index > -1:
-                self._page.set_reference_prefix('%d.' % (spine_index + 1))
+                self.qwebpage.set_reference_prefix('%d.' % (spine_index + 1))
             if scrolled:
-                self.manager.scrolled(self._page.scroll_fraction,
+                self.manager.scrolled(self.qwebpage.scroll_fraction,
                                       onload=True)
 
         if self.flipper.isVisible():
@@ -450,7 +450,7 @@ class QwebviewDocument(Qwebview):
                 self.flipper.setVisible(False)
             else:
                 self.flipper(self.current_page_image(),
-                             duration=self._page.page_flip_duration)
+                             duration=self.qwebpage.page_flip_duration)
 
     @classmethod
     def test_line(cls, img, y):
@@ -467,7 +467,7 @@ class QwebviewDocument(Qwebview):
         img = QImage(self.width(), overlap, QImage.Format_ARGB32_Premultiplied)
         painter = QPainter(img)
         painter.setRenderHints(self.renderHints())
-        self._page.mainFrame().render(painter, QRegion(0, 0, self.width(), overlap))
+        self.qwebpage.mainFrame().render(painter, QRegion(0, 0, self.width(), overlap))
         painter.end()
         return img
 
@@ -484,10 +484,10 @@ class QwebviewDocument(Qwebview):
             return
         if self.loading_url is not None:
             return
-        epf = self._page.enable_page_flip and not self.is_auto_repeat_event
+        epf = self.qwebpage.enable_page_flip and not self.is_auto_repeat_event
 
-        if self._page.in_paged_mode:
-            loc = self._page.javascript(
+        if self.qwebpage.in_paged_mode:
+            loc = self.qwebpage.javascript(
                 'paged_display.previous_screen_location()', typ='int')
             if loc < 0:
                 if self.manager is not None:
@@ -499,24 +499,24 @@ class QwebviewDocument(Qwebview):
                 if epf:
                     self.flipper.initialize(self.current_page_image(),
                                             forwards=False)
-                self._page.scroll_to(x=loc, y=0)
+                self.qwebpage.scroll_to(x=loc, y=0)
                 if epf:
                     self.flipper(self.current_page_image(),
-                                 duration=self._page.page_flip_duration)
+                                 duration=self.qwebpage.page_flip_duration)
                 if self.manager is not None:
                     self.manager.scrolled(self.scroll_fraction)
 
             return
 
-        delta_y = self._page.window_height - 25
-        if self._page.at_top:
+        delta_y = self.qwebpage.window_height - 25
+        if self.qwebpage.at_top:
             if self.manager is not None:
                 self.to_bottom = True
                 if epf:
                     self.flipper.initialize(self.current_page_image(), False)
                 self.manager.previous_document()
         else:
-            opos = self._page.ypos
+            opos = self.qwebpage.ypos
             upper_limit = opos - delta_y
             if upper_limit < 0:
                 upper_limit = 0
@@ -524,10 +524,10 @@ class QwebviewDocument(Qwebview):
                 if epf:
                     self.flipper.initialize(self.current_page_image(),
                                             forwards=False)
-                self._page.scroll_to(self._page.xpos, upper_limit)
+                self.qwebpage.scroll_to(self.qwebpage.xpos, upper_limit)
                 if epf:
                     self.flipper(self.current_page_image(),
-                                 duration=self._page.page_flip_duration)
+                                 duration=self.qwebpage.page_flip_duration)
                 if self.manager is not None:
                     self.manager.scrolled(self.scroll_fraction)
 
@@ -536,10 +536,10 @@ class QwebviewDocument(Qwebview):
             return
         if self.loading_url is not None:
             return
-        epf = self._page.enable_page_flip and not self.is_auto_repeat_event
+        epf = self.qwebpage.enable_page_flip and not self.is_auto_repeat_event
 
-        if self._page.in_paged_mode:
-            loc = self._page.javascript(
+        if self.qwebpage.in_paged_mode:
+            loc = self.qwebpage.javascript(
                 'paged_display.next_screen_location()', typ='int')
             if loc < 0:
                 if self.manager is not None:
@@ -549,21 +549,21 @@ class QwebviewDocument(Qwebview):
             else:
                 if epf:
                     self.flipper.initialize(self.current_page_image())
-                self._page.scroll_to(x=loc, y=0)
+                self.qwebpage.scroll_to(x=loc, y=0)
                 if epf:
                     self.flipper(self.current_page_image(),
-                                 duration=self._page.page_flip_duration)
+                                 duration=self.qwebpage.page_flip_duration)
                 if self.manager is not None:
                     self.manager.scrolled(self.scroll_fraction)
 
             return
 
-        window_height = self._page.window_height
-        document_height = self._page.height
+        window_height = self.qwebpage.window_height
+        document_height = self.qwebpage.height
         ddelta = document_height - window_height
 
         delta_y = window_height - 25
-        if self._page.at_bottom or ddelta <= 0:
+        if self.qwebpage.at_bottom or ddelta <= 0:
             if self.manager is not None:
                 if epf:
                     self.flipper.initialize(self.current_page_image())
@@ -572,9 +572,9 @@ class QwebviewDocument(Qwebview):
             self.scroll_by(y=ddelta)
             return
         else:
-            oopos = self._page.ypos
-            self._page.set_bottom_padding(0)
-            opos = self._page.ypos
+            oopos = self.qwebpage.ypos
+            self.qwebpage.set_bottom_padding(0)
+            opos = self.qwebpage.ypos
             if opos < oopos:
                 if self.manager is not None:
                     if epf:
@@ -582,7 +582,7 @@ class QwebviewDocument(Qwebview):
                     self.manager.next_document()
                 return
             lower_limit = opos + delta_y  # Max value of top y co-ord after scrolling
-            max_y = self._page.height - window_height  # The maximum possible top y co-ord
+            max_y = self.qwebpage.height - window_height  # The maximum possible top y co-ord
             if max_y < lower_limit:
                 padding = lower_limit - max_y
                 if padding == window_height:
@@ -591,18 +591,18 @@ class QwebviewDocument(Qwebview):
                             self.flipper.initialize(self.current_page_image())
                         self.manager.next_document()
                     return
-                self._page.set_bottom_padding(lower_limit - max_y)
+                self.qwebpage.set_bottom_padding(lower_limit - max_y)
             if epf:
                 self.flipper.initialize(self.current_page_image())
-            max_y = self._page.height - window_height
+            max_y = self.qwebpage.height - window_height
             lower_limit = min(max_y, lower_limit)
             if lower_limit > opos:
-                self._page.scroll_to(self._page.xpos, lower_limit)
-            actually_scrolled = self._page.ypos - opos
+                self.qwebpage.scroll_to(self.qwebpage.xpos, lower_limit)
+            actually_scrolled = self.qwebpage.ypos - opos
             self.find_next_blank_line(window_height - actually_scrolled)
             if epf:
                 self.flipper(self.current_page_image(),
-                             duration=self._page.page_flip_duration)
+                             duration=self.qwebpage.page_flip_duration)
             if self.manager is not None:
                 self.manager.scrolled(self.scroll_fraction)
 
@@ -613,37 +613,37 @@ class QwebviewDocument(Qwebview):
             self.next_page()
 
     def scroll_by(self, x=0, y=0, notify=True):
-        old_pos = (self._page.xpos if self._page.in_paged_mode else
-                   self._page.ypos)
-        self._page.scroll_by(x, y)
-        new_pos = (self._page.xpos if self._page.in_paged_mode else
-                   self._page.ypos)
+        old_pos = (self.qwebpage.xpos if self.qwebpage.in_paged_mode else
+                   self.qwebpage.ypos)
+        self.qwebpage.scroll_by(x, y)
+        new_pos = (self.qwebpage.xpos if self.qwebpage.in_paged_mode else
+                   self.qwebpage.ypos)
         if notify and self.manager is not None and new_pos != old_pos:
             self.manager.scrolled(self.scroll_fraction)
 
     def scroll_to(self, pos, notify=True):
         if self._ignore_scrollbar_signals:
             return
-        old_pos = (self._page.xpos if self._page.in_paged_mode else
-                   self._page.ypos)
-        if self._page.in_paged_mode:
+        old_pos = (self.qwebpage.xpos if self.qwebpage.in_paged_mode else
+                   self.qwebpage.ypos)
+        if self.qwebpage.in_paged_mode:
             if isinstance(pos, basestring):
-                self._page.jump_to_anchor(pos)
+                self.qwebpage.jump_to_anchor(pos)
             else:
-                self._page.scroll_fraction = pos
+                self.qwebpage.scroll_fraction = pos
         else:
             if isinstance(pos, basestring):
-                self._page.jump_to_anchor(pos)
+                self.qwebpage.jump_to_anchor(pos)
             else:
                 if pos >= 1:
-                    self._page.scroll_to(0, self._page.height)
+                    self.qwebpage.scroll_to(0, self.qwebpage.height)
                 else:
                     y = int(math.ceil(
-                        pos * (self._page.height - self._page.window_height)))
-                    self._page.scroll_to(0, y)
+                        pos * (self.qwebpage.height - self.qwebpage.window_height)))
+                    self.qwebpage.scroll_to(0, y)
 
-        new_pos = (self._page.xpos if self._page.in_paged_mode else
-                   self._page.ypos)
+        new_pos = (self.qwebpage.xpos if self.qwebpage.in_paged_mode else
+                   self.qwebpage.ypos)
         if notify and self.manager is not None and new_pos != old_pos:
             self.manager.scrolled(self.scroll_fraction)
 
@@ -656,31 +656,31 @@ class QwebviewDocument(Qwebview):
             oval = self.zoomFactor()
             self.setZoomFactor(val)
             if val != oval:
-                if self._page.in_paged_mode:
-                    self._page.update_contents_size_for_paged_mode()
+                if self.qwebpage.in_paged_mode:
+                    self.qwebpage.update_contents_size_for_paged_mode()
                 self.magnification_changed.emit(val)
 
         return property(fget=fget, fset=fset)
 
     def magnify_fonts(self, amount=None):
         if amount is None:
-            amount = self._page.font_magnification_step
-        with self._page.page_position:
+            amount = self.qwebpage.font_magnification_step
+        with self.qwebpage.page_position:
             self.multiplier += amount
-        return self._page.scroll_fraction
+        return self.qwebpage.scroll_fraction
 
     def shrink_fonts(self, amount=None):
         if amount is None:
-            amount = self._page.font_magnification_step
+            amount = self.qwebpage.font_magnification_step
         if self.multiplier >= amount:
-            with self._page.page_position:
+            with self.qwebpage.page_position:
                 self.multiplier -= amount
-        return self._page.scroll_fraction
+        return self.qwebpage.scroll_fraction
 
     def restore_font_size(self):
-        with self._page.page_position:
+        with self.qwebpage.page_position:
             self.multiplier = 1
-        return self._page.scroll_fraction
+        return self.qwebpage.scroll_fraction
 
     def changeEvent(self, event):
         if event.type() == event.EnabledChange:
@@ -690,7 +690,7 @@ class QwebviewDocument(Qwebview):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHints(self.renderHints())
-        self._page.mainFrame().render(painter, event.region())
+        self.qwebpage.mainFrame().render(painter, event.region())
         if not self.isEnabled():
             painter.fillRect(event.region().boundingRect(), self.DISABLED_BRUSH)
         painter.end()
@@ -707,15 +707,15 @@ class QwebviewDocument(Qwebview):
                  self.manager.font_size_smaller)()
                 return
 
-        if self._page.in_paged_mode:
+        if self.qwebpage.in_paged_mode:
             if abs(num_degrees) < 15:
                 return
-            typ = 'screen' if self._page.wheel_flips_pages else 'col'
+            typ = 'screen' if self.qwebpage.wheel_flips_pages else 'col'
             direction = 'next' if num_degrees < 0 else 'previous'
-            loc = self._page.javascript('paged_display.%s_%s_location()' % (
+            loc = self.qwebpage.javascript('paged_display.%s_%s_location()' % (
                 direction, typ), typ='int')
             if loc > -1:
-                self._page.scroll_to(x=loc, y=0)
+                self.qwebpage.scroll_to(x=loc, y=0)
                 if self.manager is not None:
                     self.manager.scrolled(self.scroll_fraction)
                 event.accept()
@@ -728,23 +728,23 @@ class QwebviewDocument(Qwebview):
             return
 
         if num_degrees < -14:
-            if self._page.wheel_flips_pages:
+            if self.qwebpage.wheel_flips_pages:
                 self.next_page()
                 event.accept()
                 return
-            if self._page.at_bottom:
+            if self.qwebpage.at_bottom:
                 self.scroll_by(y=15)  # at_bottom can lie on windows
                 if self.manager is not None:
                     self.manager.next_document()
                     event.accept()
                     return
         elif num_degrees > 14:
-            if self._page.wheel_flips_pages:
+            if self.qwebpage.wheel_flips_pages:
                 self.previous_page()
                 event.accept()
                 return
 
-            if self._page.at_top:
+            if self.qwebpage.at_top:
                 if self.manager is not None:
                     self.manager.previous_document()
                     event.accept()
@@ -755,11 +755,11 @@ class QwebviewDocument(Qwebview):
         num_degrees_h = event.angleDelta().x() // 8
         vertical = abs(num_degrees) > abs(num_degrees_h)
         scroll_amount = ((num_degrees if vertical else num_degrees_h) / 120.0) * .2 * -1 * 8
-        dim = self._page.viewportSize().height() if vertical else self._page.viewportSize().width()
+        dim = self.qwebpage.viewportSize().height() if vertical else self.qwebpage.viewportSize().width()
         amt = dim * scroll_amount
         mult = -1 if amt < 0 else 1
-        if self._page.wheel_scroll_fraction != 100:
-            amt = mult * max(1, abs(int(amt * self._page.wheel_scroll_fraction / 100.)))
+        if self.qwebpage.wheel_scroll_fraction != 100:
+            amt = mult * max(1, abs(int(amt * self.qwebpage.wheel_scroll_fraction / 100.)))
         self.scroll_by(0, amt) if vertical else self.scroll_by(amt, 0)
 
         if self.manager is not None:
@@ -772,11 +772,11 @@ class QwebviewDocument(Qwebview):
 
     def paged_col_scroll(self, forward=True, scroll_past_end=True):
         dir = 'next' if forward else 'previous'
-        loc = self._page.javascript(
+        loc = self.qwebpage.javascript(
             'paged_display.%s_col_location()' % dir, typ='int')
         if loc > -1:
-            self._page.scroll_to(x=loc, y=0)
-            self.manager.scrolled(self._page.scroll_fraction)
+            self.qwebpage.scroll_to(x=loc, y=0)
+            self.manager.scrolled(self.qwebpage.scroll_fraction)
         elif scroll_past_end:
             (self.manager.next_document() if forward else
              self.manager.previous_document())
@@ -792,38 +792,38 @@ class QwebviewDocument(Qwebview):
             finally:
                 self.is_auto_repeat_event = False
         elif key == 'Down':
-            if self._page.in_paged_mode:
+            if self.qwebpage.in_paged_mode:
                 self.paged_col_scroll(scroll_past_end=not
-                self._page.line_scrolling_stops_on_pagebreaks)
+                self.qwebpage.line_scrolling_stops_on_pagebreaks)
             else:
-                if (not self._page.line_scrolling_stops_on_pagebreaks and
-                        self._page.at_bottom):
+                if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
+                        self.qwebpage.at_bottom):
                     self.manager.next_document()
                 else:
-                    amt = int((self._page.line_scroll_fraction / 100.) * 15)
+                    amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
                     self.scroll_by(y=amt)
         elif key == 'Up':
-            if self._page.in_paged_mode:
+            if self.qwebpage.in_paged_mode:
                 self.paged_col_scroll(forward=False, scroll_past_end=not
-                self._page.line_scrolling_stops_on_pagebreaks)
+                self.qwebpage.line_scrolling_stops_on_pagebreaks)
             else:
-                if (not self._page.line_scrolling_stops_on_pagebreaks and
-                        self._page.at_top):
+                if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
+                        self.qwebpage.at_top):
                     self.manager.previous_document()
                 else:
-                    amt = int((self._page.line_scroll_fraction / 100.) * 15)
+                    amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
                     self.scroll_by(y=-amt)
         elif key == 'Left':
-            if self._page.in_paged_mode:
+            if self.qwebpage.in_paged_mode:
                 self.paged_col_scroll(forward=False)
             else:
-                amt = int((self._page.line_scroll_fraction / 100.) * 15)
+                amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
                 self.scroll_by(x=-amt)
         elif key == 'Right':
-            if self._page.in_paged_mode:
+            if self.qwebpage.in_paged_mode:
                 self.paged_col_scroll()
             else:
-                amt = int((self._page.line_scroll_fraction / 100.) * 15)
+                amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
                 self.scroll_by(x=amt)
         elif key == 'Back':
             if self.manager is not None:
@@ -848,7 +848,7 @@ class QwebviewDocument(Qwebview):
         return QWebView.event(self, ev)
 
     def mouseMoveEvent(self, ev):
-        if self._page.in_paged_mode and ev.buttons() & Qt.LeftButton and not self.rect().contains(
+        if self.qwebpage.in_paged_mode and ev.buttons() & Qt.LeftButton and not self.rect().contains(
                 ev.pos(), True):
             # Prevent this event from causing WebKit to scroll the viewport
             # See https://bugs.launchpad.net/bugs/1464862
@@ -856,7 +856,7 @@ class QwebviewDocument(Qwebview):
         return QWebView.mouseMoveEvent(self, ev)
 
     def mouseReleaseEvent(self, ev):
-        r = self._page.mainFrame().hitTestContent(ev.pos())
+        r = self.qwebpage.mainFrame().hitTestContent(ev.pos())
         a, url = r.linkElement(), r.linkUrl()
         if url.isValid() and not a.isNull() and self.manager is not None:
             fd = self.footnotes.get_footnote_data(a, url)
@@ -865,11 +865,11 @@ class QwebviewDocument(Qwebview):
                 self.manager.show_footnote_view()
                 ev.accept()
                 return
-        opos = self._page.ypos
+        opos = self.qwebpage.ypos
         if self.manager is not None:
             prev_pos = self.manager.update_page_number()
         ret = QWebView.mouseReleaseEvent(self, ev)
-        if self.manager is not None and opos != self._page.ypos:
+        if self.manager is not None and opos != self.qwebpage.ypos:
             self.manager.scrolled(self.scroll_fraction)
             self.manager.internal_link_clicked(prev_pos)
         return ret
@@ -880,4 +880,4 @@ class QwebviewDocument(Qwebview):
             self.link_clicked(qurl)
 
     def set_book_data(self, iterator):
-        self._page.nam.set_book_data(iterator.base, iterator.spine)
+        self.qwebpage.nam.set_book_data(iterator.base, iterator.spine)

@@ -22,11 +22,7 @@ class QplaintexteditEdit(Qplaintextedit):
 
         QobjectScrollPosition(self)
 
-        # self.dict = enchant.Dict()
-
         self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
-        # self.qsyntaxhiglighter.setDict(self.dict)
-        self.installEventFilter(self)
 
     @property
     def selected_text(self):

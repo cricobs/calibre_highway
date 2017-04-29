@@ -279,8 +279,8 @@ class QmainwindowViewer(Qmainwindow):
         self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
         self.view.set_manager(self)
         self.view.magnification_changed.connect(self.magnification_changed)
-        self.view._page.debug_javascript = debug_javascript
-        self.view._page.settings_changed.connect(self.settings_changed)
+        self.view.qwebpage.debug_javascript = debug_javascript
+        self.view.qwebpage.settings_changed.connect(self.settings_changed)
 
         self.create_actions(self.options["actions"])
 
@@ -336,7 +336,7 @@ class QmainwindowViewer(Qmainwindow):
         self.set_bookmarks([])
         self.load_theme_menu()
 
-        if start_in_fullscreen or self.view._page.start_in_fullscreen:
+        if start_in_fullscreen or self.view.qwebpage.start_in_fullscreen:
             self.qaction_full_screen.trigger()
         if listener is not None:
             t = Thread(name='ConnListener', target=listen, args=(self,))
@@ -355,7 +355,7 @@ class QmainwindowViewer(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        for plugin in self.view._page.all_viewer_plugins:
+        for plugin in self.view.qwebpage.all_viewer_plugins:
             plugin.customize_ui(self)
 
         file_events.got_file.connect(self.load_ebook)
@@ -377,7 +377,7 @@ class QmainwindowViewer(Qmainwindow):
             self.qapplication.setOverrideCursor(Qt.BlankCursor)
 
     def on_qwebviewPreview_positionChange(self, position):
-        self.view._page.page_position.to_pos(position)
+        self.view.qwebpage.page_position.to_pos(position)
         self.view.setFocus(Qt.OtherFocusReason)
 
     def on_action_search_triggered(self, checked):
@@ -405,7 +405,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def toggle_paged_mode(self, checked, at_start=False):
         in_paged_mode = not self.qaction_toggle_paged_mode.isChecked()
-        self.view._page.in_paged_mode = in_paged_mode
+        self.view.qwebpage.in_paged_mode = in_paged_mode
         self.qaction_toggle_paged_mode.setToolTip(
             self.FLOW_MODE_TT if self.qaction_toggle_paged_mode.isChecked() else self.PAGED_MODE_TT)
         if at_start:
@@ -417,7 +417,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def reload(self):
         if hasattr(self, 'current_index') and self.current_index > -1:
-            self.view._page.page_position.save(overwrite=False)
+            self.view.qwebpage.page_position.save(overwrite=False)
             self.pending_restore = True
             self.load_path(self.view.last_loaded_path)
 
@@ -452,7 +452,7 @@ class QmainwindowViewer(Qmainwindow):
             actions[0].trigger()
 
     def shutdown(self):
-        if self.isFullScreen() and not self.view._page.start_in_fullscreen:
+        if self.isFullScreen() and not self.view.qwebpage.start_in_fullscreen:
             self.qaction_full_screen.trigger()
             return False
         if self.listener is not None:
@@ -533,10 +533,10 @@ class QmainwindowViewer(Qmainwindow):
             self.showFullScreen()
 
     def showFullScreen(self):
-        self.view._page.page_position.save()
+        self.view.qwebpage.page_position.save()
         self.window_mode_changed = 'fullscreen'
         self.was_maximized = self.isMaximized()
-        if not self.view._page.fullscreen_scrollbar:
+        if not self.view.qwebpage.fullscreen_scrollbar:
             self.vertical_scrollbar.setVisible(False)
 
         super(QmainwindowViewer, self).showFullScreen()
@@ -546,7 +546,7 @@ class QmainwindowViewer(Qmainwindow):
         height = f.final_height
         width = int(0.7 * self.view.width())
         f.resize(width, height)
-        if self.view._page.show_fullscreen_help:
+        if self.view.qwebpage.show_fullscreen_help:
             f.setVisible(True)
             a = self.full_screen_label_anim
             a.setDuration(500)
@@ -554,23 +554,23 @@ class QmainwindowViewer(Qmainwindow):
             a.setEndValue(QSize(width, height))
             a.start()
             QTimer.singleShot(3500, self.full_screen_label.hide)
-        if self.view._page.fullscreen_clock:
+        if self.view.qwebpage.fullscreen_clock:
             self.show_clock()
-        if self.view._page.fullscreen_pos:
+        if self.view.qwebpage.fullscreen_pos:
             self.show_pos_label()
         self.relayout_fullscreen_labels()
 
     def show_clock(self):
         self.clock_label.setVisible(True)
         self.clock_label.setText(QTime(22, 33, 33).toString(Qt.SystemLocaleShortDate))
-        self.clock_label.set_style_options('rgba(0, 0, 0, 0)', self.view._page.colors()[1])
+        self.clock_label.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
         self.clock_label.resize(self.clock_label.sizeHint())
         self.clock_timer.start(1000)
         self.update_clock()
 
     def show_pos_label(self):
         self.pos_label.setVisible(True)
-        self.pos_label.set_style_options('rgba(0, 0, 0, 0)', self.view._page.colors()[1])
+        self.pos_label.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
         self.update_pos_label()
 
     def relayout_fullscreen_labels(self):
@@ -604,7 +604,7 @@ class QmainwindowViewer(Qmainwindow):
             self.pos_label.resize(self.pos_label.sizeHint())
 
     def showNormal(self):
-        self.view._page.page_position.save()
+        self.view.qwebpage.page_position.save()
         self.clock_label.setVisible(False)
         self.clock_timer.stop()
         self.vertical_scrollbar.setVisible(True)
@@ -631,7 +631,7 @@ class QmainwindowViewer(Qmainwindow):
         spine_index = bm['spine']
         if spine_index > -1 and self.current_index == spine_index:
             if self.resize_in_progress:
-                self.view._page.page_position.set_pos(bm['pos'])
+                self.view.qwebpage.page_position.set_pos(bm['pos'])
             else:
                 self.view.goto_bookmark(bm)
                 # Going to a bookmark does not call scrolled() so we update the
@@ -781,13 +781,13 @@ class QmainwindowViewer(Qmainwindow):
                 self.pending_anchor = frag
                 self.load_path(path)
             else:
-                oldpos = self.view._page.ypos
+                oldpos = self.view.qwebpage.ypos
                 if frag:
                     self.view.scroll_to(frag)
                 else:
                     # Scroll to top
                     self.view.scroll_to(0)
-                if self.view._page.ypos == oldpos:
+                if self.view.qwebpage.ypos == oldpos:
                     # If we are coming from goto_next_section() call this will
                     # cause another goto next section call with the next toc
                     # entry, since this one did not cause any scrolling at all.
@@ -826,15 +826,15 @@ class QmainwindowViewer(Qmainwindow):
             self.goto_bookmark(self.pending_bookmark)
             self.pending_bookmark = None
         if self.pending_restore:
-            self.view._page.page_position.restore()
+            self.view.qwebpage.page_position.restore()
         return self.current_index
 
     def goto_next_section(self):
         if hasattr(self, 'current_index'):
             entry = self.toc_model.next_entry(self.current_index,
-                                              self.view._page.read_anchor_positions(),
+                                              self.view.qwebpage.read_anchor_positions(),
                                               self.view.viewport_rect,
-                                              self.view._page.in_paged_mode)
+                                              self.view.qwebpage.in_paged_mode)
             if entry is not None:
                 self.pending_goto_next_section = (
                     self.toc_model.currently_viewed_entry, entry, False)
@@ -843,9 +843,9 @@ class QmainwindowViewer(Qmainwindow):
     def goto_previous_section(self):
         if hasattr(self, 'current_index'):
             entry = self.toc_model.next_entry(self.current_index,
-                                              self.view._page.read_anchor_positions(),
+                                              self.view.qwebpage.read_anchor_positions(),
                                               self.view.viewport_rect,
-                                              self.view._page.in_paged_mode,
+                                              self.view.qwebpage.in_paged_mode,
                                               backwards=True)
             if entry is not None:
                 self.pending_goto_next_section = (
@@ -856,10 +856,10 @@ class QmainwindowViewer(Qmainwindow):
         pgns = getattr(self, 'pending_goto_next_section', None)
         if hasattr(self, 'current_index'):
             if anchor_positions is None:
-                anchor_positions = self.view._page.read_anchor_positions()
+                anchor_positions = self.view.qwebpage.read_anchor_positions()
             items = self.toc_model.update_indexing_state(
                 self.current_index, self.view.viewport_rect, anchor_positions,
-                self.view._page.in_paged_mode)
+                self.view.qwebpage.in_paged_mode)
             if items:
                 self.toc.scrollTo(items[-1].index())
             if pgns is not None:
@@ -867,8 +867,8 @@ class QmainwindowViewer(Qmainwindow):
                 # Check that we actually progressed
                 if pgns[0] is self.toc_model.currently_viewed_entry:
                     entry = self.toc_model.next_entry(
-                        self.current_index, self.view._page.read_anchor_positions(),
-                        self.view.viewport_rect, self.view._page.in_paged_mode,
+                        self.current_index, self.view.qwebpage.read_anchor_positions(),
+                        self.view.viewport_rect, self.view.qwebpage.in_paged_mode,
                         backwards=pgns[2], current_entry=pgns[1])
                     if entry is not None:
                         self.pending_goto_next_section = (
@@ -886,13 +886,13 @@ class QmainwindowViewer(Qmainwindow):
             self.resize_in_progress = True
             re = ResizeEvent(
                 event.oldSize(), self.view.multiplier, self.view.last_loaded_path,
-                self.view._page.page_number)
+                self.view.qwebpage.page_number)
             self.resize_events_stack.append(re)
             if not self.window_mode_changed:
                 # The special handling for window mode changed will already
                 # have saved page position, so only save it if this is not a
                 # mode change
-                self.view._page.page_position.save()
+                self.view.qwebpage.page_position.save()
 
         if self.resize_in_progress:
             self.view_resized_timer.start(75)
@@ -906,20 +906,20 @@ class QmainwindowViewer(Qmainwindow):
         if wmc:
             # Sets up body text margins, which can be limited in fs mode by a
             # separate config option, so must be done before relayout of text
-            (self.view._page.switch_to_fullscreen_mode
-             if fs else self.view._page.switch_to_window_mode)()
+            (self.view.qwebpage.switch_to_fullscreen_mode
+             if fs else self.view.qwebpage.switch_to_window_mode)()
         # Re-layout text, must be done before restoring page position
-        self.view._page.after_resize()
+        self.view.qwebpage.after_resize()
         if wmc:
             # This resize is part of a window mode change, special case it
             if fs:
                 self.show_full_screen_label()
-            self.view._page.page_position.restore()
+            self.view.qwebpage.page_position.restore()
             self.scrolled(self.view.scroll_fraction)
         else:
             if self.isFullScreen():
                 self.relayout_fullscreen_labels()
-            self.view._page.page_position.restore()
+            self.view.qwebpage.page_position.restore()
             self.update_page_number()
 
         if self.pending_goto_page is not None:
@@ -929,21 +929,21 @@ class QmainwindowViewer(Qmainwindow):
             if self.resize_events_stack:
                 self.resize_events_stack[-1].finished(
                     self.view.size(), self.view.multiplier, self.view.last_loaded_path,
-                    self.view._page.page_number)
+                    self.view.qwebpage.page_number)
                 if len(self.resize_events_stack) > 1:
                     previous, current = self.resize_events_stack[-2:]
                     if (current.is_a_toggle(previous)
                         and previous.page_number is not None
-                        and self.view._page.in_paged_mode):
+                        and self.view.qwebpage.in_paged_mode):
                         if DEBUG:
                             print('Detected a toggle resize, restoring previous page')
-                        self.view._page.page_number = previous.page_number
+                        self.view.qwebpage.page_number = previous.page_number
                         del self.resize_events_stack[-2:]
                     else:
                         del self.resize_events_stack[-2]
 
     def update_page_number(self):
-        self.set_page_number(self.view._page.scroll_fraction)
+        self.set_page_number(self.view.qwebpage.scroll_fraction)
         return self.pos.value()
 
     def close_progress_indicator(self):
@@ -977,7 +977,7 @@ class QmainwindowViewer(Qmainwindow):
         self.view.config(self)
         self.load_theme_menu()
         if self.iterator is not None:
-            self.iterator.copy_bookmarks_to_file = self.view._page.copy_bookmarks_to_file
+            self.iterator.copy_bookmarks_to_file = self.view.qwebpage.copy_bookmarks_to_file
         from calibre.gui2 import config
         if not config['viewer_search_history']:
             self.search.clear_history()
@@ -1019,7 +1019,7 @@ class QmainwindowViewer(Qmainwindow):
         self.existing_bookmarks = []
         for bm in bookmarks:
             if bm['title'] == 'calibre_current_page_bookmark':
-                if self.view._page.remember_current_page:
+                if self.view.qwebpage.remember_current_page:
                     current_page = bm
             else:
                 self.existing_bookmarks.append(bm['title'])
@@ -1040,7 +1040,7 @@ class QmainwindowViewer(Qmainwindow):
         return bm
 
     def save_current_position(self, no_copy_to_file=False):
-        if not self.view._page.remember_current_page:
+        if not self.view.qwebpage.remember_current_page:
             return
         if hasattr(self, 'current_index'):
             try:
@@ -1063,7 +1063,7 @@ class QmainwindowViewer(Qmainwindow):
             self.save_current_position()
             self.iterator.__exit__()
         self.iterator = EbookIterator(
-            pathtoebook, copy_bookmarks_to_file=self.view._page.copy_bookmarks_to_file)
+            pathtoebook, copy_bookmarks_to_file=self.view.qwebpage.copy_bookmarks_to_file)
         self.history.clear()
         self.open_progress_indicator(_('Loading ebook...'))
         worker = Worker(target=partial(self.iterator.__enter__, view_kepub=True))
@@ -1159,7 +1159,7 @@ class QmainwindowViewer(Qmainwindow):
     def scrolled(self, frac, onload=False):
         self.set_page_number(frac)
         if not onload:
-            ap = self.view._page.read_anchor_positions()
+            ap = self.view.qwebpage.read_anchor_positions()
             self.update_indexing_state(ap)
 
     def next_document(self):
