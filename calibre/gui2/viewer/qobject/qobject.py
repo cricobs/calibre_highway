@@ -16,7 +16,11 @@ class Qobject(QObject, object):
         super(Qobject, self).__init__(*args, **kwargs)
 
         self._options = None
+
         self.qapplication = QApplication.instance()
+        if self.mode_qapplication_qaction:
+            self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
+            self.add_qapplication_actions(self.qapplication_qactions)
 
         ui_path = filepath_relative(self, "ui")
         try:
@@ -34,10 +38,6 @@ class Qobject(QObject, object):
         else:
             with iput:
                 self.options = json.load(iput)
-
-        if self.mode_qapplication_qaction:
-            self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
-            self.add_qapplication_actions(self.qapplication_qactions)
 
     @property
     def qapplication_qactions(self):
@@ -74,7 +74,8 @@ class Qobject(QObject, object):
         if self._options:
             self.load_options(self._options)
 
-    def load_options(self, options):
+    def load_options(self, options=None):
+        options = options or self.options
         actions = options.get("actions", None)
         if actions:
             self.create_actions(actions)

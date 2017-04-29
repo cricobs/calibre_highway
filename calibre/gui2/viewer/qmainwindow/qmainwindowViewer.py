@@ -231,9 +231,6 @@ class QmainwindowViewer(Qmainwindow):
             self, pathtoebook=None, debug_javascript=False, open_at=None,
             start_in_fullscreen=False, continue_reading=False, listener=None, file_events=(),
             parent=None):
-
-        QapplicationViewer.instance().qactionAdded.connect(self.on_qapplication_qactionAdded)
-
         super(QmainwindowViewer, self).__init__(parent)
 
         self.closed = False
@@ -258,7 +255,6 @@ class QmainwindowViewer(Qmainwindow):
         self.was_maximized = False
         self.window_mode_changed = None
         self.interval_hide_cursor = 3333
-        self.interval_autosave = 10000
 
         # --- info
         self.clock_label = QlabelClock(self.centralWidget())
@@ -272,11 +268,6 @@ class QmainwindowViewer(Qmainwindow):
 
         self.clock_timer = QTimer(self)
         self.clock_timer.timeout.connect(self.update_clock)
-
-        self.autosave_timer = QTimer(self)
-        self.autosave_timer.setInterval(self.interval_autosave)
-        self.autosave_timer.setSingleShot(True)
-        self.autosave_timer.timeout.connect(self.autosave)
 
         # --- scroll
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
@@ -293,7 +284,7 @@ class QmainwindowViewer(Qmainwindow):
         self.view.qwebpage.settings_changed.connect(self.settings_changed)
 
         # --- action
-        self.create_actions(self.options["actions"])
+        super(QmainwindowViewer, self).load_options()
 
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
@@ -311,7 +302,6 @@ class QmainwindowViewer(Qmainwindow):
 
         self.pos = s.pos
         self.pos.value_changed.connect(self.update_pos_label)
-        self.pos.value_changed.connect(self.autosave_timer.start)
         self.pos.editingFinished.connect(self.goto_page_num)
 
         # ---
@@ -339,6 +329,8 @@ class QmainwindowViewer(Qmainwindow):
         self.restore_state()  # fixme use qsettings
         self.settings_changed()
 
+        file_events.got_file.connect(self.load_ebook)
+
         if start_in_fullscreen or self.view.qwebpage.start_in_fullscreen:
             self.qaction_full_screen.trigger()
         if listener is not None:
@@ -359,10 +351,7 @@ class QmainwindowViewer(Qmainwindow):
         else:
             QTimer.singleShot(50, file_events.flush)
 
-        for plugin in self.view.qwebpage.all_viewer_plugins:
-            plugin.customize_ui(self)
-
-        file_events.got_file.connect(self.load_ebook)
+        map(lambda p: p.customize_ui(self), self.view.qwebpage.all_viewer_plugins)
 
     @property
     def mode_qapplication_qaction(self):
@@ -372,8 +361,13 @@ class QmainwindowViewer(Qmainwindow):
         self.qapplication.restoreOverrideCursor()
 
     def on_qapplication_inactivityTimeout(self, target, interval):
-        if target == self and interval == self.interval_hide_cursor:
+        if target != self:
+            return
+
+        if interval == self.interval_hide_cursor:
             self.qapplication.setOverrideCursor(Qt.BlankCursor)
+        elif interval == self.interval_autosave:
+            print ("on_qapplication_inactivityTimeout autosave")
 
     def on_qwebviewPreview_positionChange(self, position):
         self.view.qwebpage.page_position.to_pos(position)
