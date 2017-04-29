@@ -254,25 +254,19 @@ class QmainwindowViewer(Qmainwindow):
         self.window_mode_changed = None
         self.interval_hide_cursor = 3333
 
-        # --- timer
-        self.view_resized_timer = QTimer(self)
-        self.view_resized_timer.setSingleShot(True)
-        self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
-
-        self.clock_timer = QTimer(self)
-        self.clock_timer.timeout.connect(self.update_clock)
-
-        self.pi = ProgressIndicator(self.centralWidget())
-
-        # --- label
-        self.clock_label = QlabelClock(self.centralWidget())
-        self.pos_label = QlabelPos(self.centralWidget())
-
         # --- scroll
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
 
         self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
+
+        # --- view
+        self.view = self.centralWidget().view
+        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
+        self.view.set_manager(self)
+        self.view.magnification_changed.connect(self.magnification_changed)
+        self.view.qwebpage.debug_javascript = debug_javascript
+        self.view.qwebpage.settings_changed.connect(self.settings_changed)
 
         # --- search
         self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
@@ -288,20 +282,12 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.value_changed.connect(self.update_pos_label)
         self.pos.editingFinished.connect(self.goto_page_num)
 
-        # --- view
-        self.view = self.centralWidget().view
-        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
-        self.view.set_manager(self)
-        self.view.magnification_changed.connect(self.magnification_changed)
-        self.view.qwebpage.debug_javascript = debug_javascript
-        self.view.qwebpage.settings_changed.connect(self.settings_changed)
+        # ---
+        self.pi = ProgressIndicator(self.centralWidget())
 
-        # --- action
-        super(QmainwindowViewer, self).load_options()
-
-        self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
-
-        self.history = History(self.qaction_back, self.qaction_forward)
+        # --- label
+        self.clock_label = QlabelClock(self.centralWidget())
+        self.pos_label = QlabelPos(self.centralWidget())
 
         # ---
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
@@ -314,10 +300,23 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
+        self.history = History(self.qaction_back, self.qaction_forward)
+
+        # --- timer
+        self.view_resized_timer = QTimer(self)
+        self.view_resized_timer.setSingleShot(True)
+        self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
+
+        self.clock_timer = QTimer(self)
+        self.clock_timer.timeout.connect(self.update_clock)
+
+        # ---
         self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
+
+        self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.resize(653, 746)
@@ -370,8 +369,6 @@ class QmainwindowViewer(Qmainwindow):
 
         if interval == self.interval_hide_cursor:
             self.qapplication.setOverrideCursor(Qt.BlankCursor)
-        elif interval == self.interval_autosave:
-            print("on_qapplication_inactivityTimeout autosave")
 
     def on_qwebviewPreview_positionChange(self, position):
         self.view.qwebpage.page_position.to_pos(position)
@@ -1225,9 +1222,6 @@ class QmainwindowViewer(Qmainwindow):
             error_dialog(self, _('No themes'),
                          _('You must first create some themes in the viewer preferences'),
                          show=True)
-
-    def load_options(self, options):
-        pass
 
     def addAction(self, qaction):
         super(QmainwindowViewer, self).addAction(qaction)

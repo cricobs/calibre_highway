@@ -37,35 +37,6 @@
       }
     },
     {
-      "text": "Previous page",
-      "name": "previous_page",
-      "parents": [
-        "QtoolbarEdit"
-      ],
-      "icon": "previous.png",
-      "slots": {
-        "triggered": [
-          "view",
-          "previous_page"
-        ]
-      }
-    },
-    {
-      "text": "Next page",
-      "separator": true,
-      "name": "next_page",
-      "icon": "next.png",
-      "parents": [
-        "QtoolbarEdit"
-      ],
-      "slots": {
-        "triggered": [
-          "view",
-          "next_page"
-        ]
-      }
-    },
-    {
       "dropdown": "open_history",
       "text": "Open ebook",
       "name": "open_ebook",
@@ -299,21 +270,6 @@
       "slots": {
         "triggered": [
           "toggle_fullscreen"
-        ]
-      }
-    },
-    {
-      "text": "Reference mode",
-      "name": "reference_mode",
-      "parents": [
-        "QtoolbarEdit"
-      ],
-      "checkable": true,
-      "icon": "lookfeel.png",
-      "slots": {
-        "triggered": [
-          "view",
-          "reference_mode"
         ]
       }
     },
