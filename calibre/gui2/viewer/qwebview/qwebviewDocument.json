@@ -61,7 +61,10 @@
         "name": "Inspect",
         "action": [
           "pageAction_inspect"
-        ]
+        ],
+        "data": {
+          "position": 99
+        }
       },
       {
         "name": "Copy",
@@ -147,7 +150,8 @@
             "Next occurrence"
           ],
           "position": 3
-        }
+        },
+        "icon": "forward.png"
       }
     ],
     "goto_location": [
