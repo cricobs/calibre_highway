@@ -409,6 +409,7 @@ class QmainwindowViewer(Qmainwindow):
         self.qaction_toggle_paged_mode.setToolTip(texts["paged"] if p else texts["flow"])
         if at_start:
             return
+
         self.reload()
 
     def settings_changed(self):

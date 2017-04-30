@@ -12,6 +12,9 @@
         "triggered": [
           "setVisible"
         ]
+      },
+      "data" : {
+        "position" : -0.1
       }
     }
   ]

@@ -11,7 +11,7 @@ class Qaction(QAction):
         self.qmenu = None
 
     def setData(self, data):
-        return super(Qaction, self).setData(data or {})
+        return super(Qaction, self).setData(data if data is not None else {})
 
     def set_data(self, name, value):
         data = self.data()

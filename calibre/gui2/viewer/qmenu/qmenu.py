@@ -28,28 +28,18 @@ class Qmenu(QMenu, Qwidget):
         pass
 
     def exec_(self, *args):
-        actions = self.actions()  # fixme too slow
         if self.selected_text:  # note get selected_text via __getattribute__
-            actions += filter(
+            actions = filter(
                 lambda q: q.data().get("context", None) == "text", self.qapplication_qactions)
 
-        for action in sorted(actions, key=actions_sorter):
-            self._addAction(action)
-            if getattr(action, "separator", None):
-                self.addSeparator()
+            map(self._addAction, actions)
 
-        if actions:
-            return super(Qmenu, self).exec_(*args)
+        return super(Qmenu, self).exec_(*args)
 
     def addActions(self, qactions):
         map(self._addAction, qactions)
 
     def _addAction(self, action):
-        """
-        reimplementation of addAction(action)
-        :param action:
-        :return:
-        """
         if not action.isEnabled():
             return
         try:
@@ -57,7 +47,7 @@ class Qmenu(QMenu, Qwidget):
         except AttributeError:
             pass
 
-        super(Qmenu, self).addAction(action)
+        super(Qmenu, self)._addAction(action)
 
     def addAction(self, *args, **kwargs):
         try:

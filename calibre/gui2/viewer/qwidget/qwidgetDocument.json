@@ -12,6 +12,9 @@
           "view",
           "previous_page"
         ]
+      },
+      "data": {
+        "position" : -1.09
       }
     },
     {
@@ -27,6 +30,9 @@
           "view",
           "next_page"
         ]
+      },
+      "data": {
+        "position" : -1.08
       }
     },
     {
@@ -42,6 +48,9 @@
           "view",
           "reference_mode"
         ]
+      },
+      "data" : {
+        "position" : 12
       }
     }
   ]

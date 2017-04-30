@@ -213,6 +213,9 @@
         "triggered": [
           "copy"
         ]
+      },
+      "data": {
+        "position" : 7.9
       }
     },
     {
@@ -311,6 +314,9 @@
         "toggled": [
           "toggle_paged_mode"
         ]
+      },
+      "data" : {
+        "position": 13
       }
     },
     {
@@ -323,7 +329,8 @@
       "icon": "wizard.png",
       "separator": true,
       "data": {
-        "popup": "InstantPopup"
+        "popup": "InstantPopup",
+        "position": 14
       }
     },
     {
@@ -337,6 +344,9 @@
         "triggered": [
           "print_book"
         ]
+      },
+      "data" : {
+        "position": 15
       }
     },
     {
@@ -350,6 +360,9 @@
         "triggered": [
           "do_config"
         ]
+      },
+      "data" : {
+        "position": 16
       }
     },
     {
@@ -358,7 +371,6 @@
       "data": {
         "context": "blank"
       },
-      "separator": true,
       "parents": [
         "QwebviewDocument"
       ],

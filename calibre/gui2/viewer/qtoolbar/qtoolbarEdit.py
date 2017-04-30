@@ -5,6 +5,9 @@ class QtoolbarEdit(Qtoolbar):
     def __init__(self, parent=None):
         super(QtoolbarEdit, self).__init__(parent)
 
+    def addAction(self, *__args):
+        self._addAction(*__args)
+
     @property
     def mode_qapplication_qaction(self):
         return True
@@ -18,13 +21,6 @@ class QtoolbarEdit(Qtoolbar):
                 if popup:
                     qwidget = self.widgetForAction(qaction)
                     qwidget.setPopupMode(getattr(qwidget, popup))
-
-    def addAction(self, qaction):
-        r = super(QtoolbarEdit, self).addAction(qaction)
-        if getattr(qaction, "separator", None):
-            self.addSeparator()
-
-        return r
 
     def contextMenuEvent(self, ev):
         ac = self.actionAt(ev.pos())

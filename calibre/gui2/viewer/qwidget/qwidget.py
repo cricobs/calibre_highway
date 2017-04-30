@@ -28,6 +28,31 @@ class Qwidget(QWidget, Qobject):
             if q:
                 self.qaction_toggle.setText(q().text())
 
+    def _addAction(self, action):
+        """
+        reimplementation of overload addAction(action)
+        :param action:
+        :return:
+        """
+        separator = getattr(action, "separator", None)
+        data = action.data() or {}
+        position = data.get("position", None)
+        if position is not None:
+            actions = self.actions()
+            for i, a in enumerate(actions):
+                d = a.data() or {}
+                p = d.get("position", None)
+                if p > position:
+                    self.insertAction(a, action)
+                    if separator:
+                        self.insertSeparator(a)
+
+                    return
+
+        super(Qwidget, self).addAction(action)
+        if separator:
+            self.addSeparator()
+
     def setWindowTitle(self, p_str):
         super(Qwidget, self).setWindowTitle(p_str)
 
@@ -43,7 +68,7 @@ class Qwidget(QWidget, Qobject):
 
     def on_qaction_toggle_triggered(self, checked):
         """
-        calle if getattr(self, "toggleViewAction")
+        called if getattr(self, "toggleViewAction")
         :param checked:
         :return:
         """

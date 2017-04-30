@@ -231,32 +231,6 @@
             "Section Bottom"
           ]
         }
-      },
-      {
-        "slots": {
-          "triggered": [
-            "next_page"
-          ]
-        },
-        "name": "Next Page",
-        "data": {
-          "shortcuts": [
-            "Next Page"
-          ]
-        }
-      },
-      {
-        "slots": {
-          "triggered": [
-            "previous_page"
-          ]
-        },
-        "name": "Previous Page",
-        "data": {
-          "shortcuts": [
-            "Previous Page"
-          ]
-        }
       }
     ],
     "synopsis": [

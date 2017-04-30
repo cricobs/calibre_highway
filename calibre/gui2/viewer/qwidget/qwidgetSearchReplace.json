@@ -8,7 +8,8 @@
       "data": {
         "shortcuts": [
           "Ctrl+Alt+F"
-        ]
+        ],
+        "position": -99
       },
       "parents": [
         "QtoolbarEdit"
