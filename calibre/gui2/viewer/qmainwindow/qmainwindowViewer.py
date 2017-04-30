@@ -248,7 +248,6 @@ class QmainwindowViewer(Qmainwindow):
         self.pending_search_dir = None
         self.resize_events_stack = []
         self.resize_in_progress = False
-        self.selected_text = None
         self.show_toc_on_open = False
         self.was_maximized = False
         self.window_mode_changed = None
@@ -646,10 +645,6 @@ class QmainwindowViewer(Qmainwindow):
                     url.setFragment(item.fragment)
                 self.link_clicked(url)
         self.view.setFocus(Qt.OtherFocusReason)
-
-    def copy(self, x):
-        if self.selected_text:
-            QApplication.clipboard().setText(self.selected_text)
 
     def back(self, x):
         pos = self.history.back(self.pos.value())
