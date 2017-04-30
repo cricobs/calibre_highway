@@ -2,6 +2,62 @@
   "actions": {
     "": [
       {
+        "text": "Previous page",
+        "name": "previous_page",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "icon": "previous.png",
+        "slots": {
+          "triggered": [
+            "previous_page"
+          ]
+        },
+        "data": {
+          "position": -1.09,
+          "shortcuts": [
+            "Previous Page"
+          ]
+        }
+      },
+      {
+        "text": "Next page",
+        "separator": true,
+        "name": "next_page",
+        "icon": "next.png",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "slots": {
+          "triggered": [
+            "next_page"
+          ]
+        },
+        "data": {
+          "position": -1.08,
+          "shortcuts": [
+            "Next Page"
+          ]
+        }
+      },
+      {
+        "text": "Reference mode",
+        "name": "reference_mode",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "checkable": true,
+        "icon": "lookfeel.png",
+        "slots": {
+          "triggered": [
+            "reference_mode"
+          ]
+        },
+        "data": {
+          "position": 12
+        }
+      },
+      {
         "slots": {
           "triggered": [
             "copy_position"
