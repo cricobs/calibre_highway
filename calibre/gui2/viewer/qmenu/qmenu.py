@@ -30,7 +30,7 @@ class Qmenu(QMenu, Qwidget):
     def exec_(self, *args):
         if self.selected_text:  # note get selected_text via __getattribute__
             actions = filter(
-                lambda q: q.data().get("context", None) == "text", self.qapplication_qactions)
+                lambda q: "text" in q.data().get("context", []), self.qapplication_qactions)
 
             map(self._addAction, actions)
 

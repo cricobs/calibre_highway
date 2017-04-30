@@ -76,7 +76,9 @@
         "text": "View &image...",
         "name": "view_image",
         "data": {
-          "context": "blank"
+          "context": [
+            "blank"
+          ]
         },
         "icon": "view-image.png"
       },
@@ -100,7 +102,9 @@
         "name": "restore_fonts",
         "text": "Default font size",
         "data": {
-          "context": "blank",
+          "context": [
+            "blank"
+          ],
           "position": 9
         }
       },
@@ -109,7 +113,9 @@
         "text": "Go to...",
         "name": "goto_location",
         "data": {
-          "context": "blank",
+          "context": [
+            "blank"
+          ],
           "position": -1.1
         }
       },
@@ -123,6 +129,7 @@
         }
       },
       {
+        "enabled": false,
         "name": "Copy",
         "icon": "edit-copy.png",
         "action": [
@@ -133,8 +140,16 @@
             "copy"
           ]
         },
+        "parents": [
+          "Qmenu",
+          "QtoolbarEdit"
+        ],
         "data": {
-          "context": "blank"
+          "context": [
+            "blank",
+            "text"
+          ],
+          "position": 7.9
         }
       }
     ],
@@ -147,7 +162,9 @@
         "text": "S&ynopsis",
         "icon": "modified.png",
         "data": {
-          "context": "text",
+          "context": [
+            "text"
+          ],
           "position": 0
         }
       },
@@ -163,7 +180,9 @@
         "name": "search_online",
         "icon": "search.png",
         "data": {
-          "context": "text",
+          "context": [
+            "text"
+          ],
           "text_format": "Search online '{0}'",
           "position": 1
         }
@@ -180,7 +199,9 @@
         "name": "dictionary",
         "text": "&Lookup in dictionary",
         "data": {
-          "context": "text",
+          "context": [
+            "text"
+          ],
           "shortcuts": [
             "Lookup word"
           ],
@@ -201,7 +222,9 @@
         "text": "&Search for next occurrence",
         "separator": true,
         "data": {
-          "context": "text",
+          "context": [
+            "text"
+          ],
           "shortcuts": [
             "Next occurrence"
           ],

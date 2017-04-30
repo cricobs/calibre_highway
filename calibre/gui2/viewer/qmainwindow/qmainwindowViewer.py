@@ -647,10 +647,6 @@ class QmainwindowViewer(Qmainwindow):
                 self.link_clicked(url)
         self.view.setFocus(Qt.OtherFocusReason)
 
-    def selection_changed(self, selected_text):
-        self.selected_text = selected_text.strip()
-        self.qaction_copy.setEnabled(bool(self.selected_text))
-
     def copy(self, x):
         if self.selected_text:
             QApplication.clipboard().setText(self.selected_text)

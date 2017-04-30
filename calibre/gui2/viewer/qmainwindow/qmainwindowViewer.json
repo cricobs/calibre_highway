@@ -14,7 +14,9 @@
         ]
       },
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": -1.3
       }
     },
@@ -32,7 +34,9 @@
         ]
       },
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": -1.2
       }
     },
@@ -52,7 +56,9 @@
       },
       "data": {
         "popup": "InstantPopup",
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 0
       }
     },
@@ -80,7 +86,9 @@
       },
       "data": {
         "position": 1,
-        "context": "blank"
+        "context": [
+          "blank"
+        ]
       }
     },
     {
@@ -95,7 +103,9 @@
       "separator": true,
       "data": {
         "popup": "InstantPopup",
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 2
       }
     },
@@ -113,7 +123,9 @@
       ],
       "icon": "column.png",
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 3
       }
     },
@@ -131,7 +143,9 @@
       ],
       "icon": "modified.png",
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 4
       }
     },
@@ -142,7 +156,9 @@
         "qaction_toggle"
       ],
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 5,
         "shortcuts": [
           "Table of Contents"
@@ -169,7 +185,9 @@
       ],
       "text": "Edit",
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "shortcuts": [
           "Edit"
         ],
@@ -196,27 +214,12 @@
         ]
       },
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 7
       },
       "separator": true
-    },
-    {
-      "enabled": false,
-      "text": "Copy to clipboard",
-      "name": "copy",
-      "icon": "edit-copy.png",
-      "parents": [
-        "QtoolbarEdit"
-      ],
-      "slots": {
-        "triggered": [
-          "copy"
-        ]
-      },
-      "data": {
-        "position" : 7.9
-      }
     },
     {
       "text": "Increase font size",
@@ -227,7 +230,9 @@
         "QwebviewDocument"
       ],
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 8
       },
       "slots": {
@@ -245,7 +250,9 @@
         "QwebviewDocument"
       ],
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "position": 10
       },
       "separator": true,
@@ -258,7 +265,9 @@
     {
       "text": "Toggle full screen",
       "data": {
-        "context": "blank",
+        "context": [
+          "blank"
+        ],
         "shortcuts": [
           "Fullscreen"
         ],
@@ -315,7 +324,7 @@
           "toggle_paged_mode"
         ]
       },
-      "data" : {
+      "data": {
         "position": 13
       }
     },
@@ -345,7 +354,7 @@
           "print_book"
         ]
       },
-      "data" : {
+      "data": {
         "position": 15
       }
     },
@@ -361,7 +370,7 @@
           "do_config"
         ]
       },
-      "data" : {
+      "data": {
         "position": 16
       }
     },
@@ -369,7 +378,9 @@
       "text": "&Quit",
       "name": "quit",
       "data": {
-        "context": "blank"
+        "context": [
+          "blank"
+        ]
       },
       "parents": [
         "QwebviewDocument"

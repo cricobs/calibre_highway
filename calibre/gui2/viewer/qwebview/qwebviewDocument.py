@@ -113,7 +113,7 @@ class QwebviewDocument(Qwebview):
             setattr(self, name, qaction)
 
         data = qaction.data()
-        if data and data.get("context", None) == "blank":
+        if data and "blank" in data.get("context", []):
             self.context_blank_qactions.add(qaction)
 
     # --- synopsis
@@ -208,18 +208,9 @@ class QwebviewDocument(Qwebview):
 
     def copy(self):
         self.qwebpage.triggerAction(self.qwebpage.Copy)
-        c = QApplication.clipboard()
-        md = c.mimeData()
-        if iswindows:
-            nmd = QMimeData()
-            nmd.setHtml(md.html().replace(u'\u00ad', ''))
-            md = nmd
-        md.setText(self.selected_text)
-        QApplication.clipboard().setMimeData(md)
 
     def selection_changed(self):
-        if self.manager is not None:
-            self.manager.selection_changed(self.selected_text)
+        self.qaction_copy.setEnabled(bool(self.selected_text))
 
     def popup_table(self):
         html = self.qwebpage.extract_node()
