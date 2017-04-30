@@ -12,15 +12,14 @@ class QtoolbarEdit(Qtoolbar):
     def mode_qapplication_qaction(self):
         return True
 
-    def add_qapplication_action(self, qaction):
-        super(QtoolbarEdit, self).add_qapplication_action(qaction)
-        if qaction.menu():
-            data = qaction.data()
-            if data:
-                popup = data.get("popup", None)
-                if popup:
-                    qwidget = self.widgetForAction(qaction)
-                    qwidget.setPopupMode(getattr(qwidget, popup))
+    def _addAction(self, action):
+        super(QtoolbarEdit, self)._addAction(action)
+        if action.menu():
+            data = action.data() or {}
+            popup = data.get("popup", None)
+            if popup is not None:
+                qwidget = self.widgetForAction(action)
+                qwidget.setPopupMode(getattr(qwidget, popup))
 
     def contextMenuEvent(self, ev):
         ac = self.actionAt(ev.pos())

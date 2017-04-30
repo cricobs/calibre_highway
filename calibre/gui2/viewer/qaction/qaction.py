@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QMenu
 
 
 class Qaction(QAction):
@@ -20,9 +21,7 @@ class Qaction(QAction):
         self.setData(data)
 
     def create_qmenu(self):
-        from calibre.gui2.viewer.qmenu.qmenu import Qmenu
-
-        qmenu = Qmenu()
+        qmenu = QMenu(self.parent())
         self.setMenu(qmenu)
 
         return qmenu
