@@ -307,9 +307,9 @@ class QmainwindowViewer(Qmainwindow):
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.read_settings()
-        self.build_recent_menu()
-        self.load_theme_menu()
-        self.set_bookmarks([])
+        self.create_recent_menu()
+        self.create_theme_menu()
+        self.create_bookmarks_menu([])
         self.restore_state()  # fixme use qsettings
 
         file_events.got_file.connect(self.load_ebook)
@@ -397,9 +397,9 @@ class QmainwindowViewer(Qmainwindow):
 
     def clear_recent_history(self, *args):
         vprefs.set('viewer_open_history', [])
-        self.build_recent_menu()
+        self.create_recent_menu()
 
-    def build_recent_menu(self):
+    def create_recent_menu(self):
         recent = vprefs.get('viewer_open_history', [])
         actions = self.open_qactions[:]
         for path in recent:
@@ -884,7 +884,7 @@ class QmainwindowViewer(Qmainwindow):
 
         self.setCursor(Qt.BusyCursor)
 
-    def load_theme_menu(self):
+    def create_theme_menu(self):
         from calibre.gui2.viewer.qdialog.qdialogConfig import load_themes
         self.qmenu_themes.clear()
         for key in load_themes():
@@ -896,7 +896,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def do_config(self):
         self.view.config(self)
-        self.load_theme_menu()
+        self.create_theme_menu()
         if self.iterator is not None:
             self.iterator.copy_bookmarks_to_file = self.view.qwebpage.copy_bookmarks_to_file
         from calibre.gui2 import config
@@ -919,18 +919,20 @@ class QmainwindowViewer(Qmainwindow):
             bm['spine'] = self.current_index
             bm['title'] = title
             self.iterator.add_bookmark(bm)
-            self.set_bookmarks(self.iterator.bookmarks)
+            self.create_bookmarks_menu(self.iterator.bookmarks)
             self.qwidgetBookmark.set_current_bookmark(bm)
 
     def autosave(self):
         self.save_current_position(no_copy_to_file=True)
 
     def bookmarks_edited(self, bookmarks):
-        self.build_bookmarks_menu(bookmarks)
+        self.create_bookmarks_menu(bookmarks)
         self.iterator.set_bookmarks(bookmarks)
         self.iterator.save_bookmarks()
 
-    def build_bookmarks_menu(self, bookmarks):
+    def create_bookmarks_menu(self, bookmarks):
+        self.qwidgetBookmark.set_bookmarks(bookmarks)
+
         self.qmenu_bookmarks.clear()
         self.qmenu_bookmarks.addActions(self.bookmark_qactions)
 
@@ -945,11 +947,6 @@ class QmainwindowViewer(Qmainwindow):
                 self.qmenu_bookmarks.addAction(bm['title'], partial(self.goto_bookmark, bm))
 
         return current_page
-
-    def set_bookmarks(self, bookmarks):
-        self.qwidgetBookmark.set_bookmarks(bookmarks)
-
-        return self.build_bookmarks_menu(bookmarks)
 
     @property
     def current_page_bookmark(self):
@@ -1028,7 +1025,7 @@ class QmainwindowViewer(Qmainwindow):
                 pass
             vh.insert(0, pathtoebook)
             vprefs.set('viewer_open_history', vh[:50])
-            self.build_recent_menu()
+            self.create_recent_menu()
             self.view.set_book_data(self.iterator)
 
             self.qaction_table_of_contents.setDisabled(not self.iterator.toc)
@@ -1045,7 +1042,7 @@ class QmainwindowViewer(Qmainwindow):
             self.set_vscrollbar_value(1)
             self.current_index = -1
             QApplication.instance().alert(self, 5000)
-            previous = self.set_bookmarks(self.iterator.bookmarks)
+            previous = self.create_bookmarks_menu(self.iterator.bookmarks)
             if reopen_at is not None:
                 previous = reopen_at
             if open_at is None and previous is not None:

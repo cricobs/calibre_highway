@@ -5,6 +5,7 @@ import math
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, pyqtSignal, QApplication,
                       QKeySequence)
 from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QMainWindow
 
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog

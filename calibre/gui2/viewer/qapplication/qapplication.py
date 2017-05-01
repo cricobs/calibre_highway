@@ -27,6 +27,20 @@ class Qapplication(Application):
 
         self.installEventFilter(self)
 
+    def topLevelWidgets(self, type=None):
+        topLevelWidgets = super(Qapplication, self).topLevelWidgets()
+        if type:
+            return list(filter(lambda t: isinstance(t, type), topLevelWidgets))
+        return topLevelWidgets
+
+    def topLevelWidget(self, type=None):
+        topLevelWidgets = self.topLevelWidgets(type)
+
+        try:
+            return topLevelWidgets[0]
+        except IndexError:
+            return None
+
     def eventFilter(self, qobject, qevent):
         if qevent.type() == qevent.ActionAdded:
             qaction = qevent.action()
