@@ -1,14 +1,12 @@
 from __future__ import (unicode_literals, division, absolute_import, print_function)
 
-from functools import partial
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QStyledItemDelegate
 from PyQt5.QtWidgets import QToolTip
 
+from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qtreeview.qtreeview import Qtreeview
 
 _ = _
@@ -34,21 +32,19 @@ class QtreeviewContent(Qtreeview):
 
     def __init__(self, *args, **kwargs):
         super(QtreeviewContent, self).__init__(*args, **kwargs)
+        self.selected_text = None
+        self.selected_index = None
+
         self.delegate = Delegate(self)
         self.setItemDelegate(self.delegate)
 
     def contextMenuEvent(self, qevent):
         pos = qevent.pos()
-        index = self.indexAt(pos)
-        m = QMenu(self)
-        if index.isValid():
-            m.addAction(_('Expand all items under %s') % index.data(),
-                        partial(self.expand_tree, index))
-        m.addSeparator()
-        m.addAction(_('Expand all items'), self.expandAll)
-        m.addAction(_('Collapse all items'), self.collapseAll)
-        m.addSeparator()
-        m.addAction(_('Copy table of contents to clipboard'), self.copy_to_clipboard)
+        self.selected_index = self.indexAt(pos)
+        self.selected_text = self.selected_index.data()
+
+        m = Qmenu(self)
+        m.addActions(self.actions())
         m.exec_(self.mapToGlobal(pos))
 
     def mouseMoveEvent(self, ev):
@@ -59,7 +55,8 @@ class QtreeviewContent(Qtreeview):
 
         return super(QtreeviewContent, self).mouseMoveEvent(ev)
 
-    def expand_tree(self, index):
+    def expand_tree(self, index=None):
+        index = index if index else self.selected_index
         self.expand(index)
         i = -1
         while True:
@@ -68,15 +65,6 @@ class QtreeviewContent(Qtreeview):
             if not child.isValid():
                 break
             self.expand_tree(child)
-
-    def keyPressEvent(self, event):
-        try:
-            if self.handle_shortcuts(event):
-                return
-        except AttributeError:
-            pass
-
-        super(QtreeviewContent, self).keyPressEvent(event)
 
     def copy_to_clipboard(self):
         m = self.model()

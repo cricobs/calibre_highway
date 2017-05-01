@@ -1,0 +1,54 @@
+{
+  "actions": [
+    {
+      "name": "expand_current",
+      "data": {
+        "text_format": "Expand all items under '{0}'",
+        "position": -0.4
+      },
+      "slots": {
+        "triggered": [
+          "expand_tree"
+        ]
+      }
+    },
+    {
+      "name": "expand_all",
+      "text": "Expand all items",
+      "data": {
+        "position": -0.3
+      },
+      "slots": {
+        "triggered": [
+          "expandAll"
+        ]
+      }
+    },
+    {
+      "name": "collapse_all",
+      "text": "Collapse all items",
+      "data": {
+        "position": -0.2
+      },
+      "separator": true,
+      "slots": {
+        "triggered": [
+          "collapseAll"
+        ]
+      }
+    },
+    {
+      "name": "copy",
+      "text": "Copy table to clipboard",
+      "data": {
+        "position": -0.5
+      },
+      "separator": true,
+      "slots": {
+        "triggered": [
+          "copy_to_clipboard"
+        ]
+      }
+    }
+  ]
+}

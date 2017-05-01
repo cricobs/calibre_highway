@@ -280,7 +280,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
         self.qtreeviewContent.pressed[QModelIndex].connect(self.toc_clicked)
         self.qtreeviewContent.searched.connect(partial(self.toc_clicked, force=True))
-        self.qtreeviewContent.handle_shortcuts = self.toggle_toc
 
         self.qwidgetBookmark = self.qdockwidgetBookmark.qwidgetBookmark
         self.qwidgetBookmark.edited.connect(self.bookmarks_edited)
@@ -364,19 +363,6 @@ class QmainwindowViewer(Qmainwindow):
         if self.qwidgetSearch.isVisible():
             self.search.setFocus(Qt.OtherFocusReason)
             self.search.set_text(self.view.selected_text)
-
-    def toggle_toc(self, ev):
-        try:
-            key = self.qapplication.qabstractlistmodelShortcut.get_match(ev)
-        except AttributeError:
-            pass
-        else:
-            if key == 'Table of Contents':
-                ev.accept()
-                self.qaction_table_of_contents.trigger()
-                return True
-
-        return False
 
     def process_file_events(self):
         if self.file_events:

@@ -19,14 +19,22 @@ class Qmenu(QMenu, Qwidget):
         pass
 
     def exec_(self, *args):
-        if self.selected_text:  # note get selected_text via __getattribute__
-            actions = filter(
-                lambda q: "text" in q.data().get("context", []), self.qapplication_qactions)
-
-            map(self._addAction, actions)
+        self.add_text_qactions()
 
         if self.actions():
             return super(Qmenu, self).exec_(*args)
+
+    def add_text_qactions(self):
+        try:
+            text = self.selected_text  # note get selected_text via __getattribute__
+        except AttributeError:
+            pass
+        else:
+            if text:
+                actions = filter(
+                    lambda q: "text" in q.data().get("context", []), self.qapplication_qactions)
+
+                map(self._addAction, actions)
 
     def addActions(self, qactions):
         map(self._addAction, qactions)
