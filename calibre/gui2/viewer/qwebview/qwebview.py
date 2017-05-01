@@ -23,6 +23,11 @@ class Qwebview(QWebView, Qwidget):
         super(Qwebview, self).setPage(qwebpage)
         self.pageChange.emit(qwebpage)
 
+    def contextMenuEvent(self, qevent):
+        menu = self.page().createStandardContextMenu()
+        if not menu.exec_(qevent.globalPos()):
+            super(Qwebview, self).contextMenuEvent(qevent)
+
     @property
     def selected_text(self):
         return self.selectedText().replace(u'\u00ad', u'').strip()

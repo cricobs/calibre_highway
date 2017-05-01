@@ -25,7 +25,8 @@ class Qmenu(QMenu, Qwidget):
 
             map(self._addAction, actions)
 
-        return super(Qmenu, self).exec_(*args)
+        if self.actions():
+            return super(Qmenu, self).exec_(*args)
 
     def addActions(self, qactions):
         map(self._addAction, qactions)
