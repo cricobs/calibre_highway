@@ -1,3 +1,6 @@
+from PyQt5.QtCore import QTime
+from PyQt5.QtCore import Qt
+
 from calibre.gui2.viewer.qlabel.qlabel import Qlabel
 
 
@@ -23,3 +26,6 @@ class QlabelClock(Qlabel):
 
     def set_style_options(self, background_color, color):
         self.setStyleSheet(self.style % (background_color, color))
+
+    def update_time(self):
+        self.setText(QTime.currentTime().toString(Qt.SystemLocaleShortDate))

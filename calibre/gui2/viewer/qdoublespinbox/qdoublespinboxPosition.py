@@ -16,9 +16,12 @@ class QdoublespinboxPosition(Qdoublespinbox):
         self.blockSignals(True)
         self.setValue(val)
         try:
-            self.setToolTip(self.tt +
-                            ' [{0:.0%}]'.format(float(val) / self.maximum()))
+            self.setToolTip(self.tt + ' [{0:.0%}]'.format(float(val) / self.maximum()))
         except ZeroDivisionError:
             self.setToolTip(self.tt)
+
         self.blockSignals(False)
+        self.update_value()
+
+    def update_value(self):
         self.value_changed.emit(self.value(), self.maximum())

@@ -244,6 +244,7 @@ class QmainwindowViewer(Qmainwindow):
         self.resize_events_stack = []
         self.resize_in_progress = False
         self.show_toc_on_open = False
+        self.start_in_fullscreen = start_in_fullscreen
         self.was_maximized = False
         self.window_mode_changed = None
         self.interval_hide_cursor = 3333
@@ -256,6 +257,13 @@ class QmainwindowViewer(Qmainwindow):
         self.view = self.centralWidget().view
         self.view.set_manager(self)
 
+        # ---
+        self.pi = ProgressIndicator(self.centralWidget())
+
+        # --- label
+        self.clock_label = QlabelClock(self.centralWidget())
+        self.pos_label = QlabelPos(self.centralWidget())
+
         # --- search
         self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
 
@@ -267,20 +275,13 @@ class QmainwindowViewer(Qmainwindow):
         self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
 
         self.pos = s.pos
-        self.pos.value_changed.connect(self.update_pos_label)
+        self.pos.value_changed.connect(self.pos_label.update_value)
         self.pos.editingFinished.connect(self.goto_page_num)
-
-        # ---
-        self.pi = ProgressIndicator(self.centralWidget())
-
-        # --- label
-        self.clock_label = QlabelClock(self.centralWidget())
-        self.pos_label = QlabelPos(self.centralWidget())
 
         # ---
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
         self.qtreeviewContent.pressed[QModelIndex].connect(self.toc_clicked)
-        self.qtreeviewContent.searched.connect(partial(self.toc_clicked, force=True))
+        self.qtreeviewContent.searched.connect(lambda i: self.toc_clicked(i, force=True))
 
         self.qwidgetBookmark = self.qdockwidgetBookmark.qwidgetBookmark
         self.qwidgetBookmark.edited.connect(self.bookmarks_edited)
@@ -295,7 +296,7 @@ class QmainwindowViewer(Qmainwindow):
         self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
 
         self.clock_timer = QTimer(self)
-        self.clock_timer.timeout.connect(self.update_clock)
+        self.clock_timer.timeout.connect(self.clock_label.update_time)
 
         # ---
         self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
@@ -314,14 +315,16 @@ class QmainwindowViewer(Qmainwindow):
 
         file_events.got_file.connect(self.load_ebook)
 
-        if start_in_fullscreen or self.view.qwebpage.start_in_fullscreen:
+        if self.start_in_fullscreen:
             self.showFullScreen()
         if pathtoebook is not None:
-            QTimer.singleShot(50, lambda: self.load_ebook(pathtoebook, open_at=open_at))
+            start = lambda: self.load_ebook(pathtoebook, open_at=open_at)
         elif continue_reading:
-            QTimer.singleShot(50, self.continue_reading)
+            start = self.continue_reading
         else:
-            QTimer.singleShot(50, file_events.flush)
+            start = file_events.flush
+
+        QTimer.singleShot(50, start)
 
         map(lambda p: p.customize_ui(self), self.view.qwebpage.all_viewer_plugins)
 
@@ -514,6 +517,7 @@ class QmainwindowViewer(Qmainwindow):
             self.show_clock()
         if self.view.qwebpage.fullscreen_pos:
             self.show_pos_label()
+
         self.relayout_fullscreen_labels()
 
     def show_clock(self):
@@ -527,7 +531,7 @@ class QmainwindowViewer(Qmainwindow):
     def show_pos_label(self):
         self.pos_label.setVisible(True)
         self.pos_label.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
-        self.update_pos_label()
+        self.pos.update_value()
 
     def relayout_fullscreen_labels(self):
         vswidth = (self.vertical_scrollbar.width() if
@@ -537,25 +541,6 @@ class QmainwindowViewer(Qmainwindow):
         c = self.clock_label
         c.move(c.parent().width() - vswidth - 15 - c.width(),
                c.parent().height() - c.height() - 10)
-
-    def update_clock(self):
-        self.clock_label.setText(QTime.currentTime().toString(Qt.SystemLocaleShortDate))
-
-    def update_pos_label(self, *args):
-        if self.pos_label.isVisible():
-            p = self.pos_label
-            pos_w = p.parent().width() - (6 + p.width() + self.vertical_scrollbar.width())
-            pos_h = p.parent().height() - p.height()
-            self.pos_label.move(pos_w, pos_h)
-
-            try:
-                value, maximum = args
-            except:
-                value, maximum = self.pos.value(), self.pos.maximum()
-            # text = '%g/%g' % (value, maximum)
-            text = str(value)
-            self.pos_label.setText(text)
-            self.pos_label.resize(self.pos_label.sizeHint())
 
     def showNormal(self):
         self.view.qwebpage.page_position.save()
