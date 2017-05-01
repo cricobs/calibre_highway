@@ -42,8 +42,10 @@ __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
 vprefs = JSONConfig('viewer')
 vprefs.defaults['singleinstance'] = False
+
 dprefs = JSONConfig('viewer_dictionaries')
 dprefs.defaults['word_lookups'] = {}
+
 singleinstance_name = 'calibre_viewer'
 
 _ = _
@@ -207,17 +209,6 @@ class History(list):
             tuple(self), self.back_pos, self.insert_pos, self.forward_pos)
 
 
-def test_history():
-    h = History()
-    for i in xrange(4):
-        h.add(i)
-    for i in reversed(h):
-        h.back(i)
-    h.forward(0)
-    h.add(9)
-    assert h == [0, 9]
-
-
 class QmainwindowViewer(Qmainwindow):
     STATE_VERSION = 2
 
@@ -235,6 +226,7 @@ class QmainwindowViewer(Qmainwindow):
         self.current_book_has_toc = False
         self.current_page = None
         self.cursor_hidden = False
+        self.debug_javascript = debug_javascript
         self.existing_bookmarks = []
         self.iterator = None
         self.listener = listener
@@ -257,15 +249,11 @@ class QmainwindowViewer(Qmainwindow):
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
 
-        self.horizontal_scrollbar = self.centralWidget().horizontal_scrollbar
-
         # --- view
         self.view = self.centralWidget().view
         self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
         self.view.set_manager(self)
         self.view.magnification_changed.connect(self.magnification_changed)
-        self.view.qwebpage.debug_javascript = debug_javascript
-        self.view.qwebpage.settings_changed.connect(self.settings_changed)
 
         # --- search
         self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
@@ -318,13 +306,11 @@ class QmainwindowViewer(Qmainwindow):
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
         self.setWindowIcon(QIcon(I('viewer.png')))
-        self.resize(653, 746)
         self.read_settings()
         self.build_recent_menu()
         self.load_theme_menu()
         self.set_bookmarks([])
         self.restore_state()  # fixme use qsettings
-        self.settings_changed()
 
         file_events.got_file.connect(self.load_ebook)
 
@@ -411,9 +397,6 @@ class QmainwindowViewer(Qmainwindow):
 
         self.reload()
 
-    def settings_changed(self):
-        pass
-
     def reload(self):
         if hasattr(self, 'current_index') and self.current_index > -1:
             self.view.qwebpage.page_position.save(overwrite=False)
@@ -430,20 +413,16 @@ class QmainwindowViewer(Qmainwindow):
         self.build_recent_menu()
 
     def build_recent_menu(self):
-        m = self.qmenu_open_history
-        m.clear()
         recent = vprefs.get('viewer_open_history', [])
-        if recent:
-            m.addAction(self.qaction_open_dialog)
-            m.addAction(self.qaction_clear_recent_history)
-            m.addSeparator()
-        count = 0
+        actions = self.open_qactions[:]
         for path in recent:
-            if count > 11:
+            if len(actions) >= 11:
                 break
             if os.path.exists(path):
-                m.addAction(QactionRecent(path, m))
-                count += 1
+                actions.append(QactionRecent(path, self))
+
+        self.qmenu_open_history.clear()
+        self.qmenu_open_history.addActions(actions)
 
     def continue_reading(self):
         try:
@@ -990,9 +969,7 @@ class QmainwindowViewer(Qmainwindow):
 
     def build_bookmarks_menu(self, bookmarks):
         self.qmenu_bookmarks.clear()
-        self.qmenu_bookmarks.addAction(self.qdockwidgetBookmark.qaction_toggle)
-        self.qmenu_bookmarks.addAction(self.qaction_bookmark_location)
-        self.qmenu_bookmarks.addSeparator()
+        self.qmenu_bookmarks.addActions(self.bookmark_qactions)
 
         current_page = None
         self.existing_bookmarks = []
@@ -1199,9 +1176,10 @@ class QmainwindowViewer(Qmainwindow):
             wg = vprefs.get('viewer_window_geometry', None)
             if wg is not None:
                 self.restoreGeometry(wg)
+
         self.show_toc_on_open = vprefs.get('viewer_toc_isvisible', False)
-        desktop = QApplication.instance().desktop()
-        av = desktop.availableGeometry(self).height() - 30
+
+        av = self.qapplication.desktop().availableGeometry(self).height() - 30
         if self.height() > av:
             self.resize(self.width(), av)
 

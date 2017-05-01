@@ -57,6 +57,9 @@ class QwebviewDocument(Qwebview):
         self.image_popup = ImagePopup(self)
         self.table_popup = TablePopup(self)
 
+        self.scrollbar = self.parent().horizontal_scrollbar
+        self.scrollbar.valueChanged[(int)].connect(self.scroll_horizontally)
+
         self.loadFinished.connect(self.load_finished)
         self.qwebpage.settings_changed.connect(self.footnotes.clone_settings)
         self.create_actions(self.options["actions"])
@@ -278,8 +281,7 @@ class QwebviewDocument(Qwebview):
 
     def set_manager(self, manager):
         self.manager = manager
-        self.scrollbar = manager.horizontal_scrollbar
-        self.scrollbar.valueChanged[(int)].connect(self.scroll_horizontally)
+        self.qwebpage.debug_javascript = manager.debug_javascript
 
     def scroll_horizontally(self, amount):
         self.qwebpage.scroll_to(y=self.qwebpage.ypos, x=amount)

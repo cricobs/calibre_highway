@@ -3,15 +3,6 @@ from PyQt5.QtWidgets import QMenu
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
-def actions_sorter(action):
-    try:
-        position = action.data().get("position", None)
-    except AttributeError:
-        position = None
-
-    return position is None, position
-
-
 class Qmenu(QMenu, Qwidget):
     def __init__(self, *args, **kwargs):
         super(Qmenu, self).__init__(*args, **kwargs)

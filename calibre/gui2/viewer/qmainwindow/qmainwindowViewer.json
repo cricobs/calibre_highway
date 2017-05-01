@@ -69,7 +69,8 @@
         "triggered": [
           "open_ebook"
         ]
-      }
+      },
+      "group": "open"
     },
     {
       "text": "&Reload book",
@@ -90,6 +91,17 @@
           "blank"
         ]
       }
+    },
+    {
+      "checkable": true,
+      "icon": "bookmarks.png",
+      "text": "Bookmark",
+      "name": "bookmark_dock",
+      "action": [
+        "qdockwidgetBookmark",
+        "qaction_toggle"
+      ],
+      "group": "bookmark"
     },
     {
       "dropdown": "bookmarks",
@@ -170,12 +182,7 @@
       "parents": [
         "QtoolbarEdit",
         "QwebviewDocument"
-      ],
-      "slots": {
-        "toggled": [
-          "set_toc_visible"
-        ]
-      }
+      ]
     },
     {
       "checkable": true,
@@ -398,7 +405,9 @@
         "triggered": [
           "clear_recent_history"
         ]
-      }
+      },
+      "separator": true,
+      "group": "open"
     },
     {
       "text": "Bookmark this location",
@@ -412,7 +421,9 @@
         "shortcuts": [
           "Bookmark"
         ]
-      }
+      },
+      "group": "bookmark",
+      "separator": true
     }
   ],
   "keyboard_action": {

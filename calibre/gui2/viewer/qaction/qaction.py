@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QAction
-from PyQt5.QtWidgets import QMenu
+
+from calibre.gui2.viewer.qmenu.qmenuDropdown import QmenuDropdown
 
 
 class Qaction(QAction):
@@ -21,7 +22,7 @@ class Qaction(QAction):
         self.setData(data)
 
     def create_qmenu(self):
-        qmenu = QMenu(self.parent())
+        qmenu = QmenuDropdown(None)
         self.setMenu(qmenu)
 
         return qmenu

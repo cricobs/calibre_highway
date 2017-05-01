@@ -21,12 +21,15 @@ class Qwidget(QWidget, Qobject):
 
         if self.mode_toggle:
             self.qaction_toggle = Qaction(self)
-            self.qaction_toggle.triggered.connect(self.setVisible)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
 
             q = getattr(self, "toggleViewAction", None)
             if q:
-                self.qaction_toggle.setText(q().text())
+                q = q()
+                self.qaction_toggle.setCheckable(True)
+                self.qaction_toggle.setChecked(q.isChecked())
+                self.qaction_toggle.triggered.connect(q.trigger)
+                self.qaction_toggle.setText(q.text())
 
     def _addAction(self, action):
         """
@@ -64,6 +67,10 @@ class Qwidget(QWidget, Qobject):
 
     @property
     def mode_toggle(self):
+        """
+        connect qaction_toggle to on_qaction_toggle_triggered
+        :return:
+        """
         return False
 
     def on_qaction_toggle_triggered(self, checked):
