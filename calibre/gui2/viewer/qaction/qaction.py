@@ -27,7 +27,7 @@ class Qaction(QAction):
 
         return qmenu
 
-    def update(self, qmenu=None, text_format=None):
+    def update(self, qmenu):
         """
         called on Qmenu.exec_
         :return:
@@ -36,7 +36,7 @@ class Qaction(QAction):
 
         data = self.data() or {}
         if data.get("text_format", None):
-            self.set_text_format(text_format[:22] + (text_format[22:] and '...'))
+            text = self.qmenu.selected_text
+            text = text[:22] + (text[22:] and '...')
 
-    def set_text_format(self, *args, **kwargs):
-        self.setText(self.data().get("text_format").format(*args, **kwargs))
+            self.setText(self.data().get("text_format").format(text))

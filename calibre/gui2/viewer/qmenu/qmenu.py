@@ -43,7 +43,7 @@ class Qmenu(QMenu, Qwidget):
         if not action.isEnabled():
             return
         try:
-            action.update(qmenu=self, text_format=self.selected_text)
+            action.update(self)
         except AttributeError:
             pass
 

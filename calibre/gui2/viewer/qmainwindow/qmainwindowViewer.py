@@ -775,10 +775,9 @@ class QmainwindowViewer(Qmainwindow):
 
     def goto_next_section(self):
         if hasattr(self, 'current_index'):
-            entry = self.toc_model.next_entry(self.current_index,
-                                              self.view.qwebpage.read_anchor_positions(),
-                                              self.view.viewport_rect,
-                                              self.view.qwebpage.in_paged_mode)
+            entry = self.toc_model.next_entry(
+                self.current_index, self.view.qwebpage.read_anchor_positions(),
+                self.view.viewport_rect, self.view.qwebpage.in_paged_mode)
             if entry is not None:
                 self.pending_goto_next_section = (
                     self.toc_model.currently_viewed_entry, entry, False)
@@ -786,11 +785,9 @@ class QmainwindowViewer(Qmainwindow):
 
     def goto_previous_section(self):
         if hasattr(self, 'current_index'):
-            entry = self.toc_model.next_entry(self.current_index,
-                                              self.view.qwebpage.read_anchor_positions(),
-                                              self.view.viewport_rect,
-                                              self.view.qwebpage.in_paged_mode,
-                                              backwards=True)
+            entry = self.toc_model.next_entry(
+                self.current_index, self.view.qwebpage.read_anchor_positions(),
+                self.view.viewport_rect, self.view.qwebpage.in_paged_mode, backwards=True)
             if entry is not None:
                 self.pending_goto_next_section = (
                     self.toc_model.currently_viewed_entry, entry, True)
