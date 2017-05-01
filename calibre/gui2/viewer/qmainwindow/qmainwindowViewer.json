@@ -228,47 +228,6 @@
       "separator": true
     },
     {
-      "text": "Increase font size",
-      "name": "font_size_larger",
-      "icon": "font_size_larger.png",
-      "parents": [
-        "QtoolbarEdit",
-        "QwebviewDocument"
-      ],
-      "data": {
-        "context": [
-          "blank"
-        ],
-        "position": 8
-      },
-      "slots": {
-        "triggered": [
-          "font_size_larger"
-        ]
-      }
-    },
-    {
-      "text": "Decrease font size",
-      "name": "font_size_smaller",
-      "icon": "font_size_smaller.png",
-      "parents": [
-        "QtoolbarEdit",
-        "QwebviewDocument"
-      ],
-      "data": {
-        "context": [
-          "blank"
-        ],
-        "position": 10
-      },
-      "separator": true,
-      "slots": {
-        "triggered": [
-          "font_size_smaller"
-        ]
-      }
-    },
-    {
       "text": "Toggle full screen",
       "data": {
         "context": [

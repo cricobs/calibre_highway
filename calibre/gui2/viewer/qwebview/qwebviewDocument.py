@@ -3,10 +3,9 @@
 import math
 
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, pyqtSignal, QApplication,
-                      QKeySequence, QMimeData)
+                      QKeySequence)
 from PyQt5.QtWebKitWidgets import QWebView
 
-from calibre.constants import iswindows
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
 from calibre.gui2.viewer.qdialog.gestures import GestureHandler
@@ -16,6 +15,7 @@ from calibre.gui2.viewer.qdialog.qdialogTablePopup import TablePopup
 from calibre.gui2.viewer.qwebpage.qwebpageDocument import QwebpageDocument
 from calibre.gui2.viewer.qwebpage.qwebpageFootnote import Footnotes
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
+from calibre.gui2.viewer.qwidget.qwidgetFootnote import QwidgetFootnote
 from calibre.gui2.viewer.qwidget.qwidgetSlideFlip import QwidgetSlideFlip
 
 __license__ = 'GPL v3'
@@ -32,7 +32,6 @@ dynamic_property = dynamic_property
 # - create QwidgetLookup for text lookup
 
 class QwebviewDocument(Qwebview):
-    magnification_changed = pyqtSignal(object)
     DISABLED_BRUSH = QBrush(Qt.lightGray, Qt.Dense5Pattern)
     gesture_handler = lambda s, e: False
     last_loaded_path = None
@@ -84,10 +83,6 @@ class QwebviewDocument(Qwebview):
         if not self.selected_text and self.image_popup.current_img.isNull():
             return self._context_blank_qactions
         return []
-
-    def set_footnotes_view(self, view):
-        self.footnotes.set_footnotes_view(view)
-        view.follow_link.connect(self.follow_footnote_link)
 
     @property
     def mode_search(self):
@@ -281,7 +276,8 @@ class QwebviewDocument(Qwebview):
 
     def set_manager(self, manager):
         self.manager = manager
-        self.qwebpage.debug_javascript = manager.debug_javascript
+        self.qwebpage.debug_javascript = self.manager.debug_javascript
+        self.footnotes.set_footnotes_view(self.manager.findChild(QwidgetFootnote))
 
     def scroll_horizontally(self, amount):
         self.qwebpage.scroll_to(y=self.qwebpage.ypos, x=amount)
@@ -651,9 +647,25 @@ class QwebviewDocument(Qwebview):
             if val != oval:
                 if self.qwebpage.in_paged_mode:
                     self.qwebpage.update_contents_size_for_paged_mode()
-                self.magnification_changed.emit(val)
+
+                self.update_font(val)
 
         return property(fget=fget, fset=fset)
+
+    def update_font(self, val):
+        tt = '%(action)s [%(sc)s]\n' + _('Current magnification: %(mag).1f')
+        sc = _(' or ').join(
+            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
+        self.qaction_font_size_larger.setToolTip(
+            tt % dict(action=unicode(self.qaction_font_size_larger.text()),
+                      mag=val, sc=sc))
+        sc = _(' or ').join(
+            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
+        self.qaction_font_size_smaller.setToolTip(
+            tt % dict(action=unicode(self.qaction_font_size_smaller.text()),
+                      mag=val, sc=sc))
+        self.qaction_font_size_larger.setEnabled(self.view.multiplier < 3)
+        self.qaction_font_size_smaller.setEnabled(self.view.multiplier > 0.2)
 
     def magnify_fonts(self, amount=None):
         if amount is None:
@@ -696,8 +708,8 @@ class QwebviewDocument(Qwebview):
         num_degrees = event.angleDelta().y() // 8
         if mods & Qt.CTRL:
             if self.manager is not None and num_degrees != 0:
-                (self.manager.font_size_larger if num_degrees > 0 else
-                 self.manager.font_size_smaller)()
+                (self.magnify_fonts if num_degrees > 0 else
+                 self.shrink_fonts)()
                 return
 
         if self.qwebpage.in_paged_mode:

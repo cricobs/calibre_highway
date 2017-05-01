@@ -53,6 +53,9 @@ I = I
 P = P
 
 
+# fixme
+# - actions for font size increase/decrease
+
 class ResizeEvent(object):
     INTERVAL = 20  # mins
 
@@ -251,9 +254,7 @@ class QmainwindowViewer(Qmainwindow):
 
         # --- view
         self.view = self.centralWidget().view
-        self.view.set_footnotes_view(self.qdockwidgetFootnote.qwidgetFootnote)
         self.view.set_manager(self)
-        self.view.magnification_changed.connect(self.magnification_changed)
 
         # --- search
         self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
@@ -654,27 +655,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def open_recent(self, action):
         self.load_ebook(action.path)
-
-    def font_size_larger(self):
-        self.view.magnify_fonts()
-
-    def font_size_smaller(self):
-        self.view.shrink_fonts()
-
-    def magnification_changed(self, val):
-        tt = '%(action)s [%(sc)s]\n' + _('Current magnification: %(mag).1f')
-        sc = _(' or ').join(
-            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
-        self.qaction_font_size_larger.setToolTip(
-            tt % dict(action=unicode(self.qaction_font_size_larger.text()),
-                      mag=val, sc=sc))
-        sc = _(' or ').join(
-            self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
-        self.qaction_font_size_smaller.setToolTip(
-            tt % dict(action=unicode(self.qaction_font_size_smaller.text()),
-                      mag=val, sc=sc))
-        self.qaction_font_size_larger.setEnabled(self.view.multiplier < 3)
-        self.qaction_font_size_smaller.setEnabled(self.view.multiplier > 0.2)
 
     def find(self, text, repeat=False, backwards=False):
         if not text:

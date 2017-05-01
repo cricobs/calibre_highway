@@ -197,6 +197,45 @@
         }
       },
       {
+        "text": "Increase font size",
+        "name": "font_size_larger",
+        "icon": "font_size_larger.png",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "data": {
+          "context": [
+            "blank"
+          ],
+          "position": 8
+        },
+        "slots": {
+          "triggered": [
+            "magnify_fonts"
+          ]
+        }
+      },
+      {
+        "text": "Decrease font size",
+        "name": "font_size_smaller",
+        "icon": "font_size_smaller.png",
+        "parents": [
+          "QtoolbarEdit"
+        ],
+        "data": {
+          "context": [
+            "blank"
+          ],
+          "position": 10
+        },
+        "separator": true,
+        "slots": {
+          "triggered": [
+            "shrink_fonts"
+          ]
+        }
+      },
+      {
         "slots": {
           "triggered": [
             "lookup"

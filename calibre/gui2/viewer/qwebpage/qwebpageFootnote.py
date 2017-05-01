@@ -11,7 +11,7 @@ from collections import defaultdict
 from PyQt5.Qt import (
     QUrl, pyqtSlot)
 from PyQt5.QtWebKit import QWebSettings
-from PyQt5.QtWebKitWidgets import QWebPage
+from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 
 from calibre import prints
 from calibre.constants import DEBUG, FAKE_PROTOCOL, FAKE_HOST
@@ -75,14 +75,15 @@ class Footnotes(object):
         self.f_qwebview = None
 
         self.s_qwebview = view
-        self.s_qwebpage = self.s_qwebview.findChild(QWebPage)
+        self.s_qwebpage = view.page()
 
         self.clear()
 
     def set_footnotes_view(self, fv):
-        self.f_qwebview = fv
+        self.f_qwebview = fv.findChild(QWebView)
+        self.f_qwebview.follow_link.connect(self.s_qwebview.follow_footnote_link)
 
-        self.f_qwebpage = self.f_qwebview.findChild(QWebPage)
+        self.f_qwebpage = self.f_qwebview.page()
         self.f_qwebpage.linkClicked.connect(self.s_qwebview.link_clicked)
         self.f_qwebpage.js_loader = self.s_qwebpage.js_loader
 
@@ -164,7 +165,7 @@ body {
 
         if hasattr(self, 'f_qwebview'):
             if load_html(
-                    path, self.f_qwebview.view, codec=getattr(path, 'encoding', 'utf-8'),
+                    path, self.f_qwebview, codec=getattr(path, 'encoding', 'utf-8'),
                     mime_type=getattr(path, 'mime_type', 'text/html')):
                 self.f_qwebpage.set_footnote_data(
                     target, {k: True for k in self.known_footnote_targets[path]})
