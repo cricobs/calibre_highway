@@ -423,7 +423,7 @@ class QmainwindowViewer(Qmainwindow):
             self.load_ebook(pathtoebook)
 
     def shutdown(self):
-        if self.isFullScreen() and not self.view.qwebpage.start_in_fullscreen:
+        if self.isFullScreen() and not self.start_in_fullscreen:
             self.qaction_full_screen.trigger()
             return False
         if self.listener is not None:
@@ -487,6 +487,7 @@ class QmainwindowViewer(Qmainwindow):
                     _('Failed to use the custom dictionary for language: %s Falling back to '
                       ' default dictionary.') % lang, det_msg=traceback.format_exc(), show=True)
             url = default_lookup_website(lang).format(word=word)
+
         open_url(url)
 
     def print_book(self):
@@ -494,6 +495,7 @@ class QmainwindowViewer(Qmainwindow):
             return error_dialog(
                 self, _('No book opened'),
                 _('Cannot print as no book is opened'), show=True)
+
         from calibre.gui2.viewer.qdialog.qdialogPrint import print_book
         print_book(self.iterator.pathtoebook, self, self.current_title)
 
@@ -534,8 +536,7 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.update_value()
 
     def relayout_fullscreen_labels(self):
-        vswidth = (self.vertical_scrollbar.width() if
-                   self.vertical_scrollbar.isVisible() else 0)
+        vswidth = (self.vertical_scrollbar.width() if self.vertical_scrollbar.isVisible() else 0)
         p = self.pos_label
         p.move(15, p.parent().height() - p.height() - 10)
         c = self.clock_label
@@ -1053,6 +1054,7 @@ class QmainwindowViewer(Qmainwindow):
         self.vertical_scrollbar.blockSignals(False)
 
     def set_page_number(self, frac):
+        # hint for finding next chapter page
         if getattr(self, 'current_page', None) is not None:
             page = self.current_page.start_page + frac * float(self.current_page.pages - 1)
             self.pos.set_value(page)
