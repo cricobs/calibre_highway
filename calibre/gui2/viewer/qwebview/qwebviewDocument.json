@@ -65,7 +65,16 @@
         },
         "text": "Copy Position",
         "name": "copy_position",
-        "icon": "copy.png"
+        "icon": "copy.png",
+        "data": {
+          "context": [
+            "blank"
+          ],
+          "position": -3
+        },
+        "parents": [
+          "Qmenu"
+        ]
       },
       {
         "slots": {
