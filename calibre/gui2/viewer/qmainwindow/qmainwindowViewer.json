@@ -94,7 +94,6 @@
     },
     {
       "checkable": true,
-      "icon": "bookmarks.png",
       "text": "Bookmark",
       "name": "bookmark_dock",
       "action": [

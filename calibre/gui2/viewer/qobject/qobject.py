@@ -124,11 +124,11 @@ class Qobject(QObject, object):
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
         qaction.setEnabled(enabled)
         qaction.setData(data)
-        qaction.setIcon(QIcon(I(icon)))
         qaction.parents = parents or []
         qaction.separator = separator
         qaction.group = group
-
+        if icon:
+            qaction.setIcon(QIcon(I(icon)))
         if group:
             group_actions = []
             n = group + "_qactions"
