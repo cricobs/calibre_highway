@@ -17,6 +17,7 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
         Form.setSizePolicy(sizePolicy)
+        Form.setFocusPolicy(QtCore.Qt.StrongFocus)
         Form.setRenderHints(QtGui.QPainter.Antialiasing|QtGui.QPainter.SmoothPixmapTransform|QtGui.QPainter.TextAntialiasing)
 
         self.retranslateUi(Form)
@@ -26,4 +27,4 @@ class Ui_Form(object):
 
         Form.setWindowTitle(_("Form"))
 
-from QtWebKitWidgets.QWebView import QWebView
+from PyQt5.QtWebKitWidgets import QWebView

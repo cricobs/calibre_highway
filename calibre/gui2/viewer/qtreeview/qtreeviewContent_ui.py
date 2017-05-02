@@ -14,7 +14,8 @@ class Ui_Form(object):
         Form.resize(256, 192)
         Form.setMinimumSize(QtCore.QSize(80, 0))
         Form.setMouseTracking(True)
-        Form.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        Form.setFocusPolicy(QtCore.Qt.StrongFocus)
+        Form.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         Form.setStyleSheet("                QTreeView {\n"
 "                    background-color: palette(window);\n"
 "                    color: palette(window-text);\n"

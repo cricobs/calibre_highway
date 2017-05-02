@@ -1,0 +1,188 @@
+# vim:fileencoding=utf-8
+# License: GPL v3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
+from __python__ import hash_literals, bound_methods
+
+from dom import set_css
+from read_book.globals import get_boss
+from keycodes import get_key
+from utils import document_height, document_width, viewport_to_document
+
+def flow_to_scroll_fraction(frac):
+    window.scrollTo(0, document_height() * frac)
+
+def check_for_scroll_end(func):
+    return def ():
+        before = window.pageYOffset
+        func.apply(this, arguments)
+        if window.pageYOffset is before:
+            get_boss().send_message('next_spine_item', previous=arguments[0] < 0)
+            return False
+        return True
+
+@check_for_scroll_end
+def scroll_by(y):
+    window.scrollBy(0, y)
+
+def flow_onwheel(evt):
+    dx = dy = 0
+    if evt.deltaY:
+        if evt.deltaMode is evt.DOM_DELTA_PIXEL:
+            dy = evt.deltaY
+        elif evt.deltaMode is evt.DOM_DELTA_LINE:
+            dy = 15 * evt.deltaY
+        if evt.deltaMode is evt.DOM_DELTA_PAGE:
+            dy = (window.innerHeight - 30) * evt.deltaY
+    if evt.deltaX:
+        if evt.deltaMode is evt.DOM_DELTA_PIXEL:
+            dx = evt.deltaX
+        elif evt.deltaMode is evt.DOM_DELTA_LINE:
+            dx = 15 * evt.deltaX
+        else:
+            dx = (window.innerWidth - 30) * evt.deltaX
+    if dx:
+        window.scrollBy(dx, 0)
+    elif dy:
+        scroll_by(dy)
+
+smooth_y_data = {'last_event_at':0, 'up': False, 'timer':None, 'source':'wheel', 'pixels_per_ms': 0.2, 'scroll_interval':10, 'stop_scrolling_after':100}
+
+def do_y_scroll():
+    if scroll_by((-1 if smooth_y_data.up else 1) * smooth_y_data.pixels_per_ms * smooth_y_data.scroll_interval):
+        if Date.now() - smooth_y_data.last_event_at < smooth_y_data.stop_scrolling_after:
+            smooth_y_data.timer = setTimeout(do_y_scroll, smooth_y_data.scroll_interval)
+
+def smooth_y_scroll(up):
+    clearTimeout(smooth_y_data.timer)
+    smooth_y_data.last_event_at = Date.now()
+    smooth_y_data.up = up
+    do_y_scroll()
+
+@check_for_scroll_end
+def goto_boundary(y):
+    window.scrollTo(window.pageXOffset, 0)
+
+@check_for_scroll_end
+def scroll_by_page(backward):
+    h = window.innerHeight - 10
+    window.scrollBy(0, -h if backward else h)
+
+def flow_onkeydown(evt):
+    handled = False
+    key = get_key(evt)
+    if key is 'up' or key is 'down':
+        handled = True
+        if evt.ctrlKey:
+            goto_boundary(-1 if key is 'up' else 1)
+        else:
+            smooth_y_scroll(key is 'up')
+    elif (key is 'left' or key is 'right') and not evt.altKey:
+        handled = True
+        if evt.ctrlKey:
+            window.scrollTo(0 if key is 'left' else document_width(), window.pageYOffset)
+        else:
+            window.scrollBy(-15 if key is 'left' else 15, 0)
+    elif key is 'home' or key is 'end':
+        handled = True
+        if evt.ctrlKey:
+            get_boss().send_message('goto_doc_boundary', start=key is 'home')
+        else:
+            if key is 'home':
+                window.scrollTo(window.pageXOffset, 0)
+            else:
+                window.scrollTo(window.pageXOffset, document_height())
+    elif key is 'pageup' or key is 'pagedown' or key is 'space':
+        handled = True
+        scroll_by_page(key is 'pageup')
+    if handled:
+        evt.preventDefault()
+
+def layout(is_single_page):
+    set_css(document.body, margin='0', border_width='0', padding='0')
+
+class FlickAnimator:
+
+    SPEED_FACTOR = 0.04
+    DECEL_TIME_CONSTANT = 325  # milliseconds
+    VELOCITY_HISTORY = 300  # milliseconds
+    MIMUMUM_VELOCITY = 100  # pixels/sec
+
+    def __init__(self):
+        self.animation_id = None
+
+    def start(self, gesture):
+        self.vertical = gesture.axis is 'vertical'
+        now = window.performance.now()
+        points = times = None
+        for i, t in enumerate(gesture.times):
+            if now - t < self.VELOCITY_HISTORY:
+                points, times = gesture.points[i:], gesture.times[i:]
+                break
+        if times and times.length > 1:
+            elapsed = (times[-1] - times[0]) / 1000
+            if elapsed > 0 and points.length > 1:
+                delta = points[0] - points[-1]
+                velocity = delta / elapsed
+                if abs(velocity) > self.MIMUMUM_VELOCITY:
+                    self.amplitude = self.SPEED_FACTOR * velocity
+                    self.start_time = now
+                    self.animation_id = window.requestAnimationFrame(self.auto_scroll)
+
+    def auto_scroll(self, ts):
+        if self.animation_id is None:
+            return
+        elapsed = window.performance.now() - self.start_time
+        delta = self.amplitude * Math.exp(-elapsed / self.DECEL_TIME_CONSTANT)
+        if abs(delta) >= 1:
+            delta = Math.round(delta)
+            if self.vertical:
+                window.scrollBy(0, delta)
+            else:
+                window.scrollBy(delta, 0)
+            self.animation_id = window.requestAnimationFrame(self.auto_scroll)
+
+    def stop(self):
+        if self.animation_id is not None:
+            window.cancelAnimationFrame(self.animation_id)
+            self.animation_id = None
+
+flick_animator = FlickAnimator()
+
+def handle_gesture(gesture):
+    flick_animator.stop()
+    if gesture.type is 'swipe':
+        if gesture.points.length > 1 and not gesture.is_held:
+            delta = gesture.points[-2] - gesture.points[-1]
+            if gesture.axis is 'vertical':
+                scroll_by(delta)
+            else:
+                window.scrollBy(delta, 0)
+        if not gesture.active and not gesture.is_held:
+            flick_animator.start(gesture)
+    elif gesture.type is 'prev-page':
+        scroll_by_page(True)
+    elif gesture.type is 'next-page':
+        scroll_by_page(False)
+
+anchor_funcs = {
+    'pos_for_elem': def pos_for_elem(elem):
+        if not elem:
+            return 0, 0
+        br = elem.getBoundingClientRect()
+        x, y = viewport_to_document(br.left, br.top, elem.ownerDocument)
+        return y, x
+    ,
+    'visibility': def visibility(pos):
+        y, x = pos
+        if y < window.pageYOffset:
+            return -1
+        if y < window.pageYOffset + window.innerHeight:
+            if x < window.pageXOffset:
+                return -1
+            if x < window.pageXOffset + window.innerWidth:
+                return 0
+        return 1
+    ,
+    'cmp': def cmp(a, b):
+        return (a[0] - b[0]) or (a[1] - b[1])
+    ,
+}

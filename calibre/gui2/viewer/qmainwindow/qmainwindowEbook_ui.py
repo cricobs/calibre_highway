@@ -11,7 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_QmainwindowEbook(object):
     def setupUi(self, QmainwindowEbook):
         QmainwindowEbook.setObjectName("QmainwindowEbook")
-        QmainwindowEbook.resize(108, 118)
+        QmainwindowEbook.resize(108, 149)
+        QmainwindowEbook.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.qwidgetDocument = QwidgetDocument(QmainwindowEbook)
         self.qwidgetDocument.setObjectName("qwidgetDocument")
         self.qtoolbarEdit = QtoolbarEdit(QmainwindowEbook)
@@ -33,6 +34,9 @@ class Ui_QmainwindowEbook(object):
         self.qdockwidgetSynopsis = QdockwidgetSynopsis(QmainwindowEbook)
         self.qdockwidgetSynopsis.setObjectName("qdockwidgetSynopsis")
         QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.qdockwidgetSynopsis)
+        self.qdockwidgetQwebinspector = QdockwidgetQwebinspector(QmainwindowEbook)
+        self.qdockwidgetQwebinspector.setObjectName("qdockwidgetQwebinspector")
+        QmainwindowEbook.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.qdockwidgetQwebinspector)
 
         self.retranslateUi(QmainwindowEbook)
         QtCore.QMetaObject.connectSlotsByName(QmainwindowEbook)
@@ -40,15 +44,17 @@ class Ui_QmainwindowEbook(object):
     def retranslateUi(self, QmainwindowEbook):
 
         QmainwindowEbook.setWindowTitle(_("E-book viewer"))
-        self.qtoolbarEdit.setWindowTitle(_("toolBar"))
-        self.qdockwidgetContent.setWindowTitle(_("Table of Contents"))
+        self.qtoolbarEdit.setWindowTitle(_("Edit"))
+        self.qdockwidgetContent.setWindowTitle(_("Content"))
         self.qdockwidgetBookmark.setWindowTitle(_("Bookmark"))
-        self.qdockwidgetFootnote.setWindowTitle(_("Footnotes"))
+        self.qdockwidgetFootnote.setWindowTitle(_("Footnote"))
         self.qdockwidgetSynopsis.setWindowTitle(_("Synopsis"))
+        self.qdockwidgetQwebinspector.setWindowTitle(_("Inspect"))
 
 from calibre.gui2.viewer.qdockwidget.qdockwidgetBookmark import QdockwidgetBookmark
 from calibre.gui2.viewer.qdockwidget.qdockwidgetContent import QdockwidgetContent
 from calibre.gui2.viewer.qdockwidget.qdockwidgetFootnote import QdockwidgetFootnote
+from calibre.gui2.viewer.qdockwidget.qdockwidgetQwebinspector import QdockwidgetQwebinspector
 from calibre.gui2.viewer.qdockwidget.qdockwidgetSynopsis import QdockwidgetSynopsis
 from calibre.gui2.viewer.qtoolbar.qtoolbarEdit import QtoolbarEdit
 from calibre.gui2.viewer.qwidget.qwidgetDocument import QwidgetDocument
