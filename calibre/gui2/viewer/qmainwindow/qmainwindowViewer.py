@@ -224,13 +224,12 @@ class QmainwindowViewer(Qmainwindow):
             start_in_fullscreen=False, continue_reading=True, listener=None, file_events=(),
             parent=None):
 
-        self.debug_javascript = debug_javascript
         self._listener = None
         self.closed = False
-        self.current_book_has_toc = False
         self.current_page = None
-        self.cursor_hidden = False
+        self.debug_javascript = debug_javascript
         self.existing_bookmarks = []
+        self.interval_hide_cursor = 3333
         self.iterator = None
         self.listener = listener
         self.lookup_error_reported = {}
@@ -247,7 +246,6 @@ class QmainwindowViewer(Qmainwindow):
         self.start_in_fullscreen = start_in_fullscreen
         self.was_maximized = False
         self.window_mode_changed = None
-        self.interval_hide_cursor = 3333
 
         super(QmainwindowViewer, self).__init__(parent)
 
@@ -268,7 +266,6 @@ class QmainwindowViewer(Qmainwindow):
 
         self.search = s.search
         self.search.search.connect(self.find)
-        self.search.focus_to_library.connect(lambda: self.view.setFocus(Qt.OtherFocusReason))
 
         self.pos = s.pos
         self.pos.value_changed.connect(self.pos_label.update_value)
@@ -319,8 +316,6 @@ class QmainwindowViewer(Qmainwindow):
             start = file_events.flush
 
         QTimer.singleShot(50, start)
-
-        map(lambda p: p.customize_ui(self), self.view.qwebpage.all_viewer_plugins)
 
     @property
     def listener(self):
@@ -387,11 +382,6 @@ class QmainwindowViewer(Qmainwindow):
             self.pending_restore = True
             self.load_path(self.view.last_loaded_path)
 
-    def set_toc_visible(self, yes):
-        self.qdockwidgetContent.setVisible(yes)
-        if not yes:
-            self.show_toc_on_open = False
-
     def clear_recent_history(self, *args):
         vprefs.set('viewer_open_history', [])
         self.create_recent_menu()
@@ -422,22 +412,19 @@ class QmainwindowViewer(Qmainwindow):
             return False
         if self.listener is not None:
             self.listener.close()
+
         return True
 
     def quit(self):
         if self.shutdown():
-            QApplication.instance().quit()
+            self.qapplication.quit()
 
     def closeEvent(self, e):
-        if self.closed:
-            e.ignore()
-            return
-        if self.shutdown():
+        if not self.closed and self.shutdown():
             self.closed = True
             return super(QmainwindowViewer, self).closeEvent(e)
 
-        else:
-            e.ignore()
+        e.ignore()
 
     def save_state(self):
         state = bytearray(self.saveState(self.STATE_VERSION))
@@ -1068,11 +1055,10 @@ class QmainwindowViewer(Qmainwindow):
             self.load_path(self.iterator.spine[self.current_index - 1], pos=1.0)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Escape:
-            if self.isFullScreen():
-                self.qaction_full_screen.trigger()
-                event.accept()
-                return
+        if event.key() == Qt.Key_Escape and self.isFullScreen():
+            self.qaction_full_screen.trigger()
+            event.accept()
+            return
 
         try:
             key = self.qapplication.qabstractlistmodelShortcut.get_match(event)
@@ -1099,7 +1085,6 @@ class QmainwindowViewer(Qmainwindow):
                 reopen_at = None
             self.history.clear()
             self.load_ebook(self.iterator.pathtoebook, reopen_at=reopen_at)
-            return
 
     def __enter__(self):
         return self

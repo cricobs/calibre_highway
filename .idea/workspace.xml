@@ -4,14 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetSynopsis.py" line="0" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="QmainwindowViewer.load_ebook() +-">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitignore___jb_tmp___" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/launch_viewer.sh" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+    <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -46,8 +41,8 @@
       <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="260" column="3" lean-forward="false" selection-start-line="260" selection-start-column="3" selection-end-line="260" selection-end-column="3" />
+            <state relative-caret-position="18">
+              <caret line="346" column="0" lean-forward="true" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
               <folding>
                 <element signature="e#25#107#0" expanded="true" />
               </folding>
@@ -82,8 +77,8 @@
       <file leaf-file-name="qwebviewDocument.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="68" column="63" lean-forward="true" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
+            <state relative-caret-position="395">
+              <caret line="292" column="0" lean-forward="true" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -103,8 +98,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;group&quot;: &quot;open&quot;</find>
-      <find>clear_recent_history</find>
       <find>reference_mode</find>
       <find>group</find>
       <find>bookmark</find>
@@ -133,6 +126,8 @@
       <find>current</find>
       <find>def</find>
       <find>current_title</find>
+      <find>toggle_fullscreen</find>
+      <find>set_toc_visible</find>
     </findStrings>
     <replaceStrings>
       <replace>Ctrl</replace>
@@ -172,12 +167,12 @@
       <dir>$PROJECT_DIR$/calibre/gui2/</dir>
       <dir>$PROJECT_DIR$/calibre/</dir>
       <dir>$PROJECT_DIR$</dir>
-      <dir>$PROJECT_DIR$/../</dir>
       <dir>$PROJECT_DIR$/</dir>
       <dir>$PROJECT_DIR$/..</dir>
       <dir>$PROJECT_DIR$/calibre/gui2/viewer</dir>
       <dir>$PROJECT_DIR$/calibre/gui2/viewer/qnetworkacessmanager</dir>
       <dir>$PROJECT_DIR$/calibre/gui2/viewer/</dir>
+      <dir>$PROJECT_DIR$/../</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -878,13 +873,6 @@
       <option name="presentableId" value="Default" />
       <updated>1483536369871</updated>
     </task>
-    <task id="LOCAL-00108" summary="QmainwindowViewer user super.create_action">
-      <created>1492713801489</created>
-      <option name="number" value="00108" />
-      <option name="presentableId" value="LOCAL-00108" />
-      <option name="project" value="LOCAL" />
-      <updated>1492713801489</updated>
-    </task>
     <task id="LOCAL-00109" summary="QmainwindowViewer.build_bookmarks_menu">
       <created>1492720426797</created>
       <option name="number" value="00109" />
@@ -1221,7 +1209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493684455523</updated>
     </task>
-    <option name="localTasksCounter" value="157" />
+    <task id="LOCAL-00157" summary="QwebviewDocument use qapplication.loadedUi to set_manager">
+      <created>1493730691287</created>
+      <option name="number" value="00157" />
+      <option name="presentableId" value="LOCAL-00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1493730691288</updated>
+    </task>
+    <option name="localTasksCounter" value="158" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1243,18 +1238,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="774" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32869694" sideWeight="0.4952251" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287858" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3726208" sideWeight="0.5375171" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4568082" sideWeight="0.54297405" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
+      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29721814" sideWeight="0.54297405" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46412885" sideWeight="0.5375171" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4568082" sideWeight="0.45702592" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29648608" sideWeight="0.45702592" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29648608" sideWeight="0.54297405" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34260616" sideWeight="0.47748977" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37701318" sideWeight="0.43383357" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1264,7 +1260,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3726208" sideWeight="0.5375171" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1276,13 +1271,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="QwebviewDocument._page renamed to qwebpage" />
     <MESSAGE value="QmainwindowViewer.metadata moved to QwidgetDocument" />
     <MESSAGE value="QmainwindowViewer.full_screen_label removed" />
     <MESSAGE value="QmainwindowViewer.full_screen_label deleted" />
     <MESSAGE value="QmainwindowViewer.autosave_timer removed" />
     <MESSAGE value="QmainwindowViewer.listener property created" />
-    <MESSAGE value="QmainwindowViewer reformat" />
     <MESSAGE value="QwidgetDocument.json created&#10;" />
     <MESSAGE value="Qwidget._addAction&#10;" />
     <MESSAGE value="Qaction.create_qmenu fix&#10;" />
@@ -1301,7 +1294,9 @@
     <MESSAGE value="QlabelClock.update_time() +&#10;QlabelPos.update_value() +&#10;QmainwindowViewer.update_clock() - .update_pos_label() -" />
     <MESSAGE value="mainwindowViewer reformat" />
     <MESSAGE value="QmainwindowViewer.load_ebook() +-" />
-    <option name="LAST_COMMIT_MESSAGE" value="QmainwindowViewer.load_ebook() +-" />
+    <MESSAGE value="QwebviewDocument use qapplication.loadedUi to set_manager" />
+    <MESSAGE value="QmainwindowViewer reformat" />
+    <option name="LAST_COMMIT_MESSAGE" value="QmainwindowViewer reformat" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1476,6 +1471,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
           <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1483,6 +1479,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
           <caret line="81" column="8" lean-forward="false" selection-start-line="81" selection-start-column="8" selection-end-line="81" selection-end-column="8" />
+          <folding>
+            <element signature="e#49#157#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1498,6 +1497,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="30" column="50" lean-forward="false" selection-start-line="30" selection-start-column="50" selection-end-line="30" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#30#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1555,6 +1557,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
           <caret line="50" column="20" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1578,6 +1581,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1643,14 +1647,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="68" column="63" lean-forward="true" selection-start-line="68" selection-start-column="63" selection-end-line="68" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="173">
@@ -1671,10 +1667,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="292" column="0" lean-forward="true" selection-start-line="292" selection-start-column="0" selection-end-line="292" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="260" column="3" lean-forward="false" selection-start-line="260" selection-start-column="3" selection-end-line="260" selection-end-column="3" />
+        <state relative-caret-position="18">
+          <caret line="346" column="0" lean-forward="true" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
           <folding>
             <element signature="e#25#107#0" expanded="true" />
           </folding>

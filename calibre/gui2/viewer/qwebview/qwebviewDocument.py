@@ -289,6 +289,8 @@ class QwebviewDocument(Qwebview):
         self.qwebpage.debug_javascript = self.manager.debug_javascript
         self.footnotes.set_footnotes_view(self.manager.findChild(QwidgetFootnote))
 
+        map(lambda p: p.customize_ui(self.manager), self.qwebpage.all_viewer_plugins)
+
     def scroll_horizontally(self, amount):
         self.qwebpage.scroll_to(y=self.qwebpage.ypos, x=amount)
 
