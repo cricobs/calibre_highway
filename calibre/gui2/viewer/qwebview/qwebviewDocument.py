@@ -5,6 +5,7 @@ import math
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QApplication,
                       QKeySequence)
 from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QMainWindow
 
 from calibre.ebooks.oeb.display.webview import load_html
 from calibre.gui2 import open_url, error_dialog
@@ -66,6 +67,12 @@ class QwebviewDocument(Qwebview):
         self.qaction_synopsis.setMenu(self.qmenu_synopsis)
         self.qaction_search_online.setMenu(self.qmenu_search_online)
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
+
+        self.qapplication.loadedUi.connect(self.on_qapplication_loadedUi)
+
+    def on_qapplication_loadedUi(self, qobject):
+        if isinstance(qobject, QMainWindow):
+            self.set_manager(qobject)
 
     def create_page(self):
         self.qwebpage = d = QwebpageDocument(self)

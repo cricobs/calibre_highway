@@ -39,6 +39,8 @@ class Qobject(QObject, object):
             with iput:
                 self.options = json.load(iput)
 
+            self.qapplication.loadedUi.emit(self)
+
     @property
     def qapplication_qactions(self):
         return self.qapplication.qactions[self.__class__.__name__]

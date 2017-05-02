@@ -1,6 +1,7 @@
 import json
 import sys
 
+from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
@@ -20,6 +21,7 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
 class QapplicationViewer(Qapplication):
     search = pyqtSignal(QWidget, str, bool)
     replace = pyqtSignal(QWidget, str, str, bool)
+    loadedUi = pyqtSignal(QObject)
 
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)

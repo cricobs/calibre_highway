@@ -223,14 +223,13 @@ class QmainwindowViewer(Qmainwindow):
             self, pathtoebook=None, debug_javascript=False, open_at=None,
             start_in_fullscreen=False, continue_reading=True, listener=None, file_events=(),
             parent=None):
-        super(QmainwindowViewer, self).__init__(parent)
 
+        self.debug_javascript = debug_javascript
         self._listener = None
         self.closed = False
         self.current_book_has_toc = False
         self.current_page = None
         self.cursor_hidden = False
-        self.debug_javascript = debug_javascript
         self.existing_bookmarks = []
         self.iterator = None
         self.listener = listener
@@ -250,18 +249,14 @@ class QmainwindowViewer(Qmainwindow):
         self.window_mode_changed = None
         self.interval_hide_cursor = 3333
 
-        # --- scroll
+        super(QmainwindowViewer, self).__init__(parent)
+
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
 
-        # --- view
         self.view = self.centralWidget().view
-        self.view.set_manager(self)
 
-        # ---
         self.pi = ProgressIndicator(self.centralWidget())
-
-        # --- label
         self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
 
@@ -280,6 +275,15 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.editingFinished.connect(self.goto_page_num)
 
         # ---
+        self.view_resized_timer = QTimer(self)
+        self.view_resized_timer.setSingleShot(True)
+        self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
+
+        self.clock_timer = QTimer(self)
+        self.clock_timer.timeout.connect(self.clock_label.update_time)
+
+        self.history = History(self.qaction_back, self.qaction_forward)
+
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
         self.qtreeviewContent.pressed[QModelIndex].connect(self.toc_clicked)
         self.qtreeviewContent.searched.connect(lambda i: self.toc_clicked(i, force=True))
@@ -289,17 +293,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
-        self.history = History(self.qaction_back, self.qaction_forward)
-
-        # --- timer
-        self.view_resized_timer = QTimer(self)
-        self.view_resized_timer.setSingleShot(True)
-        self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
-
-        self.clock_timer = QTimer(self)
-        self.clock_timer.timeout.connect(self.clock_label.update_time)
-
-        # ---
         self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
         self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
         self.qapplication.activity.connect(self.on_qapplication_activity)
