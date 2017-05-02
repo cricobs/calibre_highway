@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
@@ -53,6 +54,12 @@ class QstackedwidgetSynopsis(Qstackedwidget):
             self.qwebviewPreview, self.qplaintexteditEdit)
 
         self.state_restore()
+
+        self.toplevelwidget = self.qapplication.topLevelWidget(QMainWindow)
+        self.toplevelwidget.ebookLoaded.connect(self.on_toplevelwidget_ebookLoaded)
+
+    def on_toplevelwidget_ebookLoaded(self, ebookiterator):
+        self.load(ebookiterator.pathtoebook)
 
     def preview(self):
         self.save()

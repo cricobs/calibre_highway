@@ -18,6 +18,7 @@ from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
 from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
+from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
@@ -450,7 +451,7 @@ class QmainwindowViewer(Qmainwindow):
         vprefs['main_window_state'] = state
         if not self.isFullScreen():
             vprefs.set('viewer_window_geometry', bytearray(self.saveGeometry()))
-        if self.current_book_has_toc:
+        if bool(self.iterator.toc):
             vprefs.set('viewer_toc_isvisible',
                        self.show_toc_on_open or bool(self.qdockwidgetContent.isVisible()))
         vprefs['multiplier'] = self.view.multiplier
@@ -956,25 +957,23 @@ class QmainwindowViewer(Qmainwindow):
             path, open_at = msg
         except Exception:
             return
+
         self.load_ebook(path, open_at=open_at)
         self.raise_()
 
-    def load_ebook(self, pathtoebook, open_at=None, reopen_at=None):
-        del self.resize_events_stack[:]
-        if self.iterator is not None:
-            self.save_current_position()
-            self.iterator.__exit__()
+    def load_iterator(self, pathtoebook):
         self.iterator = EbookIterator(
             pathtoebook, copy_bookmarks_to_file=self.view.qwebpage.copy_bookmarks_to_file)
         self.history.clear()
-        self.open_progress_indicator(_('Loading ebook...'))
+        self.open_progress_indicator()
+
         worker = Worker(target=partial(self.iterator.__enter__, view_kepub=True))
         worker.path_to_ebook = pathtoebook
         worker.start()
         # example join a worker while alive
         while worker.isAlive():
             worker.join(0.1)
-            QApplication.processEvents()
+            self.qapplication.processEvents()
         if worker.exception is not None:
             tb = worker.traceback.strip()
             if tb and tb.splitlines()[-1].startswith('DRMError:'):
@@ -982,71 +981,71 @@ class QmainwindowViewer(Qmainwindow):
                 DRMErrorMessage(self).exec_()
             else:
                 r = getattr(worker.exception, 'reason', worker.exception)
-                error_dialog(self, _('Could not open ebook'),
-                             as_unicode(r) or _('Unknown error'),
+                error_dialog(self, _('Could not open ebook'), as_unicode(r) or _('Unknown error'),
                              det_msg=tb, show=True)
-            self.close_progress_indicator()
+
+        self.close_progress_indicator()
+        return worker.exception is None
+
+    def load_ebook(self, pathtoebook, open_at=None, reopen_at=None):
+        del self.resize_events_stack[:]
+        if self.iterator is not None:
+            self.save_current_position()
+            self.iterator.__exit__()
+        if isbytestring(pathtoebook):
+            pathtoebook = force_unicode(pathtoebook, filesystem_encoding)
+        if not self.load_iterator(pathtoebook):
+            return
+
+        vprefs.insert_value('viewer_open_history', pathtoebook)
+
+        self.current_title = self.iterator.mi.title
+        self.current_index = -1
+        self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
+        self.qtreeviewContent.setModel(self.toc_model)
+
+        self.ebookLoaded.emit(self.iterator)
+        self.create_recent_menu()
+
+        self.qaction_table_of_contents.setChecked(self.show_toc_on_open)
+        self.qaction_table_of_contents.setDisabled(not self.iterator.toc)
+
+        self.pos.setMaximum(sum(self.iterator.pages))
+        self.pos.setSuffix(' / %d' % sum(self.iterator.pages))
+
+        self.vertical_scrollbar.setMinimum(100)
+        self.vertical_scrollbar.setMaximum(100 * sum(self.iterator.pages))
+        self.vertical_scrollbar.setSingleStep(10)
+        self.vertical_scrollbar.setPageStep(100)
+        self.set_vscrollbar_value(1)
+
+        self.qapplication.alert(self, 5000)
+
+        previous = self.create_bookmarks_menu(self.iterator.bookmarks)
+        if reopen_at is not None:
+            previous = reopen_at
+        if open_at is None and previous is not None:
+            self.goto_bookmark(previous)
         else:
-            self.ebookLoaded.emit(self.iterator)
-
-            self.view.current_language = self.iterator.language
-            title = self.iterator.mi.title
-            if not title:
-                title = os.path.splitext(os.path.basename(pathtoebook))[0]
-            if self.iterator.toc:
-                self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
-                self.qtreeviewContent.setModel(self.toc_model)
-                if self.show_toc_on_open:
-                    self.qaction_table_of_contents.setChecked(True)
+            if open_at is None:
+                self.next_document()
             else:
-                self.toc_model = QstandarditemmodelContent(self.iterator.spine)
-                self.qtreeviewContent.setModel(self.toc_model)
-                self.qaction_table_of_contents.setChecked(False)
-            if isbytestring(pathtoebook):
-                pathtoebook = force_unicode(pathtoebook, filesystem_encoding)
-            vh = vprefs.get('viewer_open_history', [])
-            try:
-                vh.remove(pathtoebook)
-            except:
-                pass
-            vh.insert(0, pathtoebook)
-            vprefs.set('viewer_open_history', vh[:50])
-            self.create_recent_menu()
-            self.view.set_book_data(self.iterator)
-
-            self.qaction_table_of_contents.setDisabled(not self.iterator.toc)
-            self.current_book_has_toc = bool(self.iterator.toc)
-            self.current_title = title
-            self.setWindowTitle(
-                title + ' [%s]' % self.iterator.book_format + ' - ' + self.windowTitle())
-            self.pos.setMaximum(sum(self.iterator.pages))
-            self.pos.setSuffix(' / %d' % sum(self.iterator.pages))
-            self.vertical_scrollbar.setMinimum(100)
-            self.vertical_scrollbar.setMaximum(100 * sum(self.iterator.pages))
-            self.vertical_scrollbar.setSingleStep(10)
-            self.vertical_scrollbar.setPageStep(100)
-            self.set_vscrollbar_value(1)
-            self.current_index = -1
-            QApplication.instance().alert(self, 5000)
-            previous = self.create_bookmarks_menu(self.iterator.bookmarks)
-            if reopen_at is not None:
-                previous = reopen_at
-            if open_at is None and previous is not None:
-                self.goto_bookmark(previous)
-            else:
-                if open_at is None:
-                    self.next_document()
+                if open_at > self.pos.maximum():
+                    open_at = self.pos.maximum()
+                if open_at < self.pos.minimum():
+                    open_at = self.pos.minimum()
+                if self.resize_in_progress:
+                    self.pending_goto_page = open_at
                 else:
-                    if open_at > self.pos.maximum():
-                        open_at = self.pos.maximum()
-                    if open_at < self.pos.minimum():
-                        open_at = self.pos.minimum()
-                    if self.resize_in_progress:
-                        self.pending_goto_page = open_at
-                    else:
-                        self.goto_page(open_at, loaded_check=False)
+                    self.goto_page(open_at, loaded_check=False)
 
-            self.qdockwidgetSynopsis.qstackedwidgetSynopsis.load(pathtoebook)
+    @property_setter
+    def current_title(self, title):
+        title = title or os.path.splitext(os.path.basename(self.iterator.pathtoebook))[0]
+        self.setWindowTitle(
+            title + ' [{0}] - {1}'.format(self.iterator.book_format, self.windowTitle()))
+
+        return title
 
     def set_vscrollbar_value(self, pagenum):
         self.vertical_scrollbar.blockSignals(True)

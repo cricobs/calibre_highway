@@ -277,6 +277,7 @@ class QwebviewDocument(Qwebview):
     def set_manager(self, manager):
         self.manager = manager
         self.manager.start_in_fullscreen = self.qwebpage.start_in_fullscreen
+        self.manager.ebookLoaded.connect(self.set_book_data)
 
         self.qwebpage.debug_javascript = self.manager.debug_javascript
         self.footnotes.set_footnotes_view(self.manager.findChild(QwidgetFootnote))
@@ -302,7 +303,7 @@ class QwebviewDocument(Qwebview):
                 l, r = (0, 1)
         else:
             l, r = d.xpos, d.xpos + d.window_width
-        return (l, d.ypos, r, d.ypos + d.window_height)
+        return l, d.ypos, r, d.ypos + d.window_height
 
     def link_hovered(self, link, text, context):
         link, text = unicode(link), unicode(text)
@@ -445,7 +446,7 @@ class QwebviewDocument(Qwebview):
 
     @classmethod
     def test_line(cls, img, y):
-        'Test if line contains pixels of exactly the same color'
+        """Test if line contains pixels of exactly the same color"""
         start = img.pixel(0, y)
         for i in range(1, img.width()):
             if img.pixel(i, y) != start:
@@ -659,13 +660,11 @@ class QwebviewDocument(Qwebview):
         sc = _(' or ').join(
             self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font larger'))
         self.qaction_font_size_larger.setToolTip(
-            tt % dict(action=unicode(self.qaction_font_size_larger.text()),
-                      mag=val, sc=sc))
+            tt % dict(action=unicode(self.qaction_font_size_larger.text()), mag=val, sc=sc))
         sc = _(' or ').join(
             self.qapplication.qabstractlistmodelShortcut.get_shortcuts('Font smaller'))
         self.qaction_font_size_smaller.setToolTip(
-            tt % dict(action=unicode(self.qaction_font_size_smaller.text()),
-                      mag=val, sc=sc))
+            tt % dict(action=unicode(self.qaction_font_size_smaller.text()), mag=val, sc=sc))
         self.qaction_font_size_larger.setEnabled(self.view.multiplier < 3)
         self.qaction_font_size_smaller.setEnabled(self.view.multiplier > 0.2)
 
@@ -800,8 +799,8 @@ class QwebviewDocument(Qwebview):
                 self.is_auto_repeat_event = False
         elif key == 'Down':
             if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll(scroll_past_end=not
-                self.qwebpage.line_scrolling_stops_on_pagebreaks)
+                self.paged_col_scroll(
+                    scroll_past_end=not self.qwebpage.line_scrolling_stops_on_pagebreaks)
             else:
                 if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
                         self.qwebpage.at_bottom):
@@ -811,8 +810,9 @@ class QwebviewDocument(Qwebview):
                     self.scroll_by(y=amt)
         elif key == 'Up':
             if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll(forward=False, scroll_past_end=not
-                self.qwebpage.line_scrolling_stops_on_pagebreaks)
+                self.paged_col_scroll(
+                    forward=False,
+                    scroll_past_end=not self.qwebpage.line_scrolling_stops_on_pagebreaks)
             else:
                 if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
                         self.qwebpage.at_top):
@@ -887,4 +887,5 @@ class QwebviewDocument(Qwebview):
             self.link_clicked(qurl)
 
     def set_book_data(self, iterator):
+        self.qwebpage.current_language = iterator.language
         self.qwebpage.nam.set_book_data(iterator.base, iterator.spine)
