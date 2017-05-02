@@ -28,6 +28,8 @@ class Qobject(QObject, object):
         except IOError as e:
             if e.errno != 2:
                 raise
+        else:
+            self.qapplication.loadedUi.emit(self)
 
         json_path = filepath_relative(self, "json")
         try:
@@ -38,8 +40,6 @@ class Qobject(QObject, object):
         else:
             with iput:
                 self.options = json.load(iput)
-
-            self.qapplication.loadedUi.emit(self)
 
     @property
     def qapplication_qactions(self):

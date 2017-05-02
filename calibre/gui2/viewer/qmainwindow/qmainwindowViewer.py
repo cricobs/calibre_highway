@@ -224,10 +224,14 @@ class QmainwindowViewer(Qmainwindow):
             start_in_fullscreen=False, continue_reading=True, listener=None, file_events=(),
             parent=None):
 
+        self.debug_javascript = debug_javascript
+        self.start_in_fullscreen = start_in_fullscreen
+
+        super(QmainwindowViewer, self).__init__(parent)
+
         self._listener = None
         self.closed = False
         self.current_page = None
-        self.debug_javascript = debug_javascript
         self.existing_bookmarks = []
         self.interval_hide_cursor = 3333
         self.iterator = None
@@ -243,11 +247,8 @@ class QmainwindowViewer(Qmainwindow):
         self.resize_events_stack = []
         self.resize_in_progress = False
         self.show_toc_on_open = False
-        self.start_in_fullscreen = start_in_fullscreen
         self.was_maximized = False
         self.window_mode_changed = None
-
-        super(QmainwindowViewer, self).__init__(parent)
 
         self.vertical_scrollbar = self.centralWidget().vertical_scrollbar
         self.vertical_scrollbar.valueChanged[int].connect(lambda x: self.goto_page(x / 100.))
