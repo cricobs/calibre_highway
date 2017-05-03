@@ -54,9 +54,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QcomboboxMarkdown" name="qcomboboxMarkdown"/>
-      </item>
-      <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -150,11 +147,6 @@
    <class>QplaintexteditEdit</class>
    <extends>QPlainTextEdit</extends>
    <header>calibre.gui2.viewer.qplaintextedit.qplaintexteditEdit</header>
-  </customwidget>
-  <customwidget>
-   <class>QcomboboxMarkdown</class>
-   <extends>QComboBox</extends>
-   <header>calibre.gui2.viewer.qcombobox.qcomboboxMarkdown</header>
   </customwidget>
   <customwidget>
    <class>QwebviewContent</class>

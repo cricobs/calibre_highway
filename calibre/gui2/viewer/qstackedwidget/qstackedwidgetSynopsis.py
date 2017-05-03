@@ -161,10 +161,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
     def on_qwebviewPreview_contentChange(self, content):
         self.qwebviewContent.set_body(content)
 
-    @pyqtSlot(str)
-    def on_qcomboboxMarkdown_activated(self, text):
-        self.qcomboboxMarkdown.setCurrentIndex(0)
-
     @pyqtSlot(bool)
     def on_toolButtonPreview_clicked(self, checked):
         self.preview()

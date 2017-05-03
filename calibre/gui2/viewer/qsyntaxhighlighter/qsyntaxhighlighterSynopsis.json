@@ -10,7 +10,7 @@
     },
     "italic": {
       "italic": true,
-      "expression": "\\*.*\\*",
+      "expression": "\\*[^\\*]+\\*",
       "color": "#CB4B16"
     },
     "bold": {
