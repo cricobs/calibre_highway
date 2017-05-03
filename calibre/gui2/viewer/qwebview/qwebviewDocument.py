@@ -123,12 +123,14 @@ class QwebviewDocument(Qwebview):
             self.context_blank_qactions.add(qaction)
 
     # --- synopsis
+    # fixme move to qstackedwidgetSynopsis
     def copy_markdown(self, *args, **kwargs):
-        self.copy_text(self.selected_markdown_body())
+        position = self.qwebpage.page_position.current_pos if self.hasFocus() else None
+        self.copy_text(self.selected_markdown_body(position))
 
     def synopsis_append(self, *args, **kwargs):
         section = self.sender().data().get("section")
-        position = self.qwebpage.page_position.current_pos
+        position = self.qwebpage.page_position.current_pos if self.hasFocus() else None
         if section == "body":
             text = self.selected_markdown_body(position)
         elif section == "header":
@@ -140,15 +142,30 @@ class QwebviewDocument(Qwebview):
             self.manager.qdockwidgetSynopsis.qstackedwidgetSynopsis.append(text, position)
 
     def selected_markdown_header(self, level, position=None):
-        if self.selected_text:
-            position = position if position else self.qwebpage.page_position.current_pos
-            return "\n{0} <a class='header' position='{1}'>{2}</a>".format(
-                "#" * level, position, self.selected_text)
+        try:
+            text = self.qapplication.focusWidget().selected_text
+        except AttributeError:
+            return
+
+        if text:
+            if position:
+                return "\n{0} <a class='header' position='{2}'>{1}</a>".format(
+                    "#" * level, text, position)
+
+            return "\n{0} <a class='header'>{1}</a>".format(
+                "#" * level, text)
 
     def selected_markdown_body(self, position=None):
-        if self.selected_text:
-            position = position if position else self.qwebpage.page_position.current_pos
-            return "\n{0}\n{{: position={1}}}".format(self.selected_text, position)
+        try:
+            text = self.qapplication.focusWidget().selected_text
+        except AttributeError:
+            return
+
+        if text:
+            if position:
+                return "\n{0}\n{{: position={1}}}".format(text, position)
+
+            return "\n{0}".format(text)
 
     # --- goto
     def goto_next_section(self, *args):

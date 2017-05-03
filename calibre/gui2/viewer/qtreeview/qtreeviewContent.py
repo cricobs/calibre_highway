@@ -32,16 +32,24 @@ class QtreeviewContent(Qtreeview):
 
     def __init__(self, *args, **kwargs):
         super(QtreeviewContent, self).__init__(*args, **kwargs)
-        self.selected_text = None
         self.selected_index = None
 
         self.delegate = Delegate(self)
         self.setItemDelegate(self.delegate)
 
+    @property
+    def selected_text(self):
+        try:
+            return self.selected_index.data()
+        except AttributeError:
+            pass
+
     def contextMenuEvent(self, qevent):
         pos = qevent.pos()
         self.selected_index = self.indexAt(pos)
-        self.selected_text = self.selected_index.data()
+
+        self.setCurrentIndex(self.selected_index)
+        self.setFocus(Qt.OtherFocusReason)
 
         m = Qmenu(self)
         m.addActions(self.actions())
