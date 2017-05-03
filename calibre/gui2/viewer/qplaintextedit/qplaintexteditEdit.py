@@ -3,7 +3,6 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
-from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextedit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
@@ -15,8 +14,6 @@ class QplaintexteditEdit(Qplaintextedit):
     positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
 
-    formats = None
-
     def __init__(self, *args, **kwargs):
         super(QplaintexteditEdit, self).__init__(*args, **kwargs)
 
@@ -24,12 +21,17 @@ class QplaintexteditEdit(Qplaintextedit):
 
         self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
 
+    def on_qaction_triggered(self):
+        c = self.textCursor()
+        self.insert_format(c, c.selectedText(), **self.sender().data())
+        self.setFocus(Qt.OtherFocusReason)
+
     @property
     def selected_text(self):
         return self.textCursor().selectedText()
 
     def contextMenuEvent(self, qevent):
-        menu = Qmenu(self)
+        menu = self.qmenu_format
         if not menu.exec_(qevent.globalPos()):
             super(QplaintexteditEdit, self).contextMenuEvent(qevent)
 
@@ -54,12 +56,7 @@ class QplaintexteditEdit(Qplaintextedit):
     def mode_search(self):
         return self.SEARCH | self.REPLACE
 
-    def insertFormat(self, format):
-        c = self.textCursor()
-        self._insertFormat(c, c.selectedText(), **self.formats.get(format, None))
-        self.setFocus(Qt.OtherFocusReason)
-
-    def _insertFormat(self, cursor, text, newline=False, position=True, start=None, end=None):
+    def insert_format(self, cursor, text, newline=False, position=True, start=None, end=None, **kwargs):
         cursor.beginEditBlock()
         if newline and not cursor.atBlockStart():
             cursor.insertText('\n')
@@ -78,11 +75,6 @@ class QplaintexteditEdit(Qplaintextedit):
         self.positionSave.emit()
         super(QplaintexteditEdit, self).setPlainText(p_str)
         self.positionLoad.emit()
-
-    def load_options(self, options):
-        super(QplaintexteditEdit, self).load_options(options)
-
-        self.formats = options["formats"]
 
     def keyPressEvent(self, qkeyevent):
         super(QplaintexteditEdit, self).keyPressEvent(qkeyevent)

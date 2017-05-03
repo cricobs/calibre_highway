@@ -48,8 +48,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
         self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
-        self.qcomboboxMarkdown.addItems(sorted(self.qplaintexteditEdit.formats.keys()))
-
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
             self.qwebviewPreview, self.qplaintexteditEdit)
 
@@ -165,7 +163,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
 
     @pyqtSlot(str)
     def on_qcomboboxMarkdown_activated(self, text):
-        self.qplaintexteditEdit.insertFormat(text)
         self.qcomboboxMarkdown.setCurrentIndex(0)
 
     @pyqtSlot(bool)

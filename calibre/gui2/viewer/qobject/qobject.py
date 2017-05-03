@@ -112,13 +112,14 @@ class Qobject(QObject, object):
 
                 qmenu = Qmenu(self)
                 setattr(self, n, qmenu)
+            finally:
+                qmenu.setObjectName(n)
 
         text = text or name
         if action:
             qaction = reduce(getattr, action, self)
         elif qmenu:
             qaction = Qaction(text, qmenu)
-            qmenu.addAction(qaction)
         else:
             qaction = Qaction(text, self)
 
@@ -152,6 +153,8 @@ class Qobject(QObject, object):
             setattr(self, 'qmenu_' + dropdown, qaction.create_qmenu())
         if actions:
             self.create_actions(actions, qaction.create_qmenu())
+        if qmenu:
+            qmenu.addAction(qaction)
 
         self.addAction(qaction)
 

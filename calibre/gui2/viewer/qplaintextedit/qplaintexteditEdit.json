@@ -1,78 +1,271 @@
 {
-  "formats": {
-    "header": {
-      "newline": true,
-      "start": "# "
-    },
-    "italic": {
-      "start": "*",
-      "end": "*"
-    },
-    "bold": {
-      "start": "**",
-      "end": "**"
-    },
-    "tag underline": {
-      "start": "<u>",
-      "end": "</u>"
-    },
-    "list number": {
-      "newline": true,
-      "start": " 1. "
-    },
-    "list bullet": {
-      "newline": true,
-      "start": " * "
-    },
-    "list dash": {
-      "newline": true,
-      "start": " - "
-    },
-    "image": {
-      "start": "![",
-      "end": "]()"
-    },
-    "link": {
-      "start": "[",
-      "end": "]()"
-    },
-    "code inline": {
-      "start": "`",
-      "end": "`"
-    },
-    "code block": {
-      "newline": true,
-      "start": "    "
-    },
-    "quote": {
-      "newline": true,
-      "start": "> "
-    },
-    "tag cite": {
-      "start": "<cite>",
-      "end": "</cite>"
-    },
-    "tag link": {
-      "start": "<a '",
-      "end": "'/>"
-    },
-    "attribute": {
-      "newline": true,
-      "start": "{: ",
-      "end": "}"
-    },
-    "tag": {
-      "start": "<>",
-      "end": "</>"
-    },
-    "tag inline": {
-      "start": "<",
-      "end": "/>"
-    },
-    "tag comment": {
-      "newline": true,
-      "start": "<!--",
-      "end": "-->"
-    }
+  "actions": {
+    "format": [
+      {
+        "name": "attribute",
+        "slots": {
+          "triggered": [
+            "on_qaction_triggered"
+          ]
+        },
+        "separator": true,
+        "data": {
+          "newline": true,
+          "start": "{: ",
+          "end": "}",
+          "position": -1
+        }
+      },
+      {
+        "name": "section",
+        "data": {
+          "position": -1.5
+        },
+        "actions": [
+          {
+            "name": "header",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": "# "
+            }
+          },
+          {
+            "name": "quote",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": "> "
+            }
+          },
+          {
+            "name": "code",
+            "actions": [
+              {
+                "name": "inline",
+                "slots": {
+                  "triggered": [
+                    "on_qaction_triggered"
+                  ]
+                },
+                "data": {
+                  "start": "`",
+                  "end": "`"
+                }
+              },
+              {
+                "name": "block",
+                "slots": {
+                  "triggered": [
+                    "on_qaction_triggered"
+                  ]
+                },
+                "data": {
+                  "newline": true,
+                  "start": "    "
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "href",
+        "data": {
+          "position": -1.1
+        },
+        "actions": [
+          {
+            "name": "image",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "![",
+              "end": "]()"
+            }
+          },
+          {
+            "name": "link",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "[",
+              "end": "]()"
+            }
+          }
+        ]
+      },
+      {
+        "name": "font",
+        "data": {
+          "position": -1.6
+        },
+        "actions": [
+          {
+            "name": "italic",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "*",
+              "end": "*"
+            }
+          },
+          {
+            "name": "bold",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "**",
+              "end": "**"
+            }
+          }
+        ]
+      },
+      {
+        "name": "list",
+        "data": {
+          "position": -1.4
+        },
+        "actions": [
+          {
+            "name": "number",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": " 1. "
+            }
+          },
+          {
+            "name": "bullet",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": " * "
+            }
+          },
+          {
+            "name": "dash",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": " - "
+            }
+          }
+        ]
+      },
+      {
+        "name": "tag",
+        "data": {
+          "position": -1.2
+        },
+        "actions": [
+          {
+            "name": "underline",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<u>",
+              "end": "</u>"
+            }
+          },
+          {
+            "name": "cite",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<cite>",
+              "end": "</cite>"
+            }
+          },
+          {
+            "name": "link",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<a '",
+              "end": "'/>"
+            }
+          },
+          {
+            "name": "tag",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<>",
+              "end": "</>"
+            }
+          },
+          {
+            "name": "inline",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<",
+              "end": "/>"
+            }
+          },
+          {
+            "name": "comment",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "newline": true,
+              "start": "<!--",
+              "end": "-->"
+            }
+          }
+        ]
+      }
+    ]
   }
 }
