@@ -36,7 +36,7 @@ class Qmenu(QMenu, Qwidget):
     def _addAction(self, action):
         if not action.isEnabled():
             return
-        try:
+        try:  # maybe use this check only for qapplication_qactions in exec_
             contexts = action.data().get("context", [])
         except AttributeError:
             pass

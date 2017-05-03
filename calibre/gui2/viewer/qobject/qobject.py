@@ -118,10 +118,8 @@ class Qobject(QObject, object):
         text = text or name
         if action:
             qaction = reduce(getattr, action, self)
-        elif qmenu:
-            qaction = Qaction(text, qmenu)
         else:
-            qaction = Qaction(text, self)
+            qaction = Qaction(text, qmenu or self)
 
         qaction.setCheckable(checkable)
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())

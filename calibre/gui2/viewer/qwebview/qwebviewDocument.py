@@ -64,6 +64,7 @@ class QwebviewDocument(Qwebview):
         self.qwebpage.settings_changed.connect(self.footnotes.clone_settings)
         self.create_actions(self.options["actions"])
 
+        # fixme setMenu from Qobject
         self.qaction_synopsis.setMenu(self.qmenu_synopsis)
         self.qaction_search_online.setMenu(self.qmenu_search_online)
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
@@ -269,7 +270,8 @@ class QwebviewDocument(Qwebview):
                 self.manager.search.set_search_string(t)
 
     def search_online(self):
-        t = unicode(self.qaction_search_online.qmenu.selected_text).strip()
+        qwidget = self.qapplication.focusWidget()
+        t = unicode(getattr(qwidget, "selected_text")).strip()
         if t:
             self.open_url(t, self.sender().data().get("url", None))
 
