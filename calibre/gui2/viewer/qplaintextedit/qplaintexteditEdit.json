@@ -192,6 +192,18 @@
         },
         "actions": [
           {
+            "name": "empty",
+            "slots": {
+              "triggered": [
+                "on_qaction_triggered"
+              ]
+            },
+            "data": {
+              "start": "<>",
+              "end": "</>"
+            }
+          },
+          {
             "name": "underline",
             "slots": {
               "triggered": [
@@ -225,18 +237,6 @@
             "data": {
               "start": "<a '",
               "end": "'/>"
-            }
-          },
-          {
-            "name": "tag",
-            "slots": {
-              "triggered": [
-                "on_qaction_triggered"
-              ]
-            },
-            "data": {
-              "start": "<>",
-              "end": "</>"
             }
           },
           {

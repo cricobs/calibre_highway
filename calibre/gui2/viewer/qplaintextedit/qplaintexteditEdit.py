@@ -3,6 +3,7 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 
+from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qplaintextedit.qplaintextedit import Qplaintextedit
 from calibre.gui2.viewer.qsyntaxhighlighter.qsyntaxhighlighterSynopsis import \
@@ -31,7 +32,8 @@ class QplaintexteditEdit(Qplaintextedit):
         return self.textCursor().selectedText()
 
     def contextMenuEvent(self, qevent):
-        menu = self.qmenu_format
+        menu = Qmenu(self)
+        menu.addActions(self.format_qactions)
         if not menu.exec_(qevent.globalPos()):
             super(QplaintexteditEdit, self).contextMenuEvent(qevent)
 
@@ -56,7 +58,8 @@ class QplaintexteditEdit(Qplaintextedit):
     def mode_search(self):
         return self.SEARCH | self.REPLACE
 
-    def insert_format(self, cursor, text, newline=False, position=True, start=None, end=None, **kwargs):
+    def insert_format(self, cursor, text, newline=False, position=True, start=None, end=None,
+                      **kwargs):
         cursor.beginEditBlock()
         if newline and not cursor.atBlockStart():
             cursor.insertText('\n')

@@ -16,7 +16,7 @@ class Qmenu(QMenu, Qwidget):
         return value
 
     def add_qapplication_actions(self, qactions):
-        pass
+        pass  # added manually in exec_
 
     def exec_(self, *args):
         self.add_text_qactions()
@@ -25,16 +25,10 @@ class Qmenu(QMenu, Qwidget):
             return super(Qmenu, self).exec_(*args)
 
     def add_text_qactions(self):
-        try:
-            text = self.selected_text  # note get selected_text via __getattribute__
-        except AttributeError:
-            pass
-        else:
-            if text:
-                actions = filter(
-                    lambda q: "text" in q.data().get("context", []), self.qapplication_qactions)
+        actions = filter(
+            lambda q: "text" in q.data().get("context", []), self.qapplication_qactions)
 
-                map(self._addAction, actions)
+        map(self._addAction, actions)
 
     def addActions(self, qactions):
         map(self._addAction, qactions)
@@ -42,6 +36,13 @@ class Qmenu(QMenu, Qwidget):
     def _addAction(self, action):
         if not action.isEnabled():
             return
+        try:
+            contexts = action.data().get("context", [])
+        except AttributeError:
+            pass
+        else:
+            if "text" in contexts and not self.selected_text:
+                return
         try:
             action.update(self)
         except AttributeError:
