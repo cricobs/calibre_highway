@@ -1,7 +1,6 @@
 from collections import defaultdict
 
-from PyQt5.QtCore import QObject, pyqtSignal
-from PyQt5.QtCore import QPoint
+from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QSignalMapper
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QAction

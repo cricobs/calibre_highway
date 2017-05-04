@@ -12,10 +12,6 @@ class Qwebpage(QWebPage, Qwidget):
             self.on_mainFrame_javaScriptWindowObjectCleared
         )
 
-    @property
-    def mode_selection(self):
-        return True
-
     def on_mainFrame_javaScriptWindowObjectCleared(self):
         self.mainFrame().addToJavaScriptWindowObject("qwebview", self.view())
 

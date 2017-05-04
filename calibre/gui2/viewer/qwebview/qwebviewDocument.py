@@ -102,10 +102,6 @@ class QwebviewDocument(Qwebview):
         return self.context_blank_qactions | self.context_text_qactions
 
     @property
-    def mode_search(self):
-        return self.SEARCH
-
-    @property
     def mode_qapplication_qaction(self):
         return True
 

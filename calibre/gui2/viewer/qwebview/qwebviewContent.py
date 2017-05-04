@@ -14,10 +14,6 @@ class QwebviewContent(Qwebview):
 
         self._body = None
 
-    @property
-    def mode_search(self):
-        return self.SEARCH
-
     @pyqtSlot(str)
     def content_click(self, content):
         self.contentClick.emit(content)

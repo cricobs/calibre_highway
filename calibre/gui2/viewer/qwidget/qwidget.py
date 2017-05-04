@@ -1,6 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
+from calibre.gui2.viewer.library.exception import PropertyException
 from calibre.gui2.viewer.qaction.qaction import Qaction
 from calibre.gui2.viewer.qobject.qobject import Qobject
 
@@ -33,6 +34,14 @@ class Qwidget(QWidget, Qobject):
 
         if self.mode_selection:
             self.selectionChanged.connect(self.qapplication.selectionChanged)
+
+    @property
+    def selected_text(self):
+        """
+        used in qapplication.selectedText() if mode_selection
+        :return:
+        """
+        raise PropertyException
 
     @property
     def mode_selection(self):

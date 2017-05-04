@@ -29,5 +29,13 @@ class Qwebview(QWebView, Qwidget):
             super(Qwebview, self).contextMenuEvent(qevent)
 
     @property
+    def mode_search(self):
+        return self.SEARCH
+
+    @property
     def selected_text(self):
-        return self.selectedText().replace(u'\u00ad', u'').strip()
+        return self.page().selectedText().replace(u'\u00ad', u'').strip()
+
+    @property
+    def mode_selection(self):
+        return True

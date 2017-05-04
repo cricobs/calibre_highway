@@ -2,6 +2,7 @@ import json
 from PyQt5.uic import loadUi
 
 from PyQt5.QtCore import QObject
+from PyQt5.QtCore import pyqtWrapperType
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
@@ -11,7 +12,13 @@ from calibre.gui2.viewer.qaction.qaction import Qaction
 I = I
 
 
+class pyqtwrappertype(pyqtWrapperType):
+    pass
+
+
 class Qobject(QObject, object):
+    __metaclass__ = pyqtwrappertype
+
     def __init__(self, *args, **kwargs):
         super(Qobject, self).__init__(*args, **kwargs)
 
@@ -22,6 +29,10 @@ class Qobject(QObject, object):
             self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
             self.add_qapplication_actions(self.qapplication_qactions)
 
+        self.load_ui_file()
+        self.load_options_file()
+
+    def load_ui_file(self):
         ui_path = filepath_relative(self, "ui")
         try:
             loadUi(ui_path, self)
@@ -31,6 +42,7 @@ class Qobject(QObject, object):
         else:
             self.qapplication.loadedUi.emit(self)
 
+    def load_options_file(self):
         json_path = filepath_relative(self, "json")
         try:
             iput = open(json_path)
