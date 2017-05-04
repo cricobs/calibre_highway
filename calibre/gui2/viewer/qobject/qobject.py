@@ -7,6 +7,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
+from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qaction import Qaction
 
 I = I
@@ -21,8 +22,6 @@ class Qobject(QObject, object):
 
     def __init__(self, *args, **kwargs):
         super(Qobject, self).__init__(*args, **kwargs)
-
-        self._options = None
 
         self.qapplication = QApplication.instance()
         if self.mode_global_qaction:
@@ -100,16 +99,10 @@ class Qobject(QObject, object):
         """
         return False
 
-    @property
-    def options(self):
-        return self._options
-
-    @options.setter
+    @property_setter
     def options(self, options):
-        self._options = options
-
-        if self._options:
-            self.load_options(self._options)
+        if options:
+            self.load_options(options)
 
     def load_options(self, options=None):
         options = options or self.options

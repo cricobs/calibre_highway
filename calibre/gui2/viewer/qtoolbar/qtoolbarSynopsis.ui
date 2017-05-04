@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QToolBar" name="Edit">
+ <widget class="QToolBar" name="Synopsis">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Edit</string>
+   <string>Synopsis</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QToolButton { 

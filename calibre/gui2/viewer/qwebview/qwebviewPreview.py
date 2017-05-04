@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 
 from calibre.ebooks import markdown
 from calibre.gui2.viewer.library.filepath import filepath_relative
+from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qobject.qobjectScrollPosition import QobjectScrollPosition
 from calibre.gui2.viewer.qwebview.qwebview import Qwebview
 
@@ -49,14 +50,9 @@ class QwebviewPreview(Qwebview):
         self.positionSave.emit()
         self.load(QUrl.fromLocalFile(filepath_relative(self, "html")))
 
-    @pyqtProperty(str)
-    def content(self):
-        return self._content
-
-    @content.setter
+    @property_setter
     def content(self, value):
-        self._content = value
-        self.contentChange.emit(self._content)
+        self.contentChange.emit(value)
 
     @pyqtProperty(str)
     def body(self):

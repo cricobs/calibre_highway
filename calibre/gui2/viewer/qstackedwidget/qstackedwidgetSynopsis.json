@@ -1,0 +1,66 @@
+{
+  "actions": [
+    {
+      "name": "reload",
+      "parents": [
+        "QtoolbarSynopsis"
+      ],
+      "slots": {
+        "triggered": [
+          "reload"
+        ]
+      },
+      "icon": "view-refresh.png"
+    },
+    {
+      "name": "undo",
+      "parents": [
+        "QtoolbarSynopsis"
+      ],
+      "slots": {
+        "triggered": [
+          "undo"
+        ]
+      },
+      "enabled": false,
+      "icon": "edit-undo.png"
+    },
+    {
+      "name": "redo",
+      "parents": [
+        "QtoolbarSynopsis"
+      ],
+      "slots": {
+        "triggered": [
+          "redo"
+        ]
+      },
+      "enabled": false,
+      "icon": "edit-redo.png"
+    },
+    {
+      "name": "save",
+      "parents": [
+        "QtoolbarSynopsis"
+      ],
+      "slots": {
+        "triggered": [
+          "save"
+        ]
+      },
+      "icon": "save.png"
+    },
+    {
+      "name": "preview",
+      "parents": [
+        "QtoolbarSynopsis"
+      ],
+      "slots": {
+        "triggered": [
+          "preview"
+        ]
+      },
+      "icon": "beautify.png"
+    }
+  ]
+}

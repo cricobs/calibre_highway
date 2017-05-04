@@ -1,6 +1,5 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
@@ -41,12 +40,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.synopsis_size = None
 
         self.update_config()
-
-        self.toolButtonRedo.setIcon(QIcon(I("edit-redo.png")))
-        self.toolButtonUndo.setIcon(QIcon(I("edit-undo.png")))
-        self.toolButtonSave.setIcon(QIcon(I("save.png")))
-        self.toolButtonPreview.setIcon(QIcon(I("beautify.png")))
-        self.toolButtonReload.setIcon(QIcon(I("view-refresh.png")))
 
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
             self.qwebviewPreview, self.qplaintexteditEdit)
@@ -156,57 +149,31 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.qwebviewPreview.goto_hash(hash)
         self.setCurrentIndex(self.indexOf(self.qwebviewPreview.parent()))
 
+    def redo(self):
+        self.qplaintexteditEdit.redo()
+
+    def undo(self):
+        self.qplaintexteditEdit.undo()
+
     @pyqtSlot(str)
     def on_qwebviewPreview_contentChange(self, content):
         self.qwebviewContent.set_body(content)
-
-    @pyqtSlot(bool)
-    def on_toolButtonPreview_clicked(self, checked):
-        self.preview()
 
     @pyqtSlot(bool)
     def on_qwebviewPreview_showEditor(self):
         self.edit()
 
     @pyqtSlot(bool)
-    def on_qplaintexteditEdit_showPreview(self):
-        self.preview()
-
-    @pyqtSlot(bool)
-    def on_qactionSave_triggered(self):
-        self.save()
-
-    @pyqtSlot(bool)
-    def on_qactionPreview_triggered(self):
-        self.preview()
-
-    @pyqtSlot(bool)
     def on_qplaintexteditEdit_modificationChanged(self, changed):
-        self.toolButtonSave.setEnabled(changed)
-
-    @pyqtSlot(bool)
-    def on_toolButtonRedo_clicked(self, checked):
-        self.qplaintexteditEdit.redo()
-
-    @pyqtSlot(bool)
-    def on_toolButtonUndo_clicked(self, checked):
-        self.qplaintexteditEdit.undo()
+        self.qaction_save.setEnabled(changed)
 
     @pyqtSlot(bool)
     def on_qplaintexteditEdit_redoAvailable(self, available):
-        self.toolButtonRedo.setEnabled(available)
+        self.qaction_redo.setEnabled(available)
 
     @pyqtSlot(bool)
     def on_qplaintexteditEdit_undoAvailable(self, available):
-        self.toolButtonUndo.setEnabled(available)
-
-    @pyqtSlot(bool)
-    def on_toolButtonReload_clicked(self, checked):
-        self.reload()
-
-    @pyqtSlot(bool)
-    def on_toolButtonSave_clicked(self, checked):
-        self.save()
+        self.qaction_undo.setEnabled(available)
 
     def on_qapplication_aboutToQuit(self):
         if self.path_source:
@@ -217,3 +184,8 @@ class QstackedwidgetSynopsis(Qstackedwidget):
     @property
     def mode_save(self):
         return True
+
+    def addAction(self, qaction):
+        setattr(self, qaction.objectName(), qaction)
+
+        super(QstackedwidgetSynopsis, self).addAction(qaction)

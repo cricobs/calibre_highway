@@ -83,6 +83,23 @@
     <number>1</number>
    </attribute>
   </widget>
+  <widget class="QtoolbarSynopsis" name="qtoolbarSynopsis">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>18</width>
+     <height>18</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -125,6 +142,11 @@
    <extends>QWidget</extends>
    <header>calibre.gui2.viewer.qwidget.qwidgetDocument</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtoolbarSynopsis</class>
+   <extends>QToolBar</extends>
+   <header>calibre.gui2.viewer.qtoolbar.qtoolbarSynopsis</header>
   </customwidget>
  </customwidgets>
  <resources/>

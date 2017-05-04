@@ -1,5 +1,7 @@
 {
   "actions": {
+    "toolbar" : [
+    ],
     "format": [
       {
         "name": "attribute",

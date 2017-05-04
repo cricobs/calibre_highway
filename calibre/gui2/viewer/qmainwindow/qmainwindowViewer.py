@@ -229,13 +229,12 @@ class QmainwindowViewer(Qmainwindow):
 
         super(QmainwindowViewer, self).__init__(parent)
 
-        self._listener = None
+        self.listener = listener
         self.closed = False
         self.current_page = None
         self.existing_bookmarks = []
         self.interval_hide_cursor = 3333
         self.iterator = None
-        self.listener = listener
         self.lookup_error_reported = {}
         self.pending_anchor = None
         self.pending_bookmark = None
@@ -320,11 +319,7 @@ class QmainwindowViewer(Qmainwindow):
     def mode_activity(self):
         return True
 
-    @property
-    def listener(self):
-        return self._listener
-
-    @listener.setter
+    @property_setter
     def listener(self, listener):
         if listener is not None:
             self._listener = listener

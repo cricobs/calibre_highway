@@ -129,7 +129,6 @@
       "text": "Footnotes",
       "name": "footnotes",
       "parents": [
-        "QtoolbarEdit",
         "QwebviewDocument"
       ],
       "icon": "column.png",
@@ -186,7 +185,6 @@
     {
       "checkable": true,
       "parents": [
-        "QtoolbarEdit",
         "QwebviewDocument"
       ],
       "text": "Edit",
@@ -240,7 +238,6 @@
       },
       "name": "full_screen",
       "parents": [
-        "QtoolbarEdit",
         "QwebviewDocument"
       ],
       "icon": "page.png",
