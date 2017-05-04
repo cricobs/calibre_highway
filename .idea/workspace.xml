@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebview.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebview.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,8 +39,8 @@
       <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="234" column="21" lean-forward="false" selection-start-line="234" selection-start-column="21" selection-end-line="234" selection-end-column="21" />
+            <state relative-caret-position="306">
+              <caret line="231" column="29" lean-forward="true" selection-start-line="231" selection-start-column="29" selection-end-line="231" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -1124,13 +1121,6 @@
       <option name="presentableId" value="Default" />
       <updated>1483536369871</updated>
     </task>
-    <task id="LOCAL-00120" summary="QmainwindowViewer.initialize_dock_state removed&#10;QmainwindowViewer.on_qapplication_qactionAdded changed to superclass">
-      <created>1493161564757</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1493161564757</updated>
-    </task>
     <task id="LOCAL-00121" summary="Qobject, QWidget reformat">
       <created>1493162459150</created>
       <option name="number" value="00121" />
@@ -1467,7 +1457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493924918275</updated>
     </task>
-    <option name="localTasksCounter" value="169" />
+    <task id="LOCAL-00169" summary="Qapplication.copy use focusWidget">
+      <created>1493928052071</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1493928052071</updated>
+    </task>
+    <option name="localTasksCounter" value="170" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1522,7 +1519,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="qwidgetDocument.json deleted&#10;" />
     <MESSAGE value="qmainwindowViewr.json copy moved to qwebviewDocument.json&#10;QmainwindowViewer.copy removed&#10;" />
     <MESSAGE value="QmainwindowViewer.selected_text removed&#10;" />
     <MESSAGE value="qwebviewDocument.json copy_position" />
@@ -1547,7 +1543,8 @@
     <MESSAGE value="QtreeviewContent enable qaction_copy" />
     <MESSAGE value="QtreeviewContent clear selection on hideEvent" />
     <MESSAGE value="Qwebpage.mode_selection move to Qwebview" />
-    <option name="LAST_COMMIT_MESSAGE" value="Qwebpage.mode_selection move to Qwebview" />
+    <MESSAGE value="Qapplication.copy use focusWidget" />
+    <option name="LAST_COMMIT_MESSAGE" value="Qapplication.copy use focusWidget" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1986,8 +1983,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="234" column="21" lean-forward="false" selection-start-line="234" selection-start-column="21" selection-end-line="234" selection-end-column="21" />
+        <state relative-caret-position="306">
+          <caret line="231" column="29" lean-forward="true" selection-start-line="231" selection-start-column="29" selection-end-line="231" selection-end-column="29" />
           <folding />
         </state>
       </provider>
