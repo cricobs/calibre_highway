@@ -25,12 +25,30 @@ class Qobject(QObject, object):
         self._options = None
 
         self.qapplication = QApplication.instance()
-        if self.mode_qapplication_qaction:
+        if self.mode_global_qaction:
             self.qapplication.qactionAdded.connect(self.on_qapplication_qactionAdded)
             self.add_qapplication_actions(self.qapplication_qactions)
+        if self.mode_activity:
+            self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
+            self.qapplication.activity.connect(self.on_qapplication_activity)
 
         self.load_ui_file()
         self.load_options_file()
+
+    def on_qapplication_activity(self):
+        pass
+
+    def on_qapplication_inactivityTimeout(self, target, interval):
+        pass
+
+    @property
+    def mode_activity(self):
+        """
+        connect qapplication.inactivityTimeout to on_qapplication_inactivityTimeout
+        connect qapplication.activity to on_qapplication_activity
+        :return:
+        """
+        return False
 
     def load_ui_file(self):
         ui_path = filepath_relative(self, "ui")
@@ -74,7 +92,12 @@ class Qobject(QObject, object):
         self.add_qapplication_action(qaction)
 
     @property
-    def mode_qapplication_qaction(self):
+    def mode_global_qaction(self):
+        """
+        connect qapplication.qactionAdded to on_qapplication_qactionAdded
+        addActions(qapplication_qactions)
+        :return:
+        """
         return False
 
     @property

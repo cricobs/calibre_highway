@@ -9,7 +9,7 @@ class QtoolbarEdit(Qtoolbar):
         self._addAction(*__args)
 
     @property
-    def mode_qapplication_qaction(self):
+    def mode_global_qaction(self):
         return True
 
     def _addAction(self, action):

@@ -102,7 +102,7 @@ class QwebviewDocument(Qwebview):
         return self.context_blank_qactions | self.context_text_qactions
 
     @property
-    def mode_qapplication_qaction(self):
+    def mode_global_qaction(self):
         return True
 
     # ---- actions

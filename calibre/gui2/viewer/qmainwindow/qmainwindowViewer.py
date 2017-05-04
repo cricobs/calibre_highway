@@ -292,8 +292,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
         self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
-        self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
-        self.qapplication.activity.connect(self.on_qapplication_activity)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
 
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
@@ -319,6 +317,10 @@ class QmainwindowViewer(Qmainwindow):
         QTimer.singleShot(50, start)
 
     @property
+    def mode_activity(self):
+        return True
+
+    @property
     def listener(self):
         return self._listener
 
@@ -335,7 +337,7 @@ class QmainwindowViewer(Qmainwindow):
             t.start()
 
     @property
-    def mode_qapplication_qaction(self):
+    def mode_global_qaction(self):
         return True
 
     def on_qapplication_activity(self):

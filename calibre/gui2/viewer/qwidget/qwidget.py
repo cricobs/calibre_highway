@@ -16,10 +16,10 @@ class Qwidget(QWidget, Qobject):
         if self.mode_search ^ self.NONE:
             self.qapplication.search.connect(self.on_qapplication_search)
             self.qapplication.replace.connect(self.on_qapplication_replace)
-
         if self.mode_save:
             self.qapplication.aboutToQuit.connect(self.on_qapplication_aboutToQuit)
-
+        if self.mode_selection:
+            self.selectionChanged.connect(self.qapplication.selectionChanged)
         if self.mode_toggle:
             self.qaction_toggle = Qaction(self)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
@@ -31,9 +31,6 @@ class Qwidget(QWidget, Qobject):
                 self.qaction_toggle.setChecked(q.isChecked())
                 self.qaction_toggle.triggered.connect(q.trigger)
                 self.qaction_toggle.setText(q.text())
-
-        if self.mode_selection:
-            self.selectionChanged.connect(self.qapplication.selectionChanged)
 
     @property
     def selected_text(self):

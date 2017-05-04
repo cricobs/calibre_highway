@@ -13,8 +13,9 @@ class Qdockwidget(QDockWidget, Qwidget):
         self.setTitleBarWidget(self.qwidgettitlebar)
         self.setVisible(self.start_visible)
 
-        if self.mode_hide:
-            self.qapplication.inactivityTimeout.connect(self.on_qapplication_inactivityTimeout)
+    @property
+    def mode_activity(self):
+        return True
 
     @property
     def mode_toggle(self):
