@@ -41,12 +41,4 @@ class QapplicationViewer(Qapplication):
             self.copyMarkdown.emit(text, options)
 
     def copy(self):
-        text = self.selected_text()
-        if not text:
-            return
-
-        qwidget = self.focusWidget()
-        try:
-            qwidget.page().triggerAction(qwidget.page().Copy)
-        except AttributeError:
-            self.copy_text(self.selected_text())
+        self.focusWidget().copy()

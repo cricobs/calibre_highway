@@ -42,6 +42,11 @@ class Qtreeview(QTreeView, Qwidget):
 
         self.setFocusPolicy(Qt.StrongFocus)
 
+    def copy(self):
+        text = self.selected_text
+        if text:
+            self.qapplication.copy_text(self.selected_text)
+
     @property
     def mode_selection(self):
         return True

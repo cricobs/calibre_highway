@@ -28,6 +28,10 @@ class Qwebview(QWebView, Qwidget):
         if not menu.exec_(qevent.globalPos()):
             super(Qwebview, self).contextMenuEvent(qevent)
 
+    def copy(self):
+        p = self.page()
+        p.triggerAction(p.Copy)
+        
     @property
     def mode_search(self):
         return self.SEARCH
