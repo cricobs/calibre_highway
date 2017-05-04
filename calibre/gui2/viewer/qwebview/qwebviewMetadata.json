@@ -4,7 +4,7 @@
       "text": "Show book metadata",
       "name": "metadata",
       "parents": [
-        "QtoolbarEdit"
+        "QwebviewDocument"
       ],
       "checkable": true,
       "icon": "metadata.png",
@@ -13,8 +13,11 @@
           "setVisible"
         ]
       },
-      "data" : {
-        "position" : -0.1
+      "data": {
+        "position": -0.1,
+        "context": [
+          "blank"
+        ]
       }
     }
   ]

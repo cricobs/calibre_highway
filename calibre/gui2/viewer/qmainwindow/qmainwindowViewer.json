@@ -77,7 +77,6 @@
       "name": "reload",
       "icon": "view-refresh.png",
       "parents": [
-        "QtoolbarEdit",
         "QwebviewDocument"
       ],
       "slots": {
@@ -276,7 +275,7 @@
     {
       "text": "Toggle paged mode",
       "parents": [
-        "QtoolbarEdit"
+        "QwebviewDocument"
       ],
       "name": "toggle_paged_mode",
       "checkable": true,
@@ -287,28 +286,34 @@
         ]
       },
       "data": {
-        "position": 13
+        "position": 13,
+        "context": [
+          "blank"
+        ]
       }
     },
     {
       "name": "load_theme",
       "text": "Load a theme",
       "parents": [
-        "QtoolbarEdit"
+        "QwebviewDocument"
       ],
       "dropdown": "themes",
       "icon": "wizard.png",
       "separator": true,
       "data": {
         "popup": "InstantPopup",
-        "position": 14
+        "position": 14,
+        "context": [
+          "blank"
+        ]
       }
     },
     {
       "text": "Print to PDF file",
       "name": "print",
       "parents": [
-        "QtoolbarEdit"
+        "QwebviewDocument"
       ],
       "icon": "print.png",
       "slots": {
@@ -317,13 +322,16 @@
         ]
       },
       "data": {
-        "position": 15
+        "position": 15,
+        "context": [
+          "blank"
+        ]
       }
     },
     {
       "text": "Preferences",
       "parents": [
-        "QtoolbarEdit"
+        "QwebviewDocument"
       ],
       "name": "preferences",
       "icon": "config.png",
@@ -333,7 +341,10 @@
         ]
       },
       "data": {
-        "position": 16
+        "position": 16,
+        "context": [
+          "blank"
+        ]
       }
     },
     {

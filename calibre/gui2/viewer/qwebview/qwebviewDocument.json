@@ -44,7 +44,7 @@
         "text": "Reference mode",
         "name": "reference_mode",
         "parents": [
-          "QtoolbarEdit"
+          "QwebviewDocument"
         ],
         "checkable": true,
         "icon": "lookfeel.png",
@@ -54,7 +54,10 @@
           ]
         },
         "data": {
-          "position": 12
+          "position": 12,
+          "context": [
+            "blank"
+          ]
         }
       },
       {
@@ -206,7 +209,7 @@
         "name": "font_size_larger",
         "icon": "font_size_larger.png",
         "parents": [
-          "QtoolbarEdit"
+          "QwebviewDocument"
         ],
         "data": {
           "context": [
@@ -225,7 +228,7 @@
         "name": "font_size_smaller",
         "icon": "font_size_smaller.png",
         "parents": [
-          "QtoolbarEdit"
+          "QwebviewDocument"
         ],
         "data": {
           "context": [
