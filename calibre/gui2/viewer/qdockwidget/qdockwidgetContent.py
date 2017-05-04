@@ -1,5 +1,4 @@
 from calibre.gui2.viewer.qdockwidget.qdockwidget import Qdockwidget
-from calibre.gui2 import error_dialog
 
 
 class QdockwidgetContent(Qdockwidget):
@@ -7,14 +6,7 @@ class QdockwidgetContent(Qdockwidget):
         super(QdockwidgetContent, self).__init__(*args, **kwargs)
 
     def search(self, search, backwards=False):
-        # fixme use direction
-        index = self.qtreeviewContent.model().search(search)
-        if index.isValid():
-            self.qtreeviewContent.searched.emit(index)
-        else:
-            error_dialog(
-                self.qtreeviewContent, 'No matches found',
-                'There are no Table of Contents entries matching: ' + search, show=True)
+        self.qtreeviewContent.search(search, backwards=backwards)
 
     @property
     def qwidgettitlebar(self):
@@ -30,8 +22,5 @@ class QdockwidgetContent(Qdockwidget):
 
     def raise_(self):
         super(QdockwidgetContent, self).raise_()
-        entry = self.qtreeviewContent.model().currently_viewed_entry
-        if not entry:
-            return
 
-        self.qtreeviewContent.scrollTo(entry.index(), self.qtreeviewContent.PositionAtTop)
+        self.self.qtreeviewContent.set_current_entry()

@@ -22,6 +22,7 @@ class QapplicationViewer(Qapplication):
     replace = pyqtSignal(QWidget, str, str, bool)
     appendMarkdown = pyqtSignal(str, dict)
     copyMarkdown = pyqtSignal(str, dict)
+    selectionChanged = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)
@@ -38,3 +39,14 @@ class QapplicationViewer(Qapplication):
         text = self.selected_text()
         if text:
             self.copyMarkdown.emit(text, options)
+
+    def copy(self):
+        text = self.selected_text()
+        if not text:
+            return
+
+        qwidget = self.focusWidget()
+        try:
+            qwidget.page().triggerAction(qwidget.page().Copy)
+        except AttributeError:
+            self.copy_text(self.selected_text())

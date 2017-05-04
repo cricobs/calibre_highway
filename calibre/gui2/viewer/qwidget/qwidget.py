@@ -31,6 +31,17 @@ class Qwidget(QWidget, Qobject):
                 self.qaction_toggle.triggered.connect(q.trigger)
                 self.qaction_toggle.setText(q.text())
 
+        if self.mode_selection:
+            self.selectionChanged.connect(self.qapplication.selectionChanged)
+
+    @property
+    def mode_selection(self):
+        """
+        connect selectionChanged to qapplication.selectionChanged
+        :return:
+        """
+        return False
+
     def _addAction(self, action):
         """
         reimplementation of overload addAction(action)

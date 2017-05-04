@@ -69,6 +69,7 @@ class QwebviewDocument(Qwebview):
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
         self.qapplication.loadedUi.connect(self.on_qapplication_loadedUi)
+        self.qapplication.selectionChanged.connect(self.on_qapplication_selectionChanged)
 
     def on_qapplication_loadedUi(self, qobject):
         if isinstance(qobject, QMainWindow):
@@ -81,7 +82,6 @@ class QwebviewDocument(Qwebview):
         d.linkClicked.connect(self.link_clicked)
         d.linkHovered.connect(self.link_hovered)
         d.page_turn.connect(self.page_turn_requested)
-        d.selectionChanged[()].connect(self.selection_changed)
 
         return d
 
@@ -151,6 +151,14 @@ class QwebviewDocument(Qwebview):
     def current_pos(self):
         return self.qwebpage.page_position.current_pos if self.hasFocus() else None
 
+    # --- copy
+    # maybe move to qapplication
+    def copy_position(self):
+        self.qapplication.copy_text(self.qwebpage.page_position.current_pos)
+
+    def on_qapplication_selectionChanged(self):
+        self.qaction_copy.setEnabled(bool(self.qapplication.selected_text()))
+
     # --- goto
     def goto_next_section(self, *args):
         if self.manager is not None:
@@ -193,6 +201,7 @@ class QwebviewDocument(Qwebview):
         self.qwebpage.do_config(parent)
         if self.qwebpage.in_fullscreen_mode:
             self.qwebpage.switch_to_fullscreen_mode()
+
         self.setFocus(Qt.OtherFocusReason)
 
     def load_theme(self, theme_id):
@@ -206,15 +215,6 @@ class QwebviewDocument(Qwebview):
 
     def bookmark(self):
         return self.qwebpage.bookmark()
-
-    def copy_position(self):
-        self.qapplication.copy_text(self.qwebpage.page_position.current_pos)
-
-    def copy(self):
-        self.qwebpage.triggerAction(self.qwebpage.Copy)
-
-    def selection_changed(self):
-        self.qaction_copy.setEnabled(bool(self.selected_text))
 
     def popup_table(self):
         html = self.qwebpage.extract_node()

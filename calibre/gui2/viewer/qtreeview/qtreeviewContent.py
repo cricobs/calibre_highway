@@ -2,10 +2,10 @@ from __future__ import (unicode_literals, division, absolute_import, print_funct
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QStyledItemDelegate
 from PyQt5.QtWidgets import QToolTip
 
+from calibre.gui2 import error_dialog
 from calibre.gui2.viewer.qmenu.qmenu import Qmenu
 from calibre.gui2.viewer.qtreeview.qtreeview import Qtreeview
 
@@ -32,28 +32,34 @@ class QtreeviewContent(Qtreeview):
 
     def __init__(self, *args, **kwargs):
         super(QtreeviewContent, self).__init__(*args, **kwargs)
-        self.selected_index = None
 
         self.delegate = Delegate(self)
         self.setItemDelegate(self.delegate)
 
-    @property
-    def selected_text(self):
-        try:
-            return self.selected_index.data()
-        except AttributeError:
-            pass
+    def search(self, search, backwards=False):
+        # fixme use direction
+        index = self.model().search(search)
+        if index.isValid():
+            self.searched.emit(index)
+        else:
+            error_dialog(
+                self, 'No matches found',
+                'There are no Table of Contents entries matching: ' + search, show=True)
+
+    def set_current_entry(self):
+        entry = self.model().currently_viewed_entry
+        if not entry:
+            return
+
+        self.scrollTo(entry.index(), self.PositionAtTop)
+        self.setCurrentIndex(entry.index())
 
     def contextMenuEvent(self, qevent):
-        pos = qevent.pos()
-        self.selected_index = self.indexAt(pos)
-
-        self.setCurrentIndex(self.selected_index)
-        self.setFocus(Qt.OtherFocusReason)
+        super(QtreeviewContent, self).contextMenuEvent(qevent)
 
         m = Qmenu(self)
         m.addActions(self.actions())
-        m.exec_(self.mapToGlobal(pos))
+        m.exec_(self.mapToGlobal(qevent.pos()))
 
     def mouseMoveEvent(self, ev):
         if self.indexAt(ev.pos()).isValid():
@@ -76,4 +82,4 @@ class QtreeviewContent(Qtreeview):
 
     def copy_to_clipboard(self):
         m = self.model()
-        QApplication.clipboard().setText(getattr(m, 'as_plain_text', ''))
+        self.qapplication.copy_text(getattr(m, 'as_plain_text', ''))
