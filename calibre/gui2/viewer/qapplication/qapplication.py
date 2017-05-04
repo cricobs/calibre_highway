@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import QSignalMapper
 from PyQt5.QtCore import pyqtSignal
@@ -12,6 +12,7 @@ from calibre.gui2.viewer.qtimer.qtimer import Qtimer
 
 
 class Qapplication(Application):
+    loadedUi = pyqtSignal(QObject)
     inactivityTimeout = pyqtSignal(QWidget, int)
     activity = pyqtSignal()
     qactionAdded = pyqtSignal(QObject, QAction)
@@ -26,6 +27,15 @@ class Qapplication(Application):
         self.qsignalmapper.mapped[QWidget].connect(self.on_qsignalmapper_mapped)
 
         self.installEventFilter(self)
+
+    def copy_text(self, text):
+        self.clipboard().setText(text)
+
+    def selected_text(self):
+        try:
+            return self.focusWidget().selected_text
+        except AttributeError:
+            pass
 
     def topLevelWidgets(self, type=None):
         topLevelWidgets = super(Qapplication, self).topLevelWidgets()

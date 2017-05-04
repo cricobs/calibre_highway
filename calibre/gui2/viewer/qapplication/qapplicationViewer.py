@@ -1,7 +1,6 @@
 import json
 import sys
 
-from PyQt5.QtCore import QObject
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 
@@ -21,10 +20,21 @@ with open(filepath_relative(sys.modules[__name__], "json")) as iput:
 class QapplicationViewer(Qapplication):
     search = pyqtSignal(QWidget, str, bool)
     replace = pyqtSignal(QWidget, str, str, bool)
-    loadedUi = pyqtSignal(QObject)
+    appendMarkdown = pyqtSignal(str, dict)
+    copyMarkdown = pyqtSignal(str, dict)
 
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)
 
         self.qabstractlistmodelShortcut = QabstractlistmodelShortcut(SHORTCUTS, 'shortcuts/viewer')
         self.qwidgetSearchReplace = QwidgetSearchReplace()
+
+    def append_markdown(self, options):
+        text = self.selected_text()
+        if text:
+            self.appendMarkdown.emit(text, options)
+
+    def copy_markdown(self, options):
+        text = self.selected_text()
+        if text:
+            self.copyMarkdown.emit(text, options)

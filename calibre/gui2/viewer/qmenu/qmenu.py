@@ -7,14 +7,6 @@ class Qmenu(QMenu, Qwidget):
     def __init__(self, *args, **kwargs):
         super(Qmenu, self).__init__(*args, **kwargs)
 
-    def __getattribute__(self, name):
-        try:
-            value = super(Qmenu, self).__getattribute__(name)
-        except AttributeError:
-            value = getattr(self.parent(), name)
-
-        return value
-
     def add_qapplication_actions(self, qactions):
         pass  # added manually in exec_
 
@@ -41,10 +33,10 @@ class Qmenu(QMenu, Qwidget):
         except AttributeError:
             pass
         else:
-            if "text" in contexts and not self.selected_text:
+            if "text" in contexts and len(contexts) == 1 and not self.qapplication.selected_text():
                 return
         try:
-            action.update(self)
+            action.update()
         except AttributeError:
             pass
 

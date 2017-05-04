@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QApplication
 
 from calibre.gui2.viewer.qmenu.qmenuDropdown import QmenuDropdown
 
@@ -27,16 +28,14 @@ class Qaction(QAction):
 
         return qmenu
 
-    def update(self, qmenu):
+    def update(self):
         """
         called on Qmenu.exec_
         :return:
         """
-        self.qmenu = qmenu
-
         data = self.data() or {}
         if data.get("text_format", None):
-            text = self.qmenu.selected_text
+            text = QApplication.instance().selected_text()
             text = text[:22] + (text[22:] and '...')
 
             self.setText(self.data().get("text_format").format(text))

@@ -124,7 +124,10 @@
             },
             "data": {
               "start": "*",
-              "end": "*"
+              "end": "*",
+              "shortcuts": [
+                "Ctrl+I"
+              ]
             }
           },
           {
@@ -136,7 +139,10 @@
             },
             "data": {
               "start": "**",
-              "end": "**"
+              "end": "**",
+              "shortcuts": [
+                "Ctrl+B"
+              ]
             }
           }
         ]

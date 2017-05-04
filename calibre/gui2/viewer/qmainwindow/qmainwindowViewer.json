@@ -345,7 +345,8 @@
       "data": {
         "context": [
           "blank"
-        ]
+        ],
+        "position": 99.9
       },
       "parents": [
         "QwebviewDocument"

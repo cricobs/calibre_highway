@@ -51,7 +51,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.qobjectscrollsynchronize = QobjectScrollSynchronize(
             self.qwebviewPreview, self.qplaintexteditEdit)
 
-        self.state_restore()
+        self.restore_state()
 
         self.toplevelwidget = self.qapplication.topLevelWidget(QMainWindow)
         self.toplevelwidget.ebookLoaded.connect(self.on_toplevelwidget_ebookLoaded)
@@ -77,15 +77,6 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.synopsis_size = opts.synopsis_size
 
         self.qplaintexteditEdit.setFont(QFont(self.mono_family))
-
-    def append(self, text, position=None):
-        self.qplaintexteditEdit.appendPlainText(text)
-
-        if self.currentIndex():
-            if position:
-                self.qwebviewPreview.scroll_to_position(position)
-
-        self.save()
 
     def save(self):
         try:
@@ -142,15 +133,23 @@ class QstackedwidgetSynopsis(Qstackedwidget):
             else:
                 raise
 
-    def state_save(self):
+    def save_state(self):
         from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
 
         vprefs.set('synopsis_mode', self.currentIndex())
 
-    def state_restore(self):
+    def restore_state(self):
         from calibre.gui2.viewer.qmainwindow.qmainwindowViewer import vprefs
 
         self.setCurrentIndex(int(vprefs.get('synopsis_mode', None) or 0))
+
+    @pyqtSlot()
+    def on_qplaintexteditEdit_save(self):
+        self.save()
+
+    @pyqtSlot(str)
+    def on_qplaintexteditEdit_scrollToMarkdownPosition(self, position):
+        self.qwebviewPreview.scroll_to_position(position)
 
     @pyqtSlot(str)
     def on_qwebviewContent_contentClick(self, hash):
@@ -213,7 +212,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         if self.path_source:
             self.save()
 
-        self.state_save()
+        self.save_state()
 
     @property
     def mode_save(self):

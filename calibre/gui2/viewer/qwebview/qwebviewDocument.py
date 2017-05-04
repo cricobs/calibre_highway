@@ -1,9 +1,7 @@
 #!/usr/bin/env  python2
-
 import math
 
-from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QApplication,
-                      QKeySequence)
+from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QKeySequence)
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QMainWindow
 
@@ -41,6 +39,7 @@ class QwebviewDocument(Qwebview):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
 
         self._context_blank_qactions = set()
+        self._context_text_qactions = set()
         self._ignore_scrollbar_signals = False
         self._reference_mode = False
         self._size_hint = QSize(510, 680)
@@ -90,7 +89,17 @@ class QwebviewDocument(Qwebview):
     def context_blank_qactions(self):
         if not self.selected_text and self.image_popup.current_img.isNull():
             return self._context_blank_qactions
-        return []
+        return set()
+
+    @property
+    def context_text_qactions(self):
+        if self.selected_text:
+            return self._context_text_qactions
+        return set()
+
+    @property
+    def context_qactions(self):
+        return self.context_blank_qactions | self.context_text_qactions
 
     @property
     def mode_search(self):
@@ -119,53 +128,28 @@ class QwebviewDocument(Qwebview):
             setattr(self, name, qaction)
 
         data = qaction.data()
-        if data and "blank" in data.get("context", []):
-            self.context_blank_qactions.add(qaction)
+        if data:
+            context = data.get("context", [])
+            if "blank" in context:
+                self._context_blank_qactions.add(qaction)
+            if "text" in context:
+                self._context_text_qactions.add(qaction)
 
-    # --- synopsis
-    # fixme move to qstackedwidgetSynopsis
+    # --- markdown
     def copy_markdown(self, *args, **kwargs):
-        position = self.qwebpage.page_position.current_pos if self.hasFocus() else None
-        self.copy_text(self.selected_markdown_body(position))
+        data = self.sender().data()
+        data["position"] = self.current_pos()
 
-    def synopsis_append(self, *args, **kwargs):
-        section = self.sender().data().get("section")
-        position = self.qwebpage.page_position.current_pos if self.hasFocus() else None
-        if section == "body":
-            text = self.selected_markdown_body(position)
-        elif section == "header":
-            text = self.selected_markdown_header(int(self.sender().text()), position)
-        else:
-            raise NotImplementedError(section)
+        self.qapplication.copy_markdown(data)
 
-        if text:
-            self.manager.qdockwidgetSynopsis.qstackedwidgetSynopsis.append(text, position)
+    def append_markdown(self, *args, **kwargs):
+        data = self.sender().data()
+        data["position"] = self.current_pos()
 
-    def selected_markdown_header(self, level, position=None):
-        try:
-            text = self.qapplication.focusWidget().selected_text
-        except AttributeError:
-            return
+        self.qapplication.append_markdown(data)
 
-        if text:
-            if position:
-                return "\n{0} <a class='header' position='{2}'>{1}</a>".format(
-                    "#" * level, text, position)
-
-            return "\n{0} <a class='header'>{1}</a>".format(
-                "#" * level, text)
-
-    def selected_markdown_body(self, position=None):
-        try:
-            text = self.qapplication.focusWidget().selected_text
-        except AttributeError:
-            return
-
-        if text:
-            if position:
-                return "\n{0}\n{{: position={1}}}".format(text, position)
-
-            return "\n{0}".format(text)
+    def current_pos(self):
+        return self.qwebpage.page_position.current_pos if self.hasFocus() else None
 
     # --- goto
     def goto_next_section(self, *args):
@@ -224,10 +208,7 @@ class QwebviewDocument(Qwebview):
         return self.qwebpage.bookmark()
 
     def copy_position(self):
-        self.copy_text(self.qwebpage.page_position.current_pos)
-
-    def copy_text(self, text):
-        QApplication.clipboard().setText(text)
+        self.qapplication.copy_text(self.qwebpage.page_position.current_pos)
 
     def copy(self):
         self.qwebpage.triggerAction(self.qwebpage.Copy)
@@ -265,8 +246,7 @@ class QwebviewDocument(Qwebview):
         self.qaction_restore_fonts.setChecked(self.multiplier == 1)
 
         menu = self.page().createStandardContextMenu()
-        menu.addActions(self.context_blank_qactions)
-        menu.addAction(self.qaction_inspect)
+        menu.addActions(self.context_qactions)
 
         for plugin in self.qwebpage.all_viewer_plugins:
             plugin.customize_context_menu(menu, qevent, r)

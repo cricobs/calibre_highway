@@ -14,6 +14,8 @@ class QplaintexteditEdit(Qplaintextedit):
     showPreview = pyqtSignal(bool)
     positionSave = pyqtSignal()
     positionLoad = pyqtSignal()
+    scrollToMarkdownPosition = pyqtSignal(str)
+    save = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
         super(QplaintexteditEdit, self).__init__(*args, **kwargs)
@@ -22,10 +24,41 @@ class QplaintexteditEdit(Qplaintextedit):
 
         self.qsyntaxhiglighter = QsyntaxhighlighterSynopsis(self.document())
 
+        self.qapplication.appendMarkdown.connect(self.on_qapplication_appendMarkdown)
+        self.qapplication.copyMarkdown.connect(self.on_qapplication_copyMarkdown)
+
+    def on_qapplication_copyMarkdown(self, text, options):
+        self.qapplication.copy_text(self.text_markdown(text, **options))
+
+    def on_qapplication_appendMarkdown(self, text, options):
+        self.append_markdown(text, **options)
+
+    def append_markdown(self, text, section=None, level=None, position=None, **kwargs):
+        text = self.text_markdown(text, section=section, level=level, position=position)
+        self.appendPlainText(text)
+        if position:
+            self.scrollToMarkdownPosition.emit(position)
+
+        self.save.emit()
+        self.scroll_to_bottom()
+
+    def text_markdown(self, text, section=None, level=None, position=None, **kwargs):
+        position = "position='{0}'".format(position) if position else ""
+        if section == "body":
+            position = "\n{{: {0}}}".format(position) if position else ""
+            return "\n{0}{1}".format(text, position)
+        elif section == "header":
+            return "\n{0} <a class='header' {2}>{1}</a>".format("#" * int(level), text, position)
+
+        raise NotImplementedError(section, level, position)
+
     def on_qaction_triggered(self):
         c = self.textCursor()
         self.insert_format(c, c.selectedText(), **self.sender().data())
         self.setFocus(Qt.OtherFocusReason)
+
+    def scroll_to_bottom(self):
+        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
 
     @property
     def selected_text(self):

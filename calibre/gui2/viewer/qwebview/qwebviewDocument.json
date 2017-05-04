@@ -134,7 +134,11 @@
           "pageAction_inspect"
         ],
         "data": {
-          "position": 99
+          "position": 99,
+          "context": [
+            "blank",
+            "text"
+          ]
         }
       },
       {
@@ -375,14 +379,15 @@
         "data": {
           "shortcuts": [
             "Copy Markdown"
-          ]
+          ],
+          "section": "body"
         },
         "text": "&Copy Markdown"
       },
       {
         "slots": {
           "triggered": [
-            "synopsis_append"
+            "append_markdown"
           ]
         },
         "name": "append_text",
@@ -401,7 +406,7 @@
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_1",
@@ -410,13 +415,14 @@
               "shortcuts": [
                 "Synopsis Append H1"
               ],
+              "level": "1",
               "section": "header"
             }
           },
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_2",
@@ -425,13 +431,14 @@
               "shortcuts": [
                 "Synopsis Append H2"
               ],
+              "level": "2",
               "section": "header"
             }
           },
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_3",
@@ -439,6 +446,7 @@
               "shortcuts": [
                 "Synopsis Append H3"
               ],
+              "level": "3",
               "section": "header"
             },
             "text": "3"
@@ -446,7 +454,7 @@
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_4",
@@ -454,6 +462,7 @@
               "shortcuts": [
                 "Synopsis Append H4"
               ],
+              "level": "4",
               "section": "header"
             },
             "text": "4"
@@ -461,7 +470,7 @@
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_5",
@@ -469,6 +478,7 @@
               "shortcuts": [
                 "Synopsis Append H5"
               ],
+              "level": "5",
               "section": "header"
             },
             "text": "5"
@@ -476,7 +486,7 @@
           {
             "slots": {
               "triggered": [
-                "synopsis_append"
+                "append_markdown"
               ]
             },
             "name": "header_6",
@@ -484,6 +494,7 @@
               "shortcuts": [
                 "Synopsis Append H6"
               ],
+              "level": "6",
               "section": "header"
             },
             "text": "6"
