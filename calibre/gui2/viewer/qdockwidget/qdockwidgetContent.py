@@ -19,8 +19,3 @@ class QdockwidgetContent(Qdockwidget):
     @property
     def mode_search(self):
         return self.SEARCH
-
-    def raise_(self):
-        super(QdockwidgetContent, self).raise_()
-
-        self.self.qtreeviewContent.set_current_entry()

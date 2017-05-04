@@ -1,5 +1,6 @@
 from __future__ import (unicode_literals, division, absolute_import, print_function)
 
+from PyQt5.QtCore import QModelIndex
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QStyledItemDelegate
@@ -83,3 +84,13 @@ class QtreeviewContent(Qtreeview):
     def copy_to_clipboard(self):
         m = self.model()
         self.qapplication.copy_text(getattr(m, 'as_plain_text', ''))
+
+    def showEvent(self, qshowevent):
+        super(QtreeviewContent, self).showEvent(qshowevent)
+
+        self.set_current_entry()
+
+    def hideEvent(self, qhideevent):
+        super(QtreeviewContent, self).hideEvent(qhideevent)
+
+        self.setCurrentIndex(QModelIndex())  # hint clear selection

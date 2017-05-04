@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetContent.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetContent.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindow.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindow.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qplaintextedit/qplaintextedit.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qplaintextedit/qplaintextedit.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qtoolbar/qtoolbar.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qtoolbar/qtoolbar.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.json" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidget.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidget.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -50,8 +42,8 @@
       <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6210">
-              <caret line="345" column="18" lean-forward="true" selection-start-line="345" selection-start-column="18" selection-end-line="345" selection-end-column="18" />
+            <state relative-caret-position="148">
+              <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding>
                 <element signature="e#25#107#0" expanded="true" />
               </folding>
@@ -168,7 +160,6 @@
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmenu/qmenuSeparator.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmenu/qmenuDropdown.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qaction/qactionRecent.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidget.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetBookmark.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewPreview.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebview.py" />
@@ -204,8 +195,9 @@
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qplaintextedit/qplaintextedit.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetContent.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidget.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py" />
       </list>
     </option>
@@ -1108,13 +1100,6 @@
       <option name="presentableId" value="Default" />
       <updated>1483536369871</updated>
     </task>
-    <task id="LOCAL-00117" summary="QwebviewDocument.contextMenuEvent reformat">
-      <created>1493074760393</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1493074760393</updated>
-    </task>
     <task id="LOCAL-00118" summary="QwebviewDocument.contextMenuEvent reformat finished">
       <created>1493159695258</created>
       <option name="number" value="00118" />
@@ -1451,7 +1436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493862613029</updated>
     </task>
-    <option name="localTasksCounter" value="166" />
+    <task id="LOCAL-00166" summary="QtreeviewContent enable qaction_copy">
+      <created>1493910704480</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1493910704480</updated>
+    </task>
+    <option name="localTasksCounter" value="167" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1473,17 +1465,17 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="774" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32869694" sideWeight="0.4952251" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287858" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3726208" sideWeight="0.5375171" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36163983" sideWeight="0.55388814" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
+      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38579795" sideWeight="0.55388814" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46412885" sideWeight="0.5375171" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36163983" sideWeight="0.44611186" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38579795" sideWeight="0.44611186" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36163983" sideWeight="0.55388814" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34260616" sideWeight="0.47748977" order="1" side_tool="true" content_ui="tabs" />
@@ -1540,13 +1532,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebview.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1920,24 +1905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#84#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetContent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
@@ -1946,20 +1913,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidgetContent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="56" lean-forward="true" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeview.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="44" column="13" lean-forward="true" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="13" />
+        <state relative-caret-position="466">
+          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1170">
+          <caret line="65" column="44" lean-forward="true" selection-start-line="65" selection-start-column="44" selection-end-line="65" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#84#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6210">
-          <caret line="345" column="18" lean-forward="true" selection-start-line="345" selection-start-column="18" selection-end-line="345" selection-end-column="18" />
+        <state relative-caret-position="148">
+          <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
             <element signature="e#25#107#0" expanded="true" />
           </folding>

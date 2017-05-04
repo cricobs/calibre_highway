@@ -56,7 +56,11 @@ class Qtreeview(QTreeView, Qwidget):
     def setCurrentIndex(self, qmodelindex):
         super(Qtreeview, self).setCurrentIndex(qmodelindex)
 
-        self.setFocus(Qt.OtherFocusReason)
+        if qmodelindex.isValid():
+            self.setFocus(Qt.OtherFocusReason)
+        else:
+            self.clearFocus()
+
         self.selectionChanged.emit()
 
     def contextMenuEvent(self, qcontextmenuevent):
