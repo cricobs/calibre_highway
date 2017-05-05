@@ -9,7 +9,7 @@ class QwidgetDocument(Qwidget):
         self.qwebviewMetadata = QwebviewMetadata(self)
 
         self.window().setCentralWidget(self)
-        self.window().ebookLoaded.connect(self.on_window_ebookLoaded)
+        self.window().iteratorChanged.connect(self.on_window_iteratorChanged)
 
-    def on_window_ebookLoaded(self, iterator):
+    def on_window_iteratorChanged(self, iterator):
         self.qwebviewMetadata.show_metadata(iterator.mi, iterator.book_format)

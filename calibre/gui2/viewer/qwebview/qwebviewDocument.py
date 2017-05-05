@@ -282,7 +282,7 @@ class QwebviewDocument(Qwebview):
     def set_manager(self, manager):
         self.manager = manager
         self.manager.start_in_fullscreen = self.qwebpage.start_in_fullscreen
-        self.manager.ebookLoaded.connect(self.set_book_data)
+        self.manager.iteratorChanged.connect(self.set_book_data)
 
         self.qwebpage.debug_javascript = self.manager.debug_javascript
         self.footnotes.set_footnotes_view(self.manager.findChild(QwidgetFootnote))

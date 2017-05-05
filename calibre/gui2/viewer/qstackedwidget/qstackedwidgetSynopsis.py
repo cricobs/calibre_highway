@@ -47,9 +47,9 @@ class QstackedwidgetSynopsis(Qstackedwidget):
         self.restore_state()
 
         self.toplevelwidget = self.qapplication.topLevelWidget(QMainWindow)
-        self.toplevelwidget.ebookLoaded.connect(self.on_toplevelwidget_ebookLoaded)
+        self.toplevelwidget.iteratorChanged.connect(self.on_toplevelwidget_iteratorChanged)
 
-    def on_toplevelwidget_ebookLoaded(self, ebookiterator):
+    def on_toplevelwidget_iteratorChanged(self, ebookiterator):
         self.load(ebookiterator.pathtoebook)
 
     def preview(self):

@@ -217,7 +217,7 @@ class QmainwindowViewer(Qmainwindow):
     STATE_VERSION = 2
 
     msgFromAnotherInstance = pyqtSignal(object)
-    ebookLoaded = pyqtSignal(EbookIterator)
+    iteratorChanged = pyqtSignal(EbookIterator)
     tocChanged = pyqtSignal(bool)
 
     def __init__(
@@ -979,12 +979,12 @@ class QmainwindowViewer(Qmainwindow):
 
         self.current_title = self.iterator.mi.title
         self.current_index = -1
-        # fixme move to qtreeview
+        # fixme move to qtreeview, use iteratorChanged signal
         self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
         self.qtreeviewContent.setModel(self.toc_model)
 
-        self.ebookLoaded.emit(self.iterator)
-        self.tocChanged.emit(not self.iterator.toc)
+        self.iteratorChanged.emit(self.iterator)
+        self.tocChanged.emit(bool(self.iterator.toc))
         self.create_recent_menu()
 
         self.pos.setMaximum(sum(self.iterator.pages))
