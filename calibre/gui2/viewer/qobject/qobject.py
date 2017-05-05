@@ -126,7 +126,7 @@ class Qobject(QObject, object):
                 self.create_action(qmenu=qmenu, **options)
 
     def create_action(self, name, text=None, slots=None, icon=None, checkable=False,
-                      separator=False, qmenu=None, enabled=True, data=None,
+                      separator=False, qmenu=None, enabled=True, data=None, visible=True,
                       actions=None, parents=None, signals=None, group=None, action=None,
                       dropdown=None):
 
@@ -155,11 +155,17 @@ class Qobject(QObject, object):
         qaction.parents = parents or []
         qaction.separator = separator
         qaction.group = group
-        if enabled is not None:
-            try:
-                enabled = reduce(getattr, enabled, self)
-            except TypeError:
-                pass
+        try:
+            visible = reduce(getattr, visible, self)
+        except TypeError:
+            pass
+        finally:
+            qaction.visible = visible
+        try:
+            enabled = reduce(getattr, enabled, self)
+        except TypeError:
+            pass
+        finally:
             qaction.setEnabled(enabled)
         if icon:
             qaction.setIcon(QIcon(I(icon)))

@@ -36,6 +36,10 @@ class Qwidget(QWidget, Qobject):
                 self.qaction_toggle.triggered.connect(q.trigger)
                 self.qaction_toggle.setText(q.text())
 
+    @property
+    def visible(self):
+        return self.isVisible()
+
     def on_topLevelWidget_iteratorChanged(self, ebookiterator):
         """
         called if mode_view

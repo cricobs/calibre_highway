@@ -1,6 +1,14 @@
 {
   "actions": [
     {
+      "signals": {
+        "set_visible": [
+          "visibilityChanged"
+        ]
+      },
+      "visible": [
+        "visible"
+      ],
       "name": "reload",
       "parents": [
         "QtoolbarSynopsis"
@@ -13,6 +21,14 @@
       "icon": "view-refresh.png"
     },
     {
+      "signals": {
+        "set_visible": [
+          "visibilityChanged"
+        ]
+      },
+      "visible": [
+        "visible"
+      ],
       "name": "undo",
       "parents": [
         "QtoolbarSynopsis"
@@ -26,6 +42,14 @@
       "icon": "edit-undo.png"
     },
     {
+      "signals": {
+        "set_visible": [
+          "visibilityChanged"
+        ]
+      },
+      "visible": [
+        "visible"
+      ],
       "name": "redo",
       "parents": [
         "QtoolbarSynopsis"
@@ -39,6 +63,14 @@
       "icon": "edit-redo.png"
     },
     {
+      "signals": {
+        "set_visible": [
+          "visibilityChanged"
+        ]
+      },
+      "visible": [
+        "visible"
+      ],
       "name": "save",
       "parents": [
         "QtoolbarSynopsis"
@@ -51,6 +83,14 @@
       "icon": "save.png"
     },
     {
+      "signals": {
+        "set_visible": [
+          "visibilityChanged"
+        ]
+      },
+      "visible": [
+        "visible"
+      ],
       "name": "preview",
       "parents": [
         "QtoolbarSynopsis"

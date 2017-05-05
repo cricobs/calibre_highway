@@ -1,10 +1,14 @@
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtWidgets import QApplication
 
+from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qmenu.qmenuDropdown import QmenuDropdown
 
 
 class Qaction(QAction):
+    visibilityChanged = pyqtSignal(bool)
+
     def __init__(self, *args, **kwargs):
         super(Qaction, self).__init__(*args, **kwargs)
 
@@ -12,6 +16,14 @@ class Qaction(QAction):
         self.parents = []
         self.setData(None)
         self.qmenu = None
+
+    @pyqtSlot(bool)
+    def set_visible(self, visible):
+        self.visible = visible
+
+    @property_setter
+    def visible(self, visible):
+        self.visibilityChanged.emit(visible)
 
     def setData(self, data):
         return super(Qaction, self).setData(data if data is not None else {})

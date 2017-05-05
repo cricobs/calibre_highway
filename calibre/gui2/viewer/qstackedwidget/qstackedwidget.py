@@ -5,6 +5,8 @@ from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
 
 class Qstackedwidget(QStackedWidget, Qwidget):
+    visibilityChanged = Qwidget.visibilityChanged  # wtf
+
     def __init__(self, *args, **kwargs):
         super(Qstackedwidget, self).__init__(*args, **kwargs)
 
@@ -19,3 +21,7 @@ class Qstackedwidget(QStackedWidget, Qwidget):
             self.setCurrentIndex(index)
 
         super(Qstackedwidget, self).keyPressEvent(event)
+
+    @property
+    def mode_visibility(self):
+        return True
