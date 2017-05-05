@@ -36,6 +36,13 @@ class Qwidget(QWidget, Qobject):
                 self.qaction_toggle.triggered.connect(q.trigger)
                 self.qaction_toggle.setText(q.text())
 
+    def show_parents(self):
+        self.show()
+        try:
+            self.parent().show_parents()
+        except AttributeError:
+            pass
+
     @property
     def visible(self):
         return self.isVisible()

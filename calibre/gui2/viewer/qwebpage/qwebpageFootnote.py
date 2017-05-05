@@ -169,3 +169,5 @@ body {
                     mime_type=getattr(path, 'mime_type', 'text/html')):
                 self.f_qwebpage.set_footnote_data(
                     target, {k: True for k in self.known_footnote_targets[path]})
+
+                self.f_qwebview.show_parents()

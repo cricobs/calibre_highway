@@ -877,7 +877,6 @@ class QwebviewDocument(Qwebview):
             fd = self.footnotes.get_footnote_data(a, url)
             if fd:
                 self.footnotes.show_footnote(fd)
-                self.manager.show_footnote_view()
                 ev.accept()
                 return
         opos = self.qwebpage.ypos

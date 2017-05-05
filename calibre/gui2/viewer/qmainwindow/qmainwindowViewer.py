@@ -8,7 +8,7 @@ import traceback
 from functools import partial
 from threading import Thread
 
-from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QTime, QObject,
+from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QObject,
                       QInputDialog, QModelIndex, pyqtSignal)
 from PyQt5.QtWidgets import QWidget
 
@@ -21,7 +21,6 @@ from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
 from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
-from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
 from calibre.gui2.widgets import ProgressIndicator
@@ -254,7 +253,6 @@ class QmainwindowViewer(Qmainwindow):
         self.view = self.centralWidget().view
 
         self.pi = ProgressIndicator(self.centralWidget())
-        self.clock_label = QlabelClock(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
 
         # --- search
@@ -274,9 +272,6 @@ class QmainwindowViewer(Qmainwindow):
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
         self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
-
-        self.clock_timer = QTimer(self)
-        self.clock_timer.timeout.connect(self.clock_label.update_time)
 
         self.history = History(self.qaction_back, self.qaction_forward)
 
@@ -489,20 +484,11 @@ class QmainwindowViewer(Qmainwindow):
         super(QmainwindowViewer, self).showFullScreen()
 
     def show_full_screen_label(self):
-        if self.view.qwebpage.fullscreen_clock:
-            self.show_clock()
+        # fixme move to view
         if self.view.qwebpage.fullscreen_pos:
             self.show_pos_label()
 
         self.relayout_fullscreen_labels()
-
-    def show_clock(self):
-        self.clock_label.setVisible(True)
-        self.clock_label.setText(QTime(22, 33, 33).toString(Qt.SystemLocaleShortDate))
-        self.clock_label.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
-        self.clock_label.resize(self.clock_label.sizeHint())
-        self.clock_timer.start(1000)
-        self.update_clock()
 
     def show_pos_label(self):
         self.pos_label.setVisible(True)
@@ -510,20 +496,13 @@ class QmainwindowViewer(Qmainwindow):
         self.pos.update_value()
 
     def relayout_fullscreen_labels(self):
-        vswidth = (self.vertical_scrollbar.width() if self.vertical_scrollbar.isVisible() else 0)
         p = self.pos_label
         p.move(15, p.parent().height() - p.height() - 10)
-        c = self.clock_label
-        c.move(c.parent().width() - vswidth - 15 - c.width(),
-               c.parent().height() - c.height() - 10)
 
     def showNormal(self):
         self.view.qwebpage.page_position.save()
-        self.clock_label.setVisible(False)
-        self.clock_timer.stop()
         self.vertical_scrollbar.setVisible(True)
         self.window_mode_changed = 'normal'
-        self.settings_changed()
         if self.was_maximized:
             super(QmainwindowViewer, self).showMaximized()
         else:
@@ -1069,9 +1048,6 @@ class QmainwindowViewer(Qmainwindow):
         av = self.qapplication.desktop().availableGeometry(self).height() - 30
         if self.height() > av:
             self.resize(self.width(), av)
-
-    def show_footnote_view(self):
-        self.qdockwidgetFootnote.show()
 
     def themes_menu_shown(self):
         if len(self.qmenu_themes.actions()) == 0:

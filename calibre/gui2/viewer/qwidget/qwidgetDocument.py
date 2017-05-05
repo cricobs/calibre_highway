@@ -1,3 +1,4 @@
+from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qwebview.qwebviewMetadata import QwebviewMetadata
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
 
@@ -7,6 +8,10 @@ class QwidgetDocument(Qwidget):
         super(QwidgetDocument, self).__init__(*args, **kwargs)
 
         self.qwebviewMetadata = QwebviewMetadata(self)
+
+        self.qlabelClock = QlabelClock(self)
+        self.qlabelClock.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
+        self.qlabelClock.setEnabled(self.view.qwebpage.fullscreen_clock)
 
         self.window().setCentralWidget(self)
         self.window().iteratorChanged.connect(self.on_window_iteratorChanged)

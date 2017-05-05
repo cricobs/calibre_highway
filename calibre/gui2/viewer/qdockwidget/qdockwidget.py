@@ -34,7 +34,7 @@ class Qdockwidget(QDockWidget, Qwidget):
     @property
     def mode_hide(self):
         """
-        connect on_qapplication_inactivityTimeout
+        close on_qapplication_inactivityTimeout
         :return:
         """
         return False
