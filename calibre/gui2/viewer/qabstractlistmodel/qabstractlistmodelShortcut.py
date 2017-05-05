@@ -20,6 +20,7 @@ class QabstractlistmodelShortcut(Qabstractlistmodel):
     <p><b>{0}</b><br>
     {2}: <code>{1}</code></p>
     '''
+
     def __init__(self, shortcuts, config_file_base_name, parent=None):
         super(QabstractlistmodelShortcut, self).__init__(parent)
 

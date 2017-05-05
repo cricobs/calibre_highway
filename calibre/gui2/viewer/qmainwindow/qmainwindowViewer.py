@@ -24,8 +24,6 @@ from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationView
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
-from calibre.gui2.viewer.qstandarditemmodel.qstandarditemmodelContent import \
-    QstandarditemmodelContent
 from calibre.gui2.widgets import ProgressIndicator
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
@@ -1016,11 +1014,6 @@ class QmainwindowViewer(Qmainwindow):
 
         return title
 
-    def set_vscrollbar_value(self, pagenum):
-        self.vertical_scrollbar.blockSignals(True)
-        self.vertical_scrollbar.setValue(int(pagenum * 100))
-        self.vertical_scrollbar.blockSignals(False)
-
     def set_page_number(self, frac):
         # hint for finding next chapter page
         if getattr(self, 'current_page', None) is not None:
@@ -1047,24 +1040,8 @@ class QmainwindowViewer(Qmainwindow):
         if event.key() == Qt.Key_Escape and self.isFullScreen():
             self.qaction_full_screen.trigger()
             event.accept()
-            return
 
-        try:
-            key = self.qapplication.qabstractlistmodelShortcut.get_match(event)
-        except AttributeError:
-            return
-
-        action = self.keyboard_action(key)
-        if action is not None:
-            event.accept()
-            try:
-                action.trigger()
-            except AttributeError:
-                action().trigger()
-
-    def keyboard_action(self, key):
-        names = self.options["keyboard_action"].get(key, None)
-        return reduce(getattr, names, self) if names else None
+        return super(QmainwindowViewer, self).keyPressEvent(event)
 
     def reload_book(self):
         if getattr(self.iterator, 'pathtoebook', None):
