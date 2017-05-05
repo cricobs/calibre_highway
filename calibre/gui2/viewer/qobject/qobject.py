@@ -35,9 +35,28 @@ class Qobject(QObject, object):
         self.load_options_file()
 
     def on_qapplication_activity(self):
+        """
+        called if mode_activity
+        :return:
+        """
         pass
 
     def on_qapplication_inactivityTimeout(self, target, interval):
+        """
+        called if mode_activity
+        :param target:
+        :param interval:
+        :return:
+        """
+        if target == self:
+            self.qapplication_inactivityTimeout(interval)
+
+    def qapplication_inactivityTimeout(self, interval):
+        """
+        called in on_qapplication_inactivityTimeout
+        :param interval:
+        :return:
+        """
         pass
 
     @property

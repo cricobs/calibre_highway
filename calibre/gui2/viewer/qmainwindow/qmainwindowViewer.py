@@ -336,10 +336,7 @@ class QmainwindowViewer(Qmainwindow):
     def on_qapplication_activity(self):
         self.qapplication.restoreOverrideCursor()
 
-    def on_qapplication_inactivityTimeout(self, target, interval):
-        if target != self:
-            return
-
+    def qapplication_inactivityTimeout(self, interval):
         if interval == self.interval_hide_cursor:
             self.qapplication.setOverrideCursor(Qt.BlankCursor)
 

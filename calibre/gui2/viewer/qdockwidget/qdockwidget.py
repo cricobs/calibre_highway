@@ -21,10 +21,7 @@ class Qdockwidget(QDockWidget, Qwidget):
     def mode_toggle(self):
         return True
 
-    def on_qapplication_inactivityTimeout(self, target, interval):
-        if target != self:
-            return
-
+    def qapplication_inactivityTimeout(self, interval):
         if self.mode_hide and interval == self.interval_hide:
             self.close()
 
