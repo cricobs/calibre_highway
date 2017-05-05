@@ -179,7 +179,15 @@
       "parents": [
         "QtoolbarEdit",
         "QwebviewDocument"
-      ]
+      ],
+      "enabled": [
+        "show_toc_on_open"
+      ],
+      "signals": {
+        "setEnabled": [
+          "tocChanged"
+        ]
+      }
     },
     {
       "checkable": true,
@@ -362,6 +370,12 @@
       "slots": {
         "triggered": [
           "quit"
+        ]
+      },
+      "signals": {
+        "trigger": [
+          "qapplication",
+          "shutdown_signal_received"
         ]
       }
     },

@@ -85,6 +85,11 @@
             "image_popup"
           ]
         },
+        "signals": {
+          "setEnabled": [
+            "imageChanged"
+          ]
+        },
         "text": "View &image...",
         "name": "view_image",
         "data": {
@@ -100,6 +105,11 @@
             "popup_table"
           ]
         },
+        "signals": {
+          "setEnabled": [
+            "tableChanged"
+          ]
+        },
         "text": "View &table...",
         "name": "view_table",
         "icon": "view.png"
@@ -108,6 +118,11 @@
         "slots": {
           "triggered": [
             "restore_font_size"
+          ]
+        },
+        "signals": {
+          "setChecked": [
+            "fontMultiplierUpdated"
           ]
         },
         "checkable": true,
@@ -155,6 +170,12 @@
           "triggered": [
             "qapplication",
             "copy"
+          ]
+        },
+        "signals": {
+          "setEnabled": [
+            "qapplication",
+            "copyChanged"
           ]
         },
         "parents": [

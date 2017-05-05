@@ -40,7 +40,8 @@ class Qmenu(QMenu, Qwidget):
         except AttributeError:
             pass
 
-        super(Qmenu, self)._addAction(action)
+        if action not in self.actions():
+            super(Qmenu, self)._addAction(action)
 
     def addAction(self, *args, **kwargs):
         try:

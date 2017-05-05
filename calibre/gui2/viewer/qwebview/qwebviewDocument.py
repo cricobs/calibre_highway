@@ -2,6 +2,7 @@
 import math
 
 from PyQt5.Qt import (QSize, QUrl, Qt, QPainter, QBrush, QImage, QRegion, QKeySequence)
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWebKitWidgets import QWebView
 from PyQt5.QtWidgets import QMainWindow
 
@@ -34,6 +35,10 @@ class QwebviewDocument(Qwebview):
     DISABLED_BRUSH = QBrush(Qt.lightGray, Qt.Dense5Pattern)
     gesture_handler = lambda s, e: False
     last_loaded_path = None
+    imageChanged = pyqtSignal(bool)
+    tableChanged = pyqtSignal(bool)
+    fontMultiplierUpdated = pyqtSignal(bool)
+    copyChanged = pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super(QwebviewDocument, self).__init__(*args, **kwargs)
@@ -69,7 +74,6 @@ class QwebviewDocument(Qwebview):
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
         self.qapplication.loadedUi.connect(self.on_qapplication_loadedUi)
-        self.qapplication.selectionChanged.connect(self.on_qapplication_selectionChanged)
 
     def on_qapplication_loadedUi(self, qobject):
         if isinstance(qobject, QMainWindow):
@@ -85,6 +89,7 @@ class QwebviewDocument(Qwebview):
 
         return d
 
+    # ---- actions
     @property
     def context_blank_qactions(self):
         if not self.selected_text and self.image_popup.current_img.isNull():
@@ -105,7 +110,6 @@ class QwebviewDocument(Qwebview):
     def mode_global_qaction(self):
         return True
 
-    # ---- actions
     @property
     def pageAction_copy(self):
         return self.pageAction(self.qwebpage.Copy)
@@ -144,16 +148,12 @@ class QwebviewDocument(Qwebview):
 
         self.qapplication.append_markdown(data)
 
+    # --- position
     def current_pos(self):
         return self.qwebpage.page_position.current_pos if self.hasFocus() else None
 
-    # --- copy
-    # maybe move to qapplication
     def copy_position(self):
         self.qapplication.copy_text(self.qwebpage.page_position.current_pos)
-
-    def on_qapplication_selectionChanged(self):
-        self.qaction_copy.setEnabled(bool(self.qapplication.selected_text()))
 
     # --- goto
     def goto_next_section(self, *args):
@@ -217,9 +217,12 @@ class QwebviewDocument(Qwebview):
         self.table_popup(html, self.as_url(self.last_loaded_path),
                          self.qwebpage.font_magnification_step)
 
-    def mark_table(self, r):
+    def set_table(self, qwebhittestresult):
         table = None
-        parent = r.element() if not r.element().isNull() else r.enclosingBlockElement()
+        if not qwebhittestresult.element().isNull():
+            parent = qwebhittestresult.element()
+        else:
+            parent = qwebhittestresult.enclosingBlockElement()
         while not parent.isNull():
             if u'table' in [unicode(parent.tagName()), unicode(parent.localName())]:
                 table = parent
@@ -229,23 +232,23 @@ class QwebviewDocument(Qwebview):
         if table is not None:
             self.qwebpage.mark_element.emit(table)
 
-        return table
+        self.tableChanged.emit(table is not None)
+
+    def set_image(self, qwebhittestresult):
+        self.image_popup.current_img = i = qwebhittestresult.pixmap()
+        self.image_popup.current_url = qwebhittestresult.imageUrl()
+
+        self.imageChanged.emit(not i.isNull())
 
     def contextMenuEvent(self, qevent):
-        r = self.qwebpage.mainFrame().hitTestContent(qevent.pos())
+        q = self.qwebpage.mainFrame().hitTestContent(qevent.pos())
 
-        self.image_popup.current_img = img = r.pixmap()
-        self.image_popup.current_url = r.imageUrl()
-
-        self.qaction_view_image.setEnabled(not img.isNull())
-        self.qaction_view_table.setEnabled(self.mark_table(r) is not None)
-        self.qaction_restore_fonts.setChecked(self.multiplier == 1)
+        self.set_image(q)
+        self.set_table(q)
+        self.fontMultiplierUpdated.emit(self.multiplier == 1)
 
         menu = self.page().createStandardContextMenu()
         menu.addActions(self.context_qactions)
-
-        for plugin in self.qwebpage.all_viewer_plugins:
-            plugin.customize_context_menu(menu, qevent, r)
 
         if not menu.exec_(qevent.globalPos()):
             super(QwebviewDocument, self).contextMenuEvent(qevent)
@@ -690,6 +693,7 @@ class QwebviewDocument(Qwebview):
     def restore_font_size(self):
         with self.qwebpage.page_position:
             self.multiplier = 1
+
         return self.qwebpage.scroll_fraction
 
     def changeEvent(self, event):

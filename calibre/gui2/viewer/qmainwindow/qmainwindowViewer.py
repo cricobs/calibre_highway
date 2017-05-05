@@ -218,6 +218,7 @@ class QmainwindowViewer(Qmainwindow):
 
     msgFromAnotherInstance = pyqtSignal(object)
     ebookLoaded = pyqtSignal(EbookIterator)
+    tocChanged = pyqtSignal(bool)
 
     def __init__(
             self, pathtoebook=None, debug_javascript=False, open_at=None,
@@ -226,6 +227,7 @@ class QmainwindowViewer(Qmainwindow):
 
         self.debug_javascript = debug_javascript
         self.start_in_fullscreen = start_in_fullscreen
+        self.show_toc_on_open = False
 
         super(QmainwindowViewer, self).__init__(parent)
 
@@ -245,7 +247,6 @@ class QmainwindowViewer(Qmainwindow):
         self.pending_search_dir = None
         self.resize_events_stack = []
         self.resize_in_progress = False
-        self.show_toc_on_open = False
         self.was_maximized = False
         self.window_mode_changed = None
 
@@ -290,7 +291,6 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
-        self.qapplication.shutdown_signal_received.connect(self.qaction_quit.trigger)
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
 
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
@@ -979,14 +979,13 @@ class QmainwindowViewer(Qmainwindow):
 
         self.current_title = self.iterator.mi.title
         self.current_index = -1
+        # fixme move to qtreeview
         self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
         self.qtreeviewContent.setModel(self.toc_model)
 
         self.ebookLoaded.emit(self.iterator)
+        self.tocChanged.emit(not self.iterator.toc)
         self.create_recent_menu()
-
-        self.qaction_table_of_contents.setChecked(self.show_toc_on_open)
-        self.qaction_table_of_contents.setDisabled(not self.iterator.toc)
 
         self.pos.setMaximum(sum(self.iterator.pages))
         self.pos.setSuffix(' / %d' % sum(self.iterator.pages))

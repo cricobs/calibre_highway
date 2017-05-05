@@ -20,6 +20,7 @@ class Qwidget(QWidget, Qobject):
             self.qapplication.aboutToQuit.connect(self.on_qapplication_aboutToQuit)
         if self.mode_selection:
             self.selectionChanged.connect(self.qapplication.selectionChanged)
+            self.selectionChanged.connect(self.qapplication.on_qwidget_selectionChanged)
         if self.mode_toggle:
             self.qaction_toggle = Qaction(self)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
@@ -38,7 +39,8 @@ class Qwidget(QWidget, Qobject):
         used in qapplication.selectedText() if mode_selection
         :return:
         """
-        raise PropertyException
+        if self.mode_selection:
+            raise PropertyException
 
     @property
     def mode_selection(self):

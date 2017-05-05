@@ -23,6 +23,7 @@ class QapplicationViewer(Qapplication):
     appendMarkdown = pyqtSignal(str, dict)
     copyMarkdown = pyqtSignal(str, dict)
     selectionChanged = pyqtSignal()
+    copyChanged = pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super(QapplicationViewer, self).__init__(*args, **kwargs)
@@ -30,6 +31,9 @@ class QapplicationViewer(Qapplication):
         self.qabstractlistmodelShortcut = QabstractlistmodelShortcut(SHORTCUTS, 'shortcuts/viewer')
         self.qwidgetSearchReplace = QwidgetSearchReplace()
 
+    def on_qwidget_selectionChanged(self):
+        self.copyChanged.emit(bool(self.selected_text()))
+        
     def append_markdown(self, options):
         text = self.selected_text()
         if text:

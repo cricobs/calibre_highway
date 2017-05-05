@@ -151,11 +151,16 @@ class Qobject(QObject, object):
 
         qaction.setCheckable(checkable)
         qaction.setObjectName('qaction_' + name.replace(" ", "_").lower())
-        qaction.setEnabled(enabled)
         qaction.setData(data)
         qaction.parents = parents or []
         qaction.separator = separator
         qaction.group = group
+        if enabled is not None:
+            try:
+                enabled = reduce(getattr, enabled, self)
+            except TypeError:
+                pass
+            qaction.setEnabled(enabled)
         if icon:
             qaction.setIcon(QIcon(I(icon)))
         if group:
