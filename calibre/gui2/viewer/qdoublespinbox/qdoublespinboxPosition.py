@@ -12,6 +12,15 @@ class QdoublespinboxPosition(Qdoublespinbox):
         self.tt = _('Position in book')
         self.setToolTip(self.tt)
 
+    @property
+    def mode_view(self):
+        return True
+
+    def on_topLevelWidget_iteratorChanged(self, ebookiterator):
+        pages = sum(ebookiterator.pages)
+        self.setMaximum(pages)
+        self.setSuffix(' / %d' % pages)
+
     def set_value(self, val):
         self.blockSignals(True)
         self.setValue(val)

@@ -963,7 +963,12 @@ class QmainwindowViewer(Qmainwindow):
                              det_msg=tb, show=True)
 
         self.close_progress_indicator()
+
         return worker.exception is None
+
+    @property
+    def toc_model(self):
+        return self.qtreeviewContent.model()
 
     def load_ebook(self, pathtoebook, open_at=None, reopen_at=None):
         del self.resize_events_stack[:]
@@ -979,23 +984,10 @@ class QmainwindowViewer(Qmainwindow):
 
         self.current_title = self.iterator.mi.title
         self.current_index = -1
-        # fixme move to qtreeview, use iteratorChanged signal
-        self.toc_model = QstandarditemmodelContent(self.iterator.spine, self.iterator.toc)
-        self.qtreeviewContent.setModel(self.toc_model)
 
         self.iteratorChanged.emit(self.iterator)
         self.tocChanged.emit(bool(self.iterator.toc))
         self.create_recent_menu()
-
-        self.pos.setMaximum(sum(self.iterator.pages))
-        self.pos.setSuffix(' / %d' % sum(self.iterator.pages))
-
-        self.vertical_scrollbar.setMinimum(100)
-        self.vertical_scrollbar.setMaximum(100 * sum(self.iterator.pages))
-        self.vertical_scrollbar.setSingleStep(10)
-        self.vertical_scrollbar.setPageStep(100)
-        self.set_vscrollbar_value(1)
-
         self.qapplication.alert(self, 5000)
 
         previous = self.create_bookmarks_menu(self.iterator.bookmarks)
@@ -1034,7 +1026,7 @@ class QmainwindowViewer(Qmainwindow):
         if getattr(self, 'current_page', None) is not None:
             page = self.current_page.start_page + frac * float(self.current_page.pages - 1)
             self.pos.set_value(page)
-            self.set_vscrollbar_value(page)
+            self.vertical_scrollbar.set_value(page)
 
     def scrolled(self, frac, onload=False):
         self.set_page_number(frac)

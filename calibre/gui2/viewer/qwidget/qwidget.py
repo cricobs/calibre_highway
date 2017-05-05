@@ -21,6 +21,9 @@ class Qwidget(QWidget, Qobject):
         if self.mode_selection:
             self.selectionChanged.connect(self.qapplication.selectionChanged)
             self.selectionChanged.connect(self.qapplication.on_qwidget_selectionChanged)
+        if self.mode_view:
+            self.qapplication.topLevelWidget().iteratorChanged.connect(
+                self.on_topLevelWidget_iteratorChanged)
         if self.mode_toggle:
             self.qaction_toggle = Qaction(self)
             self.qaction_toggle.triggered.connect(self.on_qaction_toggle_triggered)
@@ -33,10 +36,26 @@ class Qwidget(QWidget, Qobject):
                 self.qaction_toggle.triggered.connect(q.trigger)
                 self.qaction_toggle.setText(q.text())
 
+    def on_topLevelWidget_iteratorChanged(self, ebookiterator):
+        """
+        called if mode_view
+        :param ebookiterator:
+        :return:
+        """
+        pass
+
+    @property
+    def mode_view(self):
+        """
+        connect qapplication.topLevelWidget().iteratorChanged to on_topLevelWidget_iteratorChanged
+        :return:
+        """
+        return False
+
     @property
     def selected_text(self):
         """
-        used in qapplication.selectedText() if mode_selection
+        called in qapplication.selectedText() if mode_selection
         :return:
         """
         if self.mode_selection:

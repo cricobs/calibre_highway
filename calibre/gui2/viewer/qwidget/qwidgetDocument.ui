@@ -24,14 +24,14 @@
     <number>0</number>
    </property>
    <item row="1" column="1">
-    <widget class="QScrollBar" name="vertical_scrollbar">
+    <widget class="DocumentVertical" name="vertical_scrollbar">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QScrollBar" name="horizontal_scrollbar">
+    <widget class="DocumentHorizontal" name="horizontal_scrollbar">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -73,6 +73,16 @@
    <extends>QWidget</extends>
    <header>calibre.gui2.viewer.qwidget.qwidgetSearch</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DocumentVertical</class>
+   <extends>QScrollBar</extends>
+   <header>calibre.gui2.viewer.qscrollbar.qscrollbarDocument.documentVertical</header>
+  </customwidget>
+  <customwidget>
+   <class>DocumentHorizontal</class>
+   <extends>QScrollBar</extends>
+   <header>calibre.gui2.viewer.qscrollbar.qscrollbarDocument.documentHorizontal</header>
   </customwidget>
  </customwidgets>
  <resources/>

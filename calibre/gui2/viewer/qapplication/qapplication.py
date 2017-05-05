@@ -4,6 +4,7 @@ from PyQt5.QtCore import QObject
 from PyQt5.QtCore import QSignalMapper
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QWidget
 
 from calibre.gui2 import Application
@@ -43,6 +44,7 @@ class Qapplication(Application):
         return topLevelWidgets
 
     def topLevelWidget(self, type=None):
+        type = QMainWindow if type is None else type
         topLevelWidgets = self.topLevelWidgets(type)
 
         try:

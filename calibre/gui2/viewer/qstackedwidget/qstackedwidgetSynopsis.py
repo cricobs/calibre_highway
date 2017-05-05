@@ -1,6 +1,5 @@
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QMainWindow
 
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.qdialog.qdialogConfig import config
@@ -46,10 +45,11 @@ class QstackedwidgetSynopsis(Qstackedwidget):
 
         self.restore_state()
 
-        self.toplevelwidget = self.qapplication.topLevelWidget(QMainWindow)
-        self.toplevelwidget.iteratorChanged.connect(self.on_toplevelwidget_iteratorChanged)
+    @property
+    def mode_view(self):
+        return True
 
-    def on_toplevelwidget_iteratorChanged(self, ebookiterator):
+    def on_topLevelWidget_iteratorChanged(self, ebookiterator):
         self.load(ebookiterator.pathtoebook)
 
     def preview(self):

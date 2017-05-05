@@ -3,11 +3,14 @@ from __future__ import (unicode_literals, division, absolute_import, print_funct
 from PyQt5.QtCore import QModelIndex
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QStyledItemDelegate
 from PyQt5.QtWidgets import QToolTip
 
 from calibre.gui2 import error_dialog
 from calibre.gui2.viewer.qmenu.qmenu import Qmenu
+from calibre.gui2.viewer.qstandarditemmodel.qstandarditemmodelContent import \
+    QstandarditemmodelContent
 from calibre.gui2.viewer.qtreeview.qtreeview import Qtreeview
 
 _ = _
@@ -36,6 +39,14 @@ class QtreeviewContent(Qtreeview):
 
         self.delegate = Delegate(self)
         self.setItemDelegate(self.delegate)
+
+    @property
+    def mode_view(self):
+        return True
+
+    def on_topLevelWidget_iteratorChanged(self, ebookiterator):
+        qstandarditemmodel = QstandarditemmodelContent(ebookiterator.spine, ebookiterator.toc)
+        self.setModel(qstandarditemmodel)
 
     def search(self, search, backwards=False):
         # fixme use direction
