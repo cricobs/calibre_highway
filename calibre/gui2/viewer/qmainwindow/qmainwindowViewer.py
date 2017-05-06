@@ -9,20 +9,20 @@ import traceback
 from functools import partial
 from threading import Thread
 
-from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QObject,
-                      QInputDialog, QModelIndex, pyqtSignal)
+from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QInputDialog, QModelIndex,
+                      pyqtSignal)
 
 from calibre import as_unicode, force_unicode, isbytestring, prints
 from calibre.constants import islinux, filesystem_encoding, DEBUG
 from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
-from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
-                          setup_gui_option_parser)
+from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url)
 from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
+from calibre.gui2.viewer.qobject.qobjectEventAccumulator import QobjectEventAccumulator
 from calibre.gui2.viewer.qobject.qobjectHistory import QobjectHistory
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
@@ -117,6 +117,7 @@ def default_lookup_website(lang):
         prefix = 'https://www.wordnik.com/words/'
     else:
         prefix = 'http://%s.wiktionary.org/wiki/' % lang
+
     return prefix + '{word}'
 
 
@@ -124,6 +125,7 @@ def lookup_website(lang):
     if lang == 'und':
         lang = get_lang()
     wm = dprefs['word_lookups']
+
     return wm.get(lang, default_lookup_website(lang))
 
 
@@ -217,6 +219,7 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
+        self.qapplication.file_event_hook = file_events
 
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
 
@@ -886,6 +889,11 @@ class QmainwindowViewer(Qmainwindow):
             ap = self.view.qwebpage.read_anchor_positions()
             self.update_indexing_state(ap)
 
+    def show(self, raise_=None):
+        super(QmainwindowViewer, self).show()
+        if raise_ is not None:
+            self.raise_()
+
     def next_document(self):
         if (hasattr(self, 'current_index') and self.current_index <
                 len(self.iterator.spine) - 1):
@@ -946,17 +954,16 @@ class QmainwindowViewer(Qmainwindow):
 
 
 def config(defaults=None):
-    desc = _('Options to control the ebook viewer')
+    description = _('Options to control the ebook viewer')
     if defaults is None:
-        c = Config('viewer', desc)
+        config = Config('viewer', description)
     else:
-        c = StringConfig(defaults, desc)
+        config = StringConfig(defaults, description)
+    path = filepath_relative(sys.modules[__name__], "json")
+    with open(path) as iput:
+        map(lambda values: config.add_opt(**values), json.load(iput)["options"])
 
-    with open(filepath_relative(sys.modules[__name__], "json")) as iput:
-        for values in json.load(iput)["options"]:
-            c.add_opt(**values)
-
-    return c
+    return config
 
 
 def option_parser():
@@ -966,7 +973,7 @@ def option_parser():
 
 View an ebook.
 '''))
-    setup_gui_option_parser(parser)
+
     return parser
 
 
@@ -975,6 +982,7 @@ def create_listener():
         from calibre.utils.ipc.server import LinuxListener as Listener
     else:
         from multiprocessing.connection import Listener
+
     return Listener(address=viewer_socket_address())
 
 
@@ -989,7 +997,9 @@ def ensure_single_instance(args, open_at):
             _('Failed to start viewer, could not insure only a single instance '
               'of the viewer is running. Click "Show Details" for more information'),
             det_msg=traceback.format_exc(), show=True)
+
         raise SystemExit(1)
+
     if not si:
         if len(args) > 1:
             t = RC(print_error=True, socket_address=viewer_socket_address())
@@ -1001,31 +1011,15 @@ def ensure_single_instance(args, open_at):
                     _('Unable to connect to existing viewer window, try restarting the viewer.'),
                     show=True)
                 raise SystemExit(1)
+
             t.conn.send((os.path.abspath(args[1]), open_at))
             t.conn.close()
+
             prints('Opened book in existing viewer instance')
+
         raise SystemExit(0)
-    listener = create_listener()
-    return listener
 
-
-class EventAccumulator(QObject):
-    got_file = pyqtSignal(object)
-
-    def __init__(self):
-        QObject.__init__(self)
-        self.events = []
-
-    def __call__(self, paths):
-        for path in paths:
-            if os.path.exists(path):
-                self.events.append(path)
-                self.got_file.emit(path)
-
-    def flush(self):
-        if self.events:
-            self.got_file.emit(self.events[-1])
-            self.events = []
+    return create_listener()
 
 
 def main(args=sys.argv):
@@ -1033,17 +1027,10 @@ def main(args=sys.argv):
     os.environ.pop('CALIBRE_WORKER_TEMP_DIR', None)
     reset_base_dir()
 
-    parser = option_parser()
-    opts, args = parser.parse_args(args)
+    override = 'calibre-ebook-viewer' if islinux else None
+    opts, args = option_parser().parse_args(args)
     open_at = float(opts.open_at.replace(',', '.')) if opts.open_at else None
     listener = None
-    override = 'calibre-ebook-viewer' if islinux else None
-    acc = EventAccumulator()
-    app = QapplicationViewer(args, override_program_name=override, color_prefs=vprefs)
-    app.file_event_hook = acc
-    app.load_builtin_fonts()
-    app.setWindowIcon(QIcon(I('viewer.png')))
-
     if vprefs['singleinstance']:
         try:
             listener = ensure_single_instance(args, open_at)
@@ -1053,22 +1040,15 @@ def main(args=sys.argv):
                          det_msg=traceback.format_exc(), show=True)
             raise SystemExit(1)
 
-    main = QmainwindowViewer(
+    qapplication = QapplicationViewer(args, override_program_name=override, color_prefs=vprefs)
+    qmainwindow = QmainwindowViewer(
         args[1] if len(args) > 1 else None, debug_javascript=opts.debug_javascript,
         open_at=open_at, continue_reading=opts.continue_reading,
-        start_in_fullscreen=opts.full_screen, listener=listener, file_events=acc)
-
-    # This is needed for paged mode. Without it, the first document that is
-    # loaded will have extra blank space at the bottom, as
-    # turn_off_internal_scrollbars does not take effect for the first
-    # rendered document
-    main.view.load_path(P('viewer/blank.html', allow_user_override=False))
-    main.set_exception_handler()
-    main.show()
-    if opts.raise_window:
-        main.raise_()
-    with main:
-        return app.exec_()
+        start_in_fullscreen=opts.full_screen, listener=listener,
+        file_events=QobjectEventAccumulator())
+    qmainwindow.show(opts.raise_window)
+    with qmainwindow:
+        return qapplication.exec_()
 
 
 if __name__ == '__main__':

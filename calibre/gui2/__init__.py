@@ -1023,6 +1023,8 @@ class Application(QApplication):
             # Qt 5 bug: https://bugreports.qt-project.org/browse/QTBUG-41125
             self.aboutToQuit.connect(self.flush_clipboard)
 
+        self.load_builtin_fonts()
+
     def flush_clipboard(self):
         try:
             if self.clipboard().ownsClipboard():

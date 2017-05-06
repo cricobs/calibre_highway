@@ -124,6 +124,8 @@ class MainWindow(QMainWindow):
         if disable_automatic_gc:
             self._gc = GarbageCollector(self, debug=False)
 
+        self.set_exception_handler()
+
     def enable_garbage_collection(self, enabled=True):
         if hasattr(self, '_gc'):
             self._gc.timer.blockSignals(not enabled)

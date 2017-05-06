@@ -24,6 +24,7 @@ __docformat__ = 'restructuredtext en'
 
 _ = _
 I = I
+P = P
 dynamic_property = dynamic_property
 
 
@@ -74,6 +75,12 @@ class QwebviewDocument(Qwebview):
         self.qaction_goto_location.setMenu(self.qmenu_goto_location)
 
         self.qapplication.loadedUi.connect(self.on_qapplication_loadedUi)
+
+        # This is needed for paged mode. Without it, the first document that is
+        # loaded will have extra blank space at the bottom, as
+        # turn_off_internal_scrollbars does not take effect for the first
+        # rendered document
+        self.load_path(P('viewer/blank.html', allow_user_override=False))
 
     def on_qapplication_loadedUi(self, qobject):
         if isinstance(qobject, QMainWindow):
