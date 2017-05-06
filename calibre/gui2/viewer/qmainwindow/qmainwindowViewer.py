@@ -294,10 +294,8 @@ class QmainwindowViewer(Qmainwindow):
         }
 
         self.qaction_toggle_paged_mode.setToolTip(texts["paged"] if p else texts["flow"])
-        if at_start:
-            return
 
-        self.reload()
+        not at_start and self.reload()
 
     def reload(self):
         if hasattr(self, 'current_index') and self.current_index > -1:
@@ -397,8 +395,7 @@ class QmainwindowViewer(Qmainwindow):
     def print_book(self):
         if self.iterator is None:
             return error_dialog(
-                self, _('No book opened'),
-                _('Cannot print as no book is opened'), show=True)
+                self, _('No book opened'), _('Cannot print as no book is opened'), show=True)
 
         from calibre.gui2.viewer.qdialog.qdialogPrint import print_book
         print_book(self.iterator.pathtoebook, self, self.current_title)

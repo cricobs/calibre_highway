@@ -46,7 +46,6 @@ class QwebviewDocument(Qwebview):
 
         self._context_blank_qactions = set()
         self._context_text_qactions = set()
-        self._ignore_scrollbar_signals = False
         self._reference_mode = False
         self._size_hint = QSize(510, 680)
         self.goto_location_actions = {}
@@ -66,6 +65,9 @@ class QwebviewDocument(Qwebview):
         self.scrollbar.valueChanged[(int)].connect(self.scroll_horizontally)
 
         self.loadFinished.connect(self.load_finished)
+        self.loadFinished.connect(lambda: self.scrollbar.setVisible(
+            not self.qwebpage.in_paged_mode and self.qwebpage.width - self.size().width()
+        ))
         self.qwebpage.settings_changed.connect(self.footnotes.clone_settings)
         self.create_actions(self.options["actions"])
 
@@ -407,27 +409,10 @@ class QwebviewDocument(Qwebview):
             _('Failed to load the file: {}. Click "Show details" for more information').format(
                 name), det_msg=tb, show=True)
 
-    def initialize_scrollbar(self):
-        if getattr(self, 'scrollbar', None) is not None:
-            if self.qwebpage.in_paged_mode:
-                self.scrollbar.setVisible(False)
-                return
-            delta = self.qwebpage.width - self.size().width()
-            if delta > 0:
-                self._ignore_scrollbar_signals = True
-                self.scrollbar.blockSignals(True)
-                self.scrollbar.setRange(0, delta)
-                self.scrollbar.setValue(0)
-                self.scrollbar.setSingleStep(1)
-                self.scrollbar.setPageStep(int(delta / 10.))
-            self.scrollbar.setVisible(delta > 0)
-            self.scrollbar.blockSignals(False)
-            self._ignore_scrollbar_signals = False
-
     def load_finished(self, ok):
         if self.loading_url is None:
-            # An <iframe> finished loading
-            return
+            return  # An <iframe> finished loading
+
         self.loading_url = None
         self.qwebpage.load_javascript_libraries()
         self.qwebpage.after_load(self.last_loaded_path)
@@ -438,25 +423,23 @@ class QwebviewDocument(Qwebview):
             self.initial_pos = 1.0
         if self.initial_pos > 0.0:
             scrolled = True
+
         self.scroll_to(self.initial_pos, notify=False)
         self.initial_pos = 0.0
         self.update()
-        self.initialize_scrollbar()
         self.qwebpage.reference_mode(self._reference_mode)
+
         if self.manager is not None:
             spine_index = self.manager.load_finished(bool(ok))
             if spine_index > -1:
                 self.qwebpage.set_reference_prefix('%d.' % (spine_index + 1))
             if scrolled:
-                self.manager.scrolled(self.qwebpage.scroll_fraction,
-                                      onload=True)
-
+                self.manager.scrolled(self.qwebpage.scroll_fraction, onload=True)
         if self.flipper.isVisible():
             if self.flipper.running:
                 self.flipper.setVisible(False)
             else:
-                self.flipper(self.current_page_image(),
-                             duration=self.qwebpage.page_flip_duration)
+                self.flipper(self.current_page_image(), duration=self.qwebpage.page_flip_duration)
 
     @classmethod
     def test_line(cls, img, y):
@@ -628,8 +611,6 @@ class QwebviewDocument(Qwebview):
             self.manager.scrolled(self.scroll_fraction)
 
     def scroll_to(self, pos, notify=True):
-        if self._ignore_scrollbar_signals:
-            return
         old_pos = (self.qwebpage.xpos if self.qwebpage.in_paged_mode else
                    self.qwebpage.ypos)
         if self.qwebpage.in_paged_mode:

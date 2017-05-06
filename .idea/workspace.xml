@@ -7,9 +7,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qdoublespinbox/qdoublespinboxPosition.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qdoublespinbox/qdoublespinboxPosition.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,14 +42,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="37">
-              <caret line="200" column="68" lean-forward="true" selection-start-line="200" selection-start-column="68" selection-end-line="200" selection-end-column="68" />
+            <state relative-caret-position="664">
+              <caret line="556" column="25" lean-forward="true" selection-start-line="556" selection-start-column="25" selection-end-line="556" selection-end-column="25" />
               <folding>
                 <element signature="e#25#107#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qwebviewDocument.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="71" column="51" lean-forward="true" selection-start-line="71" selection-start-column="51" selection-end-line="71" selection-end-column="51" />
+              <folding>
+                <element signature="e#24#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="documentHorizontal.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="documentVertical.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentVertical.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="27" selection-end-column="25" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -90,8 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>(\{\s+)(&quot;name&quot;:)</find>
-      <find>(\{\s+)(&quot;visible&quot;:)</find>
       <find>set_visibility</find>
       <find>set_visible</find>
       <find>visibili</find>
@@ -120,9 +150,10 @@
       <find>remember_window_size</find>
       <find>_raise</find>
       <find>__enter__</find>
+      <find>.scrollbar</find>
+      <find>width</find>
     </findStrings>
     <replaceStrings>
-      <replace>$0\n&quot;context&quot;: &quot;text&quot;,</replace>
       <replace>&quot;</replace>
       <replace>$0\n        &quot;slots&quot;: {           &quot;triggered&quot;: [             &quot;search_online&quot;           ]         },</replace>
       <replace>$0\n        &quot;slots&quot;: {           &quot;triggered&quot;: [             &quot;on_qaction_format_triggered&quot;           ]         },</replace>
@@ -152,6 +183,7 @@
       <replace>*args, **kwargs</replace>
       <replace>true</replace>
       <replace>raise_</replace>
+      <replace>bool</replace>
     </replaceStrings>
     <dirStrings>
       <dir>/opt/calibre</dir>
@@ -186,7 +218,6 @@
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocumentHorizontal.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocumentVertical.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/document.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplication.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qstackedwidget/qstackedwidgetSynopsis.py" />
@@ -219,11 +250,12 @@
         <option value="$PROJECT_DIR$/calibre/gui2/__init__.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/main_window.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobjectEventAccumulator.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qdoublespinbox/qdoublespinboxPosition.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
       </list>
     </option>
   </component>
@@ -375,6 +407,62 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="qwebview" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="calibre" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gui2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="viewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qscrollbar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="calibre" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gui2" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="viewer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qscrollbar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="qscrollbarDocument" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -890,13 +978,6 @@
       <option name="presentableId" value="Default" />
       <updated>1483536369871</updated>
     </task>
-    <task id="LOCAL-00141" summary="Qaction.create_qmenu fix&#10;">
-      <created>1493526419708</created>
-      <option name="number" value="00141" />
-      <option name="presentableId" value="LOCAL-00141" />
-      <option name="project" value="LOCAL" />
-      <updated>1493526419709</updated>
-    </task>
     <task id="LOCAL-00142" summary="qwebviewDocument.json&#10;">
       <created>1493527446576</created>
       <option name="number" value="00142" />
@@ -1233,7 +1314,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494108545444</updated>
     </task>
-    <option name="localTasksCounter" value="190" />
+    <task id="LOCAL-00190" summary="QmainwindowViewer.goto_page_num() removed">
+      <created>1494110648002</created>
+      <option name="number" value="00190" />
+      <option name="presentableId" value="LOCAL-00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1494110648002</updated>
+    </task>
+    <option name="localTasksCounter" value="191" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1261,13 +1349,13 @@
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287858" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3726208" sideWeight="0.5375171" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29648608" sideWeight="0.58390176" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
+      <window_info id="Python Console" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30527085" sideWeight="0.58390176" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30307466" sideWeight="0.58390176" order="5" side_tool="true" content_ui="tabs" x="1" y="199" width="1364" height="304" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46412885" sideWeight="0.5375171" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29648608" sideWeight="0.41609824" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3023426" sideWeight="0.41609824" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29721814" sideWeight="0.58390176" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3023426" sideWeight="0.58390176" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34260616" sideWeight="0.47748977" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37701318" sideWeight="0.43383357" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1306,7 +1394,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="QtreeviewContent.contextMenuEvent modified for synopsis append" />
     <MESSAGE value="qcomboboxMarkdown deleted" />
     <MESSAGE value="QplaintexteditEdit append and copy markdown through qapplication" />
     <MESSAGE value="QtreeviewContent enable qaction_copy" />
@@ -1331,7 +1418,8 @@
     <MESSAGE value="QwebviewDocument.handle_key_press() restored" />
     <MESSAGE value="qmainwindowViewer.config use json file" />
     <MESSAGE value="reformat" />
-    <option name="LAST_COMMIT_MESSAGE" value="reformat" />
+    <MESSAGE value="QmainwindowViewer.goto_page_num() removed" />
+    <option name="LAST_COMMIT_MESSAGE" value="QmainwindowViewer.goto_page_num() removed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1340,22 +1428,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtreeview/qtreeviewContent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="51" column="10" lean-forward="false" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qstackedwidget/qstackedwidgetSynopsis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="11" column="2" lean-forward="false" selection-start-line="11" selection-start-column="2" selection-end-line="11" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qtoolbar/qtoolbar.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
@@ -1436,14 +1508,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="470">
           <caret line="166" column="25" lean-forward="false" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="61" column="13" lean-forward="false" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1534,14 +1598,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentVertical.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="67" lean-forward="false" selection-start-line="16" selection-start-column="67" selection-end-line="16" selection-end-column="67" />
           <folding />
         </state>
       </provider>
@@ -1660,14 +1716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -1690,14 +1738,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="104" column="7" lean-forward="false" selection-start-line="104" selection-start-column="7" selection-end-line="104" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1247972723/PyQt5/QtWidgets/QWidget.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="897" column="8" lean-forward="false" selection-start-line="897" selection-start-column="8" selection-end-line="897" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -1762,12 +1802,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1247972723/PyQt5/QtWidgets/QWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="168" column="8" lean-forward="false" selection-start-line="168" selection-start-column="8" selection-end-line="168" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="200" column="68" lean-forward="true" selection-start-line="200" selection-start-column="68" selection-end-line="200" selection-end-column="68" />
+        <state relative-caret-position="664">
+          <caret line="556" column="25" lean-forward="true" selection-start-line="556" selection-start-column="25" selection-end-line="556" selection-end-column="25" />
           <folding>
             <element signature="e#25#107#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#38#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentVertical.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="0" lean-forward="false" selection-start-line="23" selection-start-column="0" selection-end-line="27" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentHorizontal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="39" column="34" lean-forward="true" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="71" column="51" lean-forward="true" selection-start-line="71" selection-start-column="51" selection-end-line="71" selection-end-column="51" />
+          <folding>
+            <element signature="e#24#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
