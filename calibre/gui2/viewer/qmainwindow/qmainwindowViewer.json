@@ -1,45 +1,6 @@
 {
   "actions": [
-    {
-      "text": "Back",
-      "name": "back",
-      "parents": [
-        "QtoolbarEdit",
-        "QwebviewDocument"
-      ],
-      "icon": "back.png",
-      "slots": {
-        "triggered": [
-          "back"
-        ]
-      },
-      "data": {
-        "context": [
-          "blank"
-        ],
-        "position": -1.3
-      }
-    },
-    {
-      "text": "Forward",
-      "name": "forward",
-      "parents": [
-        "QtoolbarEdit",
-        "QwebviewDocument"
-      ],
-      "icon": "forward.png",
-      "slots": {
-        "triggered": [
-          "forward"
-        ]
-      },
-      "data": {
-        "context": [
-          "blank"
-        ],
-        "position": -1.2
-      }
-    },
+
     {
       "dropdown": "open_history",
       "text": "Open ebook",

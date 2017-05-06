@@ -48,7 +48,6 @@ class QwebviewDocument(Qwebview):
         self._ignore_scrollbar_signals = False
         self._reference_mode = False
         self._size_hint = QSize(510, 680)
-        self.goto_location_actions = {}
         self.initial_pos = 0.0
         self.is_auto_repeat_event = False
         self.loading_url = None
@@ -780,10 +779,6 @@ class QwebviewDocument(Qwebview):
             self.manager.scrolled(self.scroll_fraction)
         return ret
 
-    def keyPressEvent(self, event):
-        if not self.handle_key_press(event):
-            return QWebView.keyPressEvent(self, event)
-
     def paged_col_scroll(self, forward=True, scroll_past_end=True):
         dir = 'next' if forward else 'previous'
         loc = self.qwebpage.javascript(
@@ -794,63 +789,6 @@ class QwebviewDocument(Qwebview):
         elif scroll_past_end:
             (self.manager.next_document() if forward else
              self.manager.previous_document())
-
-    def handle_key_press(self, event):
-        handled = True
-        key = self.qapplication.qabstractlistmodelShortcut.get_match(event)
-        func = self.goto_location_actions.get(key, None)
-        if func is not None:
-            self.is_auto_repeat_event = event.isAutoRepeat()
-            try:
-                func()
-            finally:
-                self.is_auto_repeat_event = False
-        elif key == 'Down':
-            if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll(
-                    scroll_past_end=not self.qwebpage.line_scrolling_stops_on_pagebreaks)
-            else:
-                if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
-                        self.qwebpage.at_bottom):
-                    self.manager.next_document()
-                else:
-                    amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
-                    self.scroll_by(y=amt)
-        elif key == 'Up':
-            if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll(
-                    forward=False,
-                    scroll_past_end=not self.qwebpage.line_scrolling_stops_on_pagebreaks)
-            else:
-                if (not self.qwebpage.line_scrolling_stops_on_pagebreaks and
-                        self.qwebpage.at_top):
-                    self.manager.previous_document()
-                else:
-                    amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
-                    self.scroll_by(y=-amt)
-        elif key == 'Left':
-            if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll(forward=False)
-            else:
-                amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
-                self.scroll_by(x=-amt)
-        elif key == 'Right':
-            if self.qwebpage.in_paged_mode:
-                self.paged_col_scroll()
-            else:
-                amt = int((self.qwebpage.line_scroll_fraction / 100.) * 15)
-                self.scroll_by(x=amt)
-        elif key == 'Back':
-            if self.manager is not None:
-                self.manager.back(None)
-        elif key == 'Forward':
-            if self.manager is not None:
-                self.manager.forward(None)
-        elif event.matches(QKeySequence.Copy):
-            self.copy()
-        else:
-            handled = False
-        return handled
 
     def resizeEvent(self, event):
         if self.manager is not None:

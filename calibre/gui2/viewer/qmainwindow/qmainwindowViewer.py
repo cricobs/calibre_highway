@@ -21,9 +21,11 @@ from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
+from calibre.gui2.viewer.qobject.qobjectHistory import QobjectHistory
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.ipc import viewer_socket_address, RC
+from calibre.utils.ipc.simple_worker import WorkerError
 from calibre.utils.localization import canonicalize_lang, lang_as_iso639_1, get_lang
 from calibre.utils.zipfile import BadZipfile
 
@@ -87,7 +89,6 @@ class ResizeEvent(object):
 
 class Worker(Thread):
     def run(self):
-        from calibre.utils.ipc.simple_worker import WorkerError
         try:
             Thread.run(self)
             self.exception = self.traceback = None
@@ -138,80 +139,13 @@ def listen(self):
     self.listener = None
 
 
-class History(list):
-    def __init__(self, action_back=None, action_forward=None):
-        self.action_back = action_back
-        self.action_forward = action_forward
-        super(History, self).__init__(self)
-        self.clear()
-
-    def clear(self):
-        del self[:]
-        self.insert_pos = 0
-        self.back_pos = None
-        self.forward_pos = None
-        self.set_actions()
-
-    def set_actions(self):
-        if self.action_back is not None:
-            self.action_back.setDisabled(self.back_pos is None)
-        if self.action_forward is not None:
-            self.action_forward.setDisabled(self.forward_pos is None)
-
-    def back(self, item_when_clicked):
-        # Back clicked
-        if self.back_pos is None:
-            return None
-        item = self[self.back_pos]
-        self.forward_pos = self.back_pos + 1
-        if self.forward_pos >= len(self):
-            # We are at the head of the stack, append item to the stack so that
-            # clicking forward again will take us to where we were when we
-            # clicked back
-            self.append(item_when_clicked)
-            self.forward_pos = len(self) - 1
-        self.insert_pos = self.forward_pos
-        self.back_pos = None if self.back_pos == 0 else self.back_pos - 1
-        self.set_actions()
-        return item
-
-    def forward(self, item_when_clicked):
-        # Forward clicked
-        if self.forward_pos is None:
-            return None
-        item = self[self.forward_pos]
-        self.back_pos = self.forward_pos - 1
-        if self.back_pos < 0:
-            self.back_pos = None
-        self.insert_pos = min(len(self) - 1, (self.back_pos or 0) + 1)
-        self.forward_pos = None if self.forward_pos > len(self) - 2 else self.forward_pos + 1
-        self.set_actions()
-        return item
-
-    def add(self, item):
-        # Link clicked
-        self[self.insert_pos:] = []
-        while self.insert_pos > 0 and self[self.insert_pos - 1] == item:
-            self.insert_pos -= 1
-            self[self.insert_pos:] = []
-        self.insert(self.insert_pos, item)
-        # The next back must go to item
-        self.back_pos = self.insert_pos
-        self.insert_pos += 1
-        # There can be no forward
-        self.forward_pos = None
-        self.set_actions()
-
-    def __str__(self):
-        return 'History: Items=%s back_pos=%s insert_pos=%s forward_pos=%s' % (
-            tuple(self), self.back_pos, self.insert_pos, self.forward_pos)
-
-
 class QmainwindowViewer(Qmainwindow):
     STATE_VERSION = 2
 
     msgFromAnotherInstance = pyqtSignal(object)
     iteratorChanged = pyqtSignal(EbookIterator)
+    iteratorExited = pyqtSignal()
+    positionChanged = pyqtSignal(int, bool)
     tocChanged = pyqtSignal(bool)
 
     def __init__(
@@ -260,13 +194,16 @@ class QmainwindowViewer(Qmainwindow):
 
         self.pos = s.pos
         self.pos.editingFinished.connect(self.goto_page_num)
+        self.pos.value_changed.connect(
+            lambda position: self.positionChanged.emit(position, False))
 
         # ---
         self.view_resized_timer = QTimer(self)
         self.view_resized_timer.setSingleShot(True)
         self.view_resized_timer.timeout.connect(self.viewport_resize_finished)
 
-        self.history = History(self.qaction_back, self.qaction_forward)
+        self.history = QobjectHistory(self)
+        self.history.goToPosition.connect(self.goto_page)
 
         self.qtreeviewContent = self.qdockwidgetContent.qtreeviewContent
         self.qtreeviewContent.pressed[QModelIndex].connect(self.toc_clicked)
@@ -524,19 +461,9 @@ class QmainwindowViewer(Qmainwindow):
                 self.link_clicked(url)
         self.view.setFocus(Qt.OtherFocusReason)
 
-    def back(self, x):
-        pos = self.history.back(self.pos.value())
-        if pos is not None:
-            self.goto_page(pos)
-
     def goto_page_num(self):
         num = self.pos.value()
         self.goto_page(num)
-
-    def forward(self, x):
-        pos = self.history.forward(self.pos.value())
-        if pos is not None:
-            self.goto_page(pos)
 
     def goto_start(self):
         self.goto_page(1)
@@ -602,14 +529,14 @@ class QmainwindowViewer(Qmainwindow):
             self.scrolled(self.view.scroll_fraction)
 
     def internal_link_clicked(self, prev_pos):
-        self.history.add(prev_pos)
+        self.positionChanged.emit(prev_pos, True)
 
     def link_clicked(self, url):
         path = self.view.path(url)
         frag = None
         if path in self.iterator.spine:
             self.update_page_number()  # Ensure page number is accurate as it is used for history
-            self.history.add(self.pos.value())
+            self.positionChanged.emit(self.pos.value(), True)
             path = self.iterator.spine[self.iterator.spine.index(path)]
             if url.hasFragment():
                 frag = unicode(url.fragment())
@@ -869,7 +796,7 @@ class QmainwindowViewer(Qmainwindow):
     def load_iterator(self, pathtoebook):
         self.iterator = EbookIterator(
             pathtoebook, copy_bookmarks_to_file=self.view.qwebpage.copy_bookmarks_to_file)
-        self.history.clear()
+
         self.setEnabled(False)
 
         worker = Worker(target=partial(self.iterator.__enter__, view_kepub=True))
@@ -879,6 +806,7 @@ class QmainwindowViewer(Qmainwindow):
         while worker.isAlive():
             worker.join(0.1)
             self.qapplication.processEvents()
+
         if worker.exception is not None:
             tb = worker.traceback.strip()
             if tb and tb.splitlines()[-1].startswith('DRMError:'):
@@ -902,6 +830,7 @@ class QmainwindowViewer(Qmainwindow):
         if self.iterator is not None:
             self.save_current_position()
             self.iterator.__exit__()
+            self.iteratorExited.emit()
         if isbytestring(pathtoebook):
             pathtoebook = force_unicode(pathtoebook, filesystem_encoding)
         if not self.load_iterator(pathtoebook):
@@ -977,7 +906,7 @@ class QmainwindowViewer(Qmainwindow):
                 reopen_at = self.current_page_bookmark
             except Exception:
                 reopen_at = None
-            self.history.clear()
+
             self.load_ebook(self.iterator.pathtoebook, reopen_at=reopen_at)
 
     def __enter__(self):

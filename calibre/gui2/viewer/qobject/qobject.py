@@ -215,7 +215,10 @@ class Qobject(QObject, object):
         if qmenu:
             qmenu.addAction(qaction)
 
-        self.addAction(qaction)
+        try:
+            self.addAction(qaction)
+        except AttributeError:
+            pass
 
         return qaction
 
