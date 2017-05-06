@@ -1,6 +1,5 @@
 {
   "actions": [
-
     {
       "dropdown": "open_history",
       "text": "Open ebook",
@@ -369,6 +368,55 @@
       },
       "group": "bookmark",
       "separator": true
+    }
+  ],
+  "options": [
+    {
+      "name": "remember_window_size",
+      "default": false,
+      "help": "Remember last used window size"
+    },
+    {
+      "name": "raise_window",
+      "switches": [
+        "--raise-window"
+      ],
+      "default": false,
+      "help": "If specified, viewer window will try to come to the front when started."
+    },
+    {
+      "name": "full_screen",
+      "switches": [
+        "--full-screen",
+        "--fullscreen",
+        "-f"
+      ],
+      "default": false,
+      "help": "If specified, viewer window will try to open full screen when started."
+    },
+    {
+      "name": "debug_javascript",
+      "switches": [
+        "--debug-javascript"
+      ],
+      "default": false,
+      "help": "Print javascript alert and console messages to the console"
+    },
+    {
+      "name": "open_at",
+      "switches": [
+        "--open-at"
+      ],
+      "default": null,
+      "help": "The position at which to open the specified book. The position is a location as displayed in the top left corner of the viewer."
+    },
+    {
+      "name": "continue_reading",
+      "switches": [
+        "--continue"
+      ],
+      "default": true,
+      "help": "Continue reading at the previously opened book"
     }
   ]
 }

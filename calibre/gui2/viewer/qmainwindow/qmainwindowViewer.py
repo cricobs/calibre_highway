@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals, division, absolute_import, print_function
 
+import json
 import os
 import sys
 import traceback
@@ -17,6 +18,7 @@ from calibre.customize.ui import available_input_formats
 from calibre.ebooks.oeb.iterator.book import EbookIterator
 from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
                           setup_gui_option_parser)
+from calibre.gui2.viewer.library.filepath import filepath_relative
 from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
@@ -950,18 +952,9 @@ def config(defaults=None):
     else:
         c = StringConfig(defaults, desc)
 
-    c.add_opt('raise_window', ['--raise-window'], default=False,
-              help=_('If specified, viewer window will try to come to the front when started.'))
-    c.add_opt('full_screen', ['--full-screen', '--fullscreen', '-f'], default=False,
-              help=_('If specified, viewer window will try to open full screen when started.'))
-    c.add_opt('remember_window_size', default=False, help=_('Remember last used window size'))
-    c.add_opt('debug_javascript', ['--debug-javascript'], default=False,
-              help=_('Print javascript alert and console messages to the console'))
-    c.add_opt('open_at', ['--open-at'], default=None, help=_(
-        'The position at which to open the specified book.'
-        ' The position is a location as displayed in the top left corner of the viewer.'))
-    c.add_opt('continue_reading', ['--continue'], default=True,
-              help=_('Continue reading at the previously opened book'))
+    with open(filepath_relative(sys.modules[__name__], "json")) as iput:
+        for values in json.load(iput)["options"]:
+            c.add_opt(**values)
 
     return c
 
