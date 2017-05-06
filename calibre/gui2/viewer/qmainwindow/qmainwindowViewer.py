@@ -252,6 +252,7 @@ class QmainwindowViewer(Qmainwindow):
 
         self.view = self.centralWidget().view
 
+        # fixme move to QwidgetDocument
         self.pi = ProgressIndicator(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
 

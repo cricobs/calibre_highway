@@ -228,7 +228,10 @@
         "context": [
           "blank"
         ],
-        "position": 7
+        "position": 7,
+        "shortcuts": [
+          "Focus Search"
+        ]
       },
       "separator": true
     },

@@ -7,14 +7,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d1ca3d9d-678b-4d9f-b200-c21c6195f461" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidget.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qdockwidget/qdockwidget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.json" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageFootnote.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageFootnote.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidget.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.json" afterPath="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.json" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -45,90 +41,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="qwidgetDocument.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" column="24" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#62#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qwebpageDocument.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="61" column="13" lean-forward="false" selection-start-line="61" selection-start-column="13" selection-end-line="61" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qlabelClock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qwebviewDocument.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="879" column="27" lean-forward="false" selection-start-line="879" selection-start-column="27" selection-end-line="879" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qwidget.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidget.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="28" column="46" lean-forward="false" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qwebpageFootnote.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageFootnote.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="166" column="25" lean-forward="false" selection-start-line="166" selection-start-column="25" selection-end-line="166" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="qobject.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="26" column="18" lean-forward="false" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="qmainwindowViewer.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="247" column="39" lean-forward="true" selection-start-line="247" selection-start-column="39" selection-end-line="247" selection-end-column="39" />
+            <state relative-caret-position="259">
+              <caret line="258" column="20" lean-forward="true" selection-start-line="258" selection-start-column="20" selection-end-line="258" selection-end-column="20" />
               <folding>
                 <element signature="e#25#107#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qmainwindowViewer.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="985">
+              <caret line="232" column="23" lean-forward="false" selection-start-line="232" selection-start-column="23" selection-end-line="232" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qabstractlistmodelShortcut.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qabstractlistmodel/qabstractlistmodelShortcut.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="446">
+              <caret line="64" column="22" lean-forward="false" selection-start-line="64" selection-start-column="22" selection-end-line="64" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="qwidgetSearchReplace.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetSearchReplace.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="5" column="15" lean-forward="false" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -147,7 +99,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>addaction</find>
       <find>s</find>
       <find>table</find>
       <find>restore_fonts</find>
@@ -170,13 +121,14 @@
       <find>visibili</find>
       <find>scroll</find>
       <find>ebook</find>
-      <find>footnote</find>
       <find>show</find>
       <find>update_clock</find>
       <find>c.</find>
       <find>clock_timer</find>
       <find>settings_changed</find>
       <find>clock</find>
+      <find>footnote</find>
+      <find>start sear</find>
     </findStrings>
     <replaceStrings>
       <replace>_page</replace>
@@ -230,8 +182,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qstandarditem/qstandarditemContent.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qplaintextedit/test.json" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qsyntaxhighlighter/qsyntaxhighlighterSynopsis.json" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindow.py" />
@@ -267,7 +217,6 @@
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qstackedwidget/qstackedwidgetSynopsis.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qscrollbar/qscrollbarDocument/documentVertical.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qabstractlistmodel/qabstractlistmodelShortcut.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qstackedwidget/qstackedwidgetSynopsis.json" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qtoolbar/qtoolbarSynopsis.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qstackedwidget/qstackedwidget.py" />
@@ -279,8 +228,11 @@
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageFootnote.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py" />
-        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
         <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.json" />
+        <option value="$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.json" />
       </list>
     </option>
   </component>
@@ -1346,13 +1298,6 @@
       <option name="presentableId" value="Default" />
       <updated>1483536369871</updated>
     </task>
-    <task id="LOCAL-00131" summary="QwebviewDocument._page renamed to qwebpage">
-      <created>1493495333489</created>
-      <option name="number" value="00131" />
-      <option name="presentableId" value="LOCAL-00131" />
-      <option name="project" value="LOCAL" />
-      <updated>1493495333495</updated>
-    </task>
     <task id="LOCAL-00132" summary="QmainwindowViewer.metadata moved to QwidgetDocument">
       <created>1493498995524</created>
       <option name="number" value="00132" />
@@ -1689,7 +1634,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494014355036</updated>
     </task>
-    <option name="localTasksCounter" value="180" />
+    <task id="LOCAL-00180" summary="QmainwindowViewer.clock_label moved to QwidgetDocument.qlabelClock">
+      <created>1494022390873</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1494022390873</updated>
+    </task>
+    <option name="localTasksCounter" value="181" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1711,7 +1663,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="774" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46930423" sideWeight="0.4952251" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1778,14 +1730,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1247972723/__builtin__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="3910" column="8" lean-forward="false" selection-start-line="3910" selection-start-column="8" selection-end-line="3910" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetSearchReplace.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -1896,25 +1840,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="121" column="18" lean-forward="false" selection-start-line="121" selection-start-column="10" selection-end-line="121" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmenu/qmenu.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="123" column="21" lean-forward="false" selection-start-line="123" selection-start-column="21" selection-end-line="123" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1982,32 +1912,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7344">
-          <caret line="408" column="3" lean-forward="false" selection-start-line="408" selection-start-column="3" selection-end-line="408" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qabstractlistmodel/qabstractlistmodelShortcut.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="64" column="22" lean-forward="false" selection-start-line="64" selection-start-column="22" selection-end-line="64" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" column="41" lean-forward="true" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
           <folding />
         </state>
       </provider>
@@ -2112,18 +2016,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="26" column="18" lean-forward="false" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="7" column="32" lean-forward="false" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1247972723/PyQt5/QtWidgets/QWidget.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="327" column="8" lean-forward="false" selection-start-line="327" selection-start-column="8" selection-end-line="327" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qobject/qobject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="26" column="18" lean-forward="false" selection-start-line="26" selection-start-column="18" selection-end-line="26" selection-end-column="18" />
           <folding />
         </state>
       </provider>
@@ -2154,11 +2066,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1247972723/PyQt5/QtWidgets/QWidget.py">
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="327" column="8" lean-forward="false" selection-start-line="327" selection-start-column="8" selection-end-line="327" selection-end-column="8" />
-          <folding />
+        <state relative-caret-position="540">
+          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2170,30 +2084,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qlabel/qlabelClock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetDocument.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="11" column="24" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="24" />
           <folding>
-            <element signature="e#0#62#0" expanded="true" />
+            <element signature="e#0#62#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwidget/qwidgetSearchReplace.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="15" lean-forward="false" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebview/qwebviewDocument.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="214" column="20" lean-forward="true" selection-start-line="214" selection-start-column="20" selection-end-line="214" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qabstractlistmodel/qabstractlistmodelShortcut.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="64" column="22" lean-forward="false" selection-start-line="64" selection-start-column="22" selection-end-line="64" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="985">
+          <caret line="232" column="23" lean-forward="false" selection-start-line="232" selection-start-column="23" selection-end-line="232" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qapplication/qapplicationViewer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2340">
+          <caret line="130" column="17" lean-forward="false" selection-start-line="130" selection-start-column="17" selection-end-line="130" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qwebpage/qwebpageDocument.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="34" column="3" lean-forward="false" selection-start-line="34" selection-start-column="3" selection-end-line="34" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/calibre/gui2/viewer/qmainwindow/qmainwindowViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="247" column="39" lean-forward="true" selection-start-line="247" selection-start-column="39" selection-end-line="247" selection-end-column="39" />
+        <state relative-caret-position="259">
+          <caret line="258" column="20" lean-forward="true" selection-start-line="258" selection-start-column="20" selection-end-line="258" selection-end-column="20" />
           <folding>
             <element signature="e#25#107#0" expanded="true" />
           </folding>
