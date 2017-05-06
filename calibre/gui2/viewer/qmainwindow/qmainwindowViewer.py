@@ -197,9 +197,8 @@ class QmainwindowViewer(Qmainwindow):
         self.search.search.connect(self.find)
 
         self.pos = s.pos
-        self.pos.editingFinished.connect(self.goto_page_num)
-        self.pos.value_changed.connect(
-            lambda position: self.positionChanged.emit(position, False))
+        self.pos.goToPosition.connect(self.goto_page)
+        self.pos.positionChanged.connect(lambda p: self.positionChanged.emit(p, False))
 
         # ---
         self.view_resized_timer = QTimer(self)
@@ -218,6 +217,9 @@ class QmainwindowViewer(Qmainwindow):
         self.qwidgetBookmark.activated.connect(self.goto_bookmark)
         self.qwidgetBookmark.create_requested.connect(self.bookmark)
 
+        self.file_events = file_events
+        self.file_events.got_file.connect(self.load_ebook)
+
         self.qapplication.time_inactivity(self, interval=self.interval_hide_cursor)
         self.qapplication.file_event_hook = file_events
 
@@ -229,8 +231,6 @@ class QmainwindowViewer(Qmainwindow):
         self.create_theme_menu()
         self.create_bookmarks_menu([])
         self.restore_state()  # fixme use qsettings
-
-        file_events.got_file.connect(self.load_ebook)
 
         if self.start_in_fullscreen:
             self.showFullScreen()
@@ -465,10 +465,6 @@ class QmainwindowViewer(Qmainwindow):
                     url.setFragment(item.fragment)
                 self.link_clicked(url)
         self.view.setFocus(Qt.OtherFocusReason)
-
-    def goto_page_num(self):
-        num = self.pos.value()
-        self.goto_page(num)
 
     def goto_start(self):
         self.goto_page(1)

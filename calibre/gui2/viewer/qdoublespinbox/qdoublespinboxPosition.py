@@ -4,13 +4,15 @@ from calibre.gui2.viewer.qdoublespinbox.qdoublespinbox import Qdoublespinbox
 
 
 class QdoublespinboxPosition(Qdoublespinbox):
-    value_changed = pyqtSignal(object, object)
+    positionChanged = pyqtSignal(object, object)
+    goToPosition = pyqtSignal(int)
 
     def __init__(self, *args, **kwargs):
         super(QdoublespinboxPosition, self).__init__(*args, **kwargs)
 
         self.tt = _('Position in book')
         self.setToolTip(self.tt)
+        self.editingFinished.connect(lambda: self.goToPosition.emit(self.value()))
 
     @property
     def mode_view(self):
@@ -33,4 +35,4 @@ class QdoublespinboxPosition(Qdoublespinbox):
         self.update_value()
 
     def update_value(self):
-        self.value_changed.emit(self.value(), self.maximum())
+        self.positionChanged.emit(self.value(), self.maximum())

@@ -21,7 +21,7 @@ class QwidgetDocument(Qwidget):
         self.qlabelClock.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
         self.qlabelClock.setEnabled(self.view.qwebpage.fullscreen_clock)
 
-        self.qwidgetSearch.pos.value_changed.connect(self.qlabelPosition.update_value)
+        self.qwidgetSearch.pos.positionChanged.connect(self.qlabelPosition.update_value)
 
         self.window().setCentralWidget(self)
         self.window().iteratorChanged.connect(self.on_window_iteratorChanged)
