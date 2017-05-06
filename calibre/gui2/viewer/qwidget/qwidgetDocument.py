@@ -1,6 +1,7 @@
 from calibre.gui2.viewer.qlabel.qlabelClock import QlabelClock
 from calibre.gui2.viewer.qwebview.qwebviewMetadata import QwebviewMetadata
 from calibre.gui2.viewer.qwidget.qwidget import Qwidget
+from calibre.gui2.viewer.qwidget.qwidgetProgress import QwidgetProgress
 
 
 class QwidgetDocument(Qwidget):
@@ -8,6 +9,8 @@ class QwidgetDocument(Qwidget):
         super(QwidgetDocument, self).__init__(*args, **kwargs)
 
         self.qwebviewMetadata = QwebviewMetadata(self)
+
+        self.qwidgetProgress = QwidgetProgress(self)
 
         self.qlabelClock = QlabelClock(self)
         self.qlabelClock.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])

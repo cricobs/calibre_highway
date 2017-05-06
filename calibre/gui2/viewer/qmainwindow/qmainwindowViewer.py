@@ -22,7 +22,6 @@ from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
-from calibre.gui2.viewer.qwidget.qwidgetProgress import QwidgetProgress
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.ipc import viewer_socket_address, RC
@@ -252,7 +251,6 @@ class QmainwindowViewer(Qmainwindow):
         self.view = self.centralWidget().view
 
         # fixme move to QwidgetDocument
-        self.pi = QwidgetProgress(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
 
         # --- search
