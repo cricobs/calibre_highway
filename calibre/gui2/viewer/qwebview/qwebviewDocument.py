@@ -193,7 +193,7 @@ class QwebviewDocument(Qwebview):
     def goto_bookmark(self, bm):
         self.qwebpage.goto_bookmark(bm)
 
-    # ---
+    # --- todo reformat
     def animated_scroll_done(self):
         if self.manager is not None:
             self.manager.scrolled(self.qwebpage.scroll_fraction)
@@ -217,9 +217,6 @@ class QwebviewDocument(Qwebview):
         if self.qwebpage.in_fullscreen_mode:
             self.qwebpage.switch_to_fullscreen_mode()
         self.setFocus(Qt.OtherFocusReason)
-
-    def bookmark(self):
-        return self.qwebpage.bookmark()
 
     def popup_table(self):
         html = self.qwebpage.extract_node()

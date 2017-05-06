@@ -469,6 +469,7 @@ class QmainwindowViewer(Qmainwindow):
     def goto_end(self):
         self.goto_page(self.pos.maximum())
 
+    # fixme move to QwebviewDocument
     def goto_page(self, new_page, loaded_check=True):
         if self.current_page is not None or not loaded_check:
             for page in self.iterator.spine:
@@ -732,7 +733,7 @@ class QmainwindowViewer(Qmainwindow):
                                          text=bm)
         title = unicode(title).strip()
         if ok and title:
-            bm = self.view.bookmark()
+            bm = self.view.qwebpage.bookmark()
             bm['spine'] = self.current_index
             bm['title'] = title
             self.iterator.add_bookmark(bm)
@@ -767,7 +768,7 @@ class QmainwindowViewer(Qmainwindow):
 
     @property
     def current_page_bookmark(self):
-        bm = self.view.bookmark()
+        bm = self.view.qwebpage.bookmark()
         bm['spine'] = self.current_index
         bm['title'] = 'calibre_current_page_bookmark'
         return bm
