@@ -20,7 +20,6 @@ from calibre.gui2 import (choose_files, info_dialog, error_dialog, open_url,
 from calibre.gui2.viewer.library.thing import property_setter
 from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
-from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
@@ -250,9 +249,6 @@ class QmainwindowViewer(Qmainwindow):
 
         self.view = self.centralWidget().view
 
-        # fixme move to QwidgetDocument
-        self.pos_label = QlabelPos(self.centralWidget())
-
         # --- search
         self.qwidgetSearch = s = self.centralWidget().qwidgetSearch
 
@@ -263,7 +259,6 @@ class QmainwindowViewer(Qmainwindow):
         self.search.search.connect(self.find)
 
         self.pos = s.pos
-        self.pos.value_changed.connect(self.pos_label.update_value)
         self.pos.editingFinished.connect(self.goto_page_num)
 
         # ---
@@ -481,22 +476,6 @@ class QmainwindowViewer(Qmainwindow):
 
         super(QmainwindowViewer, self).showFullScreen()
 
-    def show_full_screen_label(self):
-        # fixme move to view
-        if self.view.qwebpage.fullscreen_pos:
-            self.show_pos_label()
-
-        self.relayout_fullscreen_labels()
-
-    def show_pos_label(self):
-        self.pos_label.setVisible(True)
-        self.pos_label.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
-        self.pos.update_value()
-
-    def relayout_fullscreen_labels(self):
-        p = self.pos_label
-        p.move(15, p.parent().height() - p.height() - 10)
-
     def showNormal(self):
         self.view.qwebpage.page_position.save()
         self.vertical_scrollbar.setVisible(True)
@@ -662,7 +641,6 @@ class QmainwindowViewer(Qmainwindow):
 
     def load_finished(self, ok):
         self.setEnabled(True)
-        self.show_pos_label()
 
         path = self.view.path()
         try:
@@ -772,13 +750,9 @@ class QmainwindowViewer(Qmainwindow):
         self.view.qwebpage.after_resize()
         if wmc:
             # This resize is part of a window mode change, special case it
-            if fs:
-                self.show_full_screen_label()
             self.view.qwebpage.page_position.restore()
             self.scrolled(self.view.scroll_fraction)
         else:
-            if self.isFullScreen():
-                self.relayout_fullscreen_labels()
             self.view.qwebpage.page_position.restore()
             self.update_page_number()
 

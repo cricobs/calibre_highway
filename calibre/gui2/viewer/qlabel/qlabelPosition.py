@@ -1,11 +1,12 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QScrollBar
 
 from calibre.gui2.viewer.qlabel.qlabel import Qlabel
 
 
-class QlabelPos(Qlabel):
+class QlabelPosition(Qlabel):
     def __init__(self, *args, **kwargs):
-        super(QlabelPos, self).__init__(*args, **kwargs)
+        super(QlabelPosition, self).__init__(*args, **kwargs)
 
         self.style = '''
             QLabel {
@@ -16,20 +17,27 @@ class QlabelPos(Qlabel):
                 padding: 5px;
         }'''
 
-        # self.setText('2000/4000')
-        # self.setVisible(False)
-
     def set_style_options(self, background_color, color):
         self.setStyleSheet(self.style % (background_color, color))
+
+    def update_position(self, scrollbar=True):
+        if not self.isVisible():
+            return
+
+        height = self.parent().height() - self.height()
+        width = self.parent().width() - self.width()
+        if scrollbar:
+            qscrollbars = self.parent().findChildren(QScrollBar)
+            for q in qscrollbars:
+                if q.orientation() == Qt.Vertical:
+                    width -= q.width()
+                    break
+
+        self.move(width - 6, height - 6)
 
     def update_value(self, *args):
         if not self.isVisible():
             return
-
-        pos_w = self.parent().width() - (
-        6 + self.width() + self.parent().findChild(QScrollBar).width())
-        pos_h = self.parent().height() - self.height()
-        self.move(pos_w, pos_h)
 
         try:
             value, maximum = args
@@ -38,3 +46,4 @@ class QlabelPos(Qlabel):
 
         self.setText(str(value))
         self.resize(self.sizeHint())
+        self.update_position()
