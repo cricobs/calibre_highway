@@ -10,7 +10,6 @@ from threading import Thread
 
 from PyQt5.Qt import (QApplication, Qt, QIcon, QTimer, QByteArray, QObject,
                       QInputDialog, QModelIndex, pyqtSignal)
-from PyQt5.QtWidgets import QWidget
 
 from calibre import as_unicode, force_unicode, isbytestring, prints
 from calibre.constants import islinux, filesystem_encoding, DEBUG
@@ -23,7 +22,7 @@ from calibre.gui2.viewer.qaction.qactionRecent import QactionRecent
 from calibre.gui2.viewer.qapplication.qapplicationViewer import QapplicationViewer
 from calibre.gui2.viewer.qlabel.qlabelPos import QlabelPos
 from calibre.gui2.viewer.qmainwindow.qmainwindow import Qmainwindow
-from calibre.gui2.widgets import ProgressIndicator
+from calibre.gui2.viewer.qwidget.qwidgetProgress import QwidgetProgress
 from calibre.ptempfile import reset_base_dir
 from calibre.utils.config import Config, StringConfig, JSONConfig
 from calibre.utils.ipc import viewer_socket_address, RC
@@ -253,7 +252,7 @@ class QmainwindowViewer(Qmainwindow):
         self.view = self.centralWidget().view
 
         # fixme move to QwidgetDocument
-        self.pi = ProgressIndicator(self.centralWidget())
+        self.pi = QwidgetProgress(self.centralWidget())
         self.pos_label = QlabelPos(self.centralWidget())
 
         # --- search
@@ -660,10 +659,11 @@ class QmainwindowViewer(Qmainwindow):
             open_url(url)
 
     def load_started(self):
-        self.open_progress_indicator(_('Loading flow...'))
+        self.setEnabled(False)
+        # self.open_progress_indicator(_('Loading flow...'))
 
     def load_finished(self, ok):
-        self.close_progress_indicator()
+        self.setEnabled(True)
         self.show_pos_label()
 
         path = self.view.path()
@@ -738,7 +738,8 @@ class QmainwindowViewer(Qmainwindow):
                         self.toc_clicked(entry.index(), force=True)
 
     def load_path(self, path, pos=0.0):
-        self.open_progress_indicator(_('Laying out %s') % self.current_title)
+        self.setEnabled(False)
+        # self.open_progress_indicator(_('Laying out %s') % self.current_title)
         self.view.load_path(path, pos=pos)
 
     def viewport_resize_started(self, event):
@@ -806,23 +807,6 @@ class QmainwindowViewer(Qmainwindow):
     def update_page_number(self):
         self.set_page_number(self.view.qwebpage.scroll_fraction)
         return self.pos.value()
-
-    def close_progress_indicator(self):
-        self.pi.stop()
-        for qwidget in self.findChildren(QWidget):
-            if qwidget.parent() == self:
-                qwidget.setEnabled(True)
-
-        self.unsetCursor()
-        self.view.setFocus(Qt.PopupFocusReason)
-
-    def open_progress_indicator(self, msg=''):
-        self.pi.start(msg)
-        for qwidget in self.findChildren(QWidget):
-            if qwidget.parent() == self:
-                qwidget.setEnabled(False)
-
-        self.setCursor(Qt.BusyCursor)
 
     def create_theme_menu(self):
         from calibre.gui2.viewer.qdialog.qdialogConfig import load_themes
@@ -918,7 +902,7 @@ class QmainwindowViewer(Qmainwindow):
         self.iterator = EbookIterator(
             pathtoebook, copy_bookmarks_to_file=self.view.qwebpage.copy_bookmarks_to_file)
         self.history.clear()
-        self.open_progress_indicator()
+        self.setEnabled(False)
 
         worker = Worker(target=partial(self.iterator.__enter__, view_kepub=True))
         worker.path_to_ebook = pathtoebook
@@ -937,7 +921,7 @@ class QmainwindowViewer(Qmainwindow):
                 error_dialog(self, _('Could not open ebook'), as_unicode(r) or _('Unknown error'),
                              det_msg=tb, show=True)
 
-        self.close_progress_indicator()
+        self.setEnabled(True)
 
         return worker.exception is None
 

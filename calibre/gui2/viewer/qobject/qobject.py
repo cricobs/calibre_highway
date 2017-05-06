@@ -34,6 +34,9 @@ class Qobject(QObject, object):
         self.load_ui_file()
         self.load_options_file()
 
+    def eventFilter(self, qobject, qevent):
+        return super(Qobject, self).eventFilter(qobject, qevent)
+
     def on_qapplication_activity(self):
         """
         called if mode_activity
