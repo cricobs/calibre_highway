@@ -15,15 +15,16 @@ class QwidgetDocument(Qwidget):
 
         self.qlabelPosition = QlabelPosition(self)
         self.qlabelPosition.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
+        self.qlabelPosition.mode_fullscreen = self.view.qwebpage.fullscreen_scrollbar
 
         self.qlabelClock = QlabelClock(self)
         self.qlabelClock.set_style_options('rgba(0, 0, 0, 0)', self.view.qwebpage.colors()[1])
         self.qlabelClock.setEnabled(self.view.qwebpage.fullscreen_clock)
 
+        self.qwidgetSearch.pos.value_changed.connect(self.qlabelPosition.update_value)
+
         self.window().setCentralWidget(self)
         self.window().iteratorChanged.connect(self.on_window_iteratorChanged)
-
-        self.qwidgetSearch.pos.value_changed.connect(self.qlabelPosition.update_value)
 
     def on_window_iteratorChanged(self, iterator):
         self.qwebviewMetadata.show_metadata(iterator.mi, iterator.book_format)

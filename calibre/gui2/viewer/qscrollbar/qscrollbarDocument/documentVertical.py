@@ -5,6 +5,17 @@ class DocumentVertical(Qscrollbar):
     def __init__(self, *args, **kwargs):
         super(DocumentVertical, self).__init__(*args, **kwargs)
 
+        self.mode_fullscreen = False
+
+        self.window().installEventFilter(self)
+
+    def eventFilter(self, qobject, qevent):
+        if not self.mode_fullscreen:
+            if qevent.type() == qevent.WindowStateChange:
+                self.setVisible(not qobject.isFullScreen())
+
+        return super(Qscrollbar, self).eventFilter(qobject, qevent)
+
     @property
     def mode_view(self):
         return True

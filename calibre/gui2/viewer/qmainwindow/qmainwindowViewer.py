@@ -471,14 +471,10 @@ class QmainwindowViewer(Qmainwindow):
         self.view.qwebpage.page_position.save()
         self.window_mode_changed = 'fullscreen'
         self.was_maximized = self.isMaximized()
-        if not self.view.qwebpage.fullscreen_scrollbar:
-            self.vertical_scrollbar.setVisible(False)
-
         super(QmainwindowViewer, self).showFullScreen()
 
     def showNormal(self):
         self.view.qwebpage.page_position.save()
-        self.vertical_scrollbar.setVisible(True)
         self.window_mode_changed = 'normal'
         if self.was_maximized:
             super(QmainwindowViewer, self).showMaximized()
@@ -952,7 +948,6 @@ class QmainwindowViewer(Qmainwindow):
         if getattr(self, 'current_page', None) is not None:
             page = self.current_page.start_page + frac * float(self.current_page.pages - 1)
             self.pos.set_value(page)
-            self.vertical_scrollbar.set_value(page)
 
     def scrolled(self, frac, onload=False):
         self.set_page_number(frac)
