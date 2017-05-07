@@ -220,8 +220,8 @@ class QwebviewDocument(Qwebview):
 
     def popup_table(self):
         html = self.qwebpage.extract_node()
-        self.table_popup(html, self.as_url(self.last_loaded_path),
-                         self.qwebpage.font_magnification_step)
+        baseurl = self.as_url(self.last_loaded_path)
+        self.table_popup(html, baseurl, self.qwebpage.font_magnification_step)
 
     def set_table(self, qwebhittestresult):
         table = None
