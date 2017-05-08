@@ -224,6 +224,7 @@ class QmainwindowViewer(Qmainwindow):
         self.qapplication.file_event_hook = file_events
 
         self.qmenu_themes.aboutToShow.connect(self.themes_menu_shown, type=Qt.QueuedConnection)
+        self.qmenu_open_history.triggered.connect(self.open_recent)
 
         self.setWindowIcon(QIcon(I('viewer.png')))
         self.read_settings()
@@ -314,7 +315,9 @@ class QmainwindowViewer(Qmainwindow):
             if len(actions) >= 11:
                 break
             if os.path.exists(path):
-                actions.append(QactionRecent(path, self))
+                action =QactionRecent(path, self)
+
+                actions.append(action)
 
         self.qmenu_open_history.clear()
         self.qmenu_open_history.addActions(actions)
@@ -492,7 +495,10 @@ class QmainwindowViewer(Qmainwindow):
             self.load_ebook(files[0])
 
     def open_recent(self, action):
-        self.load_ebook(action.path)
+        try:
+            self.load_ebook(action.path)
+        except AttributeError:
+            pass
 
     def find(self, text, repeat=False, backwards=False):
         if not text:
