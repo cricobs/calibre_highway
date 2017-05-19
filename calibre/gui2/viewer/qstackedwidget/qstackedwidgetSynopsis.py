@@ -122,6 +122,7 @@ class QstackedwidgetSynopsis(Qstackedwidget):
 
         except IOError as error:
             if error.errno == 2:
+                self.qwebviewPreview.clear()
                 self.qplaintexteditEdit.clear()
             else:
                 raise

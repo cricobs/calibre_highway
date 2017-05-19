@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QUrl
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWebKitWidgets import QWebView, QWebPage
 
@@ -12,6 +13,9 @@ class Qwebview(QWebView, Qwidget):
         super(Qwebview, self).__init__(*args, **kwargs)
 
         self.setPage(self.create_page())
+
+    def clear(self):
+        self.load(QUrl())
 
     def create_page(self):
         return QwebpagePreview(self)
