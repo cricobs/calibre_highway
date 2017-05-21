@@ -48,6 +48,9 @@
         "position": 1,
         "context": [
           "blank"
+        ],
+        "shortcuts": [
+          "Reload"
         ]
       }
     },

@@ -53,6 +53,7 @@ P = P
 
 
 # fixme
+# - find where the document changes page to update vertical scrollbar
 # - actions for font size increase/decrease
 
 class ResizeEvent(object):

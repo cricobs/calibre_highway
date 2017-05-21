@@ -22,6 +22,7 @@ class QwidgetDocument(Qwidget):
         self.qlabelClock.setEnabled(self.view.qwebpage.fullscreen_clock)
 
         self.qwidgetSearch.pos.positionChanged.connect(self.qlabelPosition.update_value)
+        self.qwidgetSearch.pos.positionChanged.connect(self.vertical_scrollbar.set_value)
 
         self.window().setCentralWidget(self)
         self.window().iteratorChanged.connect(self.on_window_iteratorChanged)
